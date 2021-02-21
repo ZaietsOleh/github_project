@@ -5,12 +5,13 @@ import android.os.Bundle
 import com.githubuiviewer.App
 import com.githubuiviewer.R
 import com.githubuiviewer.sharedPrefsTools.SharedPref
+import com.githubuiviewer.userScreen.UserFragment
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var sharedPreferences : SharedPref
+    lateinit var model: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,16 +20,18 @@ class MainActivity : AppCompatActivity() {
         val app = this.application as App
         app.getComponent().inject(this)
 
-        checkAuthorized()
+        //todo model.checkAuthorized()
+
+        setupLiveDataListener()
+        setupBasicFragment()
     }
 
-    private fun checkAuthorized() {
-        if (sharedPreferences.token.isEmpty()) {
-            //todo start dialog log in
-        }
-        else{
-            //todo set basic user fragment
-        }
+    private fun setupLiveDataListener(){
     }
 
+    private fun setupBasicFragment(){
+        supportFragmentManager.beginTransaction()
+            .add(R.id.basic_fragment_holder, UserFragment.newInstance())
+            .commit()
+    }
 }
