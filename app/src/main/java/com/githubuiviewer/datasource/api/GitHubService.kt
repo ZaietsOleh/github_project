@@ -1,8 +1,6 @@
 package com.githubuiviewer.datasource.api
 
-import com.githubuiviewer.datasource.model.AccessTokenResponse
-import com.githubuiviewer.datasource.model.ReposResponse
-import com.githubuiviewer.datasource.model.UserResponse
+import com.githubuiviewer.datasource.model.*
 import retrofit2.http.*
 
 interface GitHubService {
@@ -26,4 +24,21 @@ interface GitHubService {
     @Headers("Accept: application/vnd.github.v3+json")
     @GET("/repos/{owner}/{repo}/contributors")
     suspend fun getContributors(@Header("Authorization") auth: String, @Path("repo") repo: String, @Path("owner") owner: String): List<UserResponse>
+
+    @Headers("Accept: application/vnd.github.v3+json")
+    @GET("/repos/{owner}/{repo}/issues")
+    suspend fun getIssues(@Header("Authorization") auth: String, @Path("repo") repo: String, @Path("owner") owner: String): List<IssueRepos>
+
+    @Headers("Accept: application/vnd.github.v3+json")
+    @GET("/repos/{owner}/{repo}/issues")
+    suspend fun getIssueDetail(@Header("Authorization") auth: String, @Path("repo") repo: String, @Path("owner") owner: String): List<IssueRepos>
+
+    @Headers("Accept: application/vnd.github.v3+json")
+    @GET("/repos/{owner}/{repo}/issues/{issue_number}/comments")
+    suspend fun getIssueComments(@Header("Authorization") auth: String, @Path("repo") repo: String, @Path("owner") owner: String, @Path("issue_number") issue_number: String): List<IssueCommentRepos>
+
+    //raw.githubusercontent.com
+    @Headers("Accept: application/vnd.github.v3+json")
+    @GET("/{owner}/{repo}/master/README.md")
+    suspend fun getReadme(@Header("Authorization") auth: String, @Path("owner") owner: String, @Path("repo") repo: String, ): String
 }
