@@ -6,27 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".userScreen.UserFragment">
 
-    <ImageView
-        android:id="@+id/iv_user_avatar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:background="@color/purple_500"
-        app:layout_constraintBottom_toTopOf="@id/guideline"
-        app:layout_constraintEnd_toStartOf="@id/tv_user_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_user_name"
+    <com.githubuiviewer.ui.UserGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_user_avatar"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/iv_user_avatar"
-        app:layout_constraintTop_toTopOf="@id/iv_user_avatar"
-        tools:text="Super puper name " />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -36,6 +22,7 @@
         app:layout_constraintGuide_percent="0.2" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_repositories"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
