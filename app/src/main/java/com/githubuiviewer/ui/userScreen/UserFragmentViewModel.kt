@@ -1,4 +1,4 @@
-package com.githubuiviewer.userScreen
+package com.githubuiviewer.ui.userScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

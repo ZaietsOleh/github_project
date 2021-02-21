@@ -1,4 +1,4 @@
-package com.githubuiviewer.userScreen
+package com.githubuiviewer.ui.userScreen
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import com.githubuiviewer.App
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.UserFragmentBinding
+import com.githubuiviewer.ui.BaseFragment
 import javax.inject.Inject
 
-class UserFragment : Fragment() {
-
+class UserFragment : BaseFragment(R.layout.user_fragment) {
     companion object {
         fun newInstance() = UserFragment()
     }
@@ -34,6 +34,9 @@ class UserFragment : Fragment() {
 
         setupDi()
         setupLiveDataListeners()
+
+        //Там на какой-то клик переходим дальше
+        //navigation.showLoginScreen()
     }
 
     private fun setupDi(){
