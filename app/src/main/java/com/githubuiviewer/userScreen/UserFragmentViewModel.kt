@@ -13,11 +13,13 @@ class UserFragmentViewModel @Inject constructor(
 ) : ViewModel() {
 
     fun getUserInfo(){
-        viewModelScope.launch {
+        /*viewModelScope.launch {
             try {
                 gitHubService.getUser(sharedPref.token)
-            }catch ()
-        }
+            }catch (e : Exception){
+
+            }
+        }*/
     }
 
     fun getUserRepos(){
