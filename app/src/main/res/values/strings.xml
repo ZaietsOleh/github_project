@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Github Ui Viewer</string>
     <string name="user_avatar">User avatar</string>
+    <string name="error_user_loading">Not authorized</string>
 </resources>

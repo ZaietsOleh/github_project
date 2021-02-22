@@ -1,4 +1,4 @@
-package com.githubuiviewer.sharedPrefsTools
+package com.githubuiviewer.tools.sharedPrefsTools
 
 import android.content.SharedPreferences
 import kotlin.properties.ReadWriteProperty

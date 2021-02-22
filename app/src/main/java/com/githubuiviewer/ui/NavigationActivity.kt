@@ -3,6 +3,7 @@ package com.githubuiviewer.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.githubuiviewer.R
+import com.githubuiviewer.tools.UserProfile
 
 class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
     val navigator by lazy {
@@ -13,6 +14,6 @@ class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)
 
-        navigator.showUserScreen()
+        navigator.showUserScreen(UserProfile.AuthorizedUser)
     }
 }

@@ -3,6 +3,7 @@ package com.githubuiviewer.di
 import android.content.Context
 import com.githubuiviewer.datasource.api.GitHubService
 import com.githubuiviewer.*
+import com.githubuiviewer.tools.sharedPrefsTools.SharedPref
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
