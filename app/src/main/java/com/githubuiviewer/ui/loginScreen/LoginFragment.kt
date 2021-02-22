@@ -18,8 +18,8 @@ class LoginFragment : BaseFragment(R.layout.login_fragment) {
         binding = LoginFragmentBinding.bind(view)
         setupListeners()
     }
-
-    private fun setupListeners(){
+    
+    private fun setupListeners() {
         binding.btnSignIn.setOnClickListener {
             startGitHubLogin()
         }
