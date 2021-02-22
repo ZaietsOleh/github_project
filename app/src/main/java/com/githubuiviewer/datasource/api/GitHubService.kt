@@ -16,13 +16,13 @@ interface GitHubService {
     suspend fun getUserByToken(@Header("Authorization") auth: String): UserResponse
 
     @GET("/users/{user}")
-    suspend fun getUser(@Path("user") user: String): UserResponse
+    suspend fun getUserByNickname(@Path("user") user: String): UserResponse
 
     @GET("/user/repos")
     suspend fun getReposByToken(@Header("Authorization") auth: String): List<ReposResponse>
 
     @GET("/users/{owner}/repos")
-    suspend fun getRepos(@Path("owner") owner: String): List<ReposResponse>
+    suspend fun getReposByNickname(@Path("owner") owner: String): List<ReposResponse>
 
     @GET("/repos/{owner}/{repo}/contributors")
     suspend fun getContributors(@Header("Authorization") auth: String, @Path("repo") repo: String, @Path("owner") owner: String): List<UserResponse>

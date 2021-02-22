@@ -2,6 +2,7 @@ package com.githubuiviewer.ui
 
 import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentManager
+import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.issueScreen.IssueFragment
 import com.githubuiviewer.ui.loginScreen.LoginFragment
 import com.githubuiviewer.ui.projectScreen.ProjectFragment
@@ -18,11 +19,11 @@ class Navigator(
         private const val ISSUE_SCREEN_FRAGMENT = "ISSUE_SCREEN_FRAGMENT"
     }
 
-    fun showUserScreen() {
+    fun showUserScreen(userProfile: UserProfile) {
         fragmentManager.beginTransaction()
-            .add(container, UserFragment.newInstance())
-            .addToBackStack(USER_SCREEN_FRAGMENT)
-            .commit()
+                .add(container, UserFragment.newInstance(userProfile))
+                .addToBackStack(USER_SCREEN_FRAGMENT)
+                .commit()
     }
 
     fun showLoginScreen() {

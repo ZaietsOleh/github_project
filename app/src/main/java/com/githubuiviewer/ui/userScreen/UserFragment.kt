@@ -1,20 +1,27 @@
 package com.githubuiviewer.ui.userScreen
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import com.githubuiviewer.App
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.UserFragmentBinding
+import com.githubuiviewer.datasource.model.ReposResponse
+import com.githubuiviewer.datasource.model.UserResponse
+import com.githubuiviewer.tools.State
+import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.BaseFragment
 import javax.inject.Inject
 
-class UserFragment : BaseFragment(R.layout.user_fragment) {
+class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout.user_fragment) {
     companion object {
-        fun newInstance() = UserFragment()
+        fun newInstance(userProfile: UserProfile) = UserFragment(userProfile)
     }
+    private val TAG = "UserFragment"
 
     @Inject
     lateinit var viewModel: UserFragmentViewModel
@@ -35,8 +42,8 @@ class UserFragment : BaseFragment(R.layout.user_fragment) {
         setupDi()
         setupLiveDataListeners()
 
-        //Там на какой-то клик переходим дальше
-        //navigation.showLoginScreen()
+        viewModel.userProfile = userProfile
+        viewModel.getContent()
     }
 
     private fun setupDi(){
@@ -45,7 +52,35 @@ class UserFragment : BaseFragment(R.layout.user_fragment) {
     }
 
     private fun setupLiveDataListeners(){
+        viewModel.userInfoLiveData.observe(viewLifecycleOwner, Observer {
+            updateUser(it)
+        })
+        viewModel.reposLiveData.observe(viewLifecycleOwner, Observer {
+            updateRepos(it)
+        })
+    }
 
+    private fun updateUser(state: State<UserResponse, String>) {
+        when (state) {
+            is State.Loading -> TODO("show loading" )
+            is State.Error -> Log.d(TAG, "update user error")//navigation.showLoginScreen()
+            is State.Content -> {
+                binding.userGroup.apply {
+                    setImage(state.data.avatar_url)
+                    setName(state.data.name)
+                }
+            }
+        }
+    }
+
+    private fun updateRepos(state: State<List<ReposResponse>, String>) {
+        when (state) {
+            is State.Loading -> TODO("show loading" )
+            is State.Error -> Log.d(TAG, "update repos error")
+            is State.Content -> {
+
+            }
+        }
     }
 
 }
