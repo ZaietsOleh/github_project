@@ -63,7 +63,7 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
     private fun updateUser(state: State<UserResponse, String>) {
         when (state) {
             is State.Loading -> TODO("show loading" )
-            is State.Error -> navigation.showLoginScreen()
+            is State.Error -> Log.d(TAG, "update user error")//navigation.showLoginScreen()
             is State.Content -> {
                 binding.userGroup.apply {
                     setImage(state.data.avatar_url)

@@ -30,7 +30,8 @@ class UserFragmentViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _userInfoLiveData.value = State.Content(profileRepository.getUser(userProfile))
-                _reposLiveData.value = State.Content(profileRepository.getRepos(userProfile))
+                //_userInfoLiveData.value = State.Content(profileRepository.getUser(UserProfile.PublicUser("ZGoblin")))
+                //_reposLiveData.value = State.Content(profileRepository.getRepos(userProfile))
             } catch (unauthorizedException: UnauthorizedException) {
                 _userInfoLiveData.value = State.Error(resourceRepository.getString(R.string.error_user_loading))
             } catch (notFoundException: NotFoundException) {
