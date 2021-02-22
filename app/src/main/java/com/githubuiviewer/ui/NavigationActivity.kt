@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.githubuiviewer.R
 import com.githubuiviewer.sharedPrefsTools.SharedPref
+import com.githubuiviewer.tools.UserProfile
 
 class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
 
@@ -19,7 +20,7 @@ class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)
 
-        navigator.showUserScreen()
+        navigator.showUserScreen(UserProfile.AuthorizedUser)
     }
 
     override fun onResume() {

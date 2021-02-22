@@ -1,4 +1,4 @@
-package com.githubuiviewer.sharedPrefsTools
+package com.githubuiviewer.tools.sharedPrefsTools
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
@@ -20,5 +20,4 @@ class SharedPref @Inject constructor(context: Context) {
 
   //todo add inject for this deligate???
   var token: String by SharedPrefDelegate(sharedPreferences, KEY_TOKEN, "")
-
 }

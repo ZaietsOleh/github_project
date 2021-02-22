@@ -9,15 +9,15 @@ class ErrorInterceptor : Interceptor {
         val request = chain.request()
         val response = chain.proceed(request)
 
-        when (response.code()) {
+        when (response.code) {
             401 -> throw UnauthorizedException("Unauthorized")
             404 -> throw NotFoundException("Resource not found")
             in 400..500 -> throw DataLoadingException("Something went wrong")
         }
 
-        val bodyString = response.body()!!.string()
+        val bodyString = response.body!!.string()
         return response.newBuilder()
-            .body(ResponseBody.create(response.body()?.contentType(), bodyString))
+            .body(ResponseBody.create(response.body?.contentType(), bodyString)) //todo deprecated create
             .build()
     }
 }
