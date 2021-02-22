@@ -3,8 +3,8 @@ package com.githubuiviewer.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.githubuiviewer.R
-import com.githubuiviewer.sharedPrefsTools.SharedPref
 import com.githubuiviewer.tools.UserProfile
+import com.githubuiviewer.tools.sharedPrefsTools.SharedPref
 
 class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
 
