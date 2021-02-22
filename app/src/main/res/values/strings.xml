@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Github Ui Viewer</string>
+    <string name="user_avatar">User avatar</string>
 </resources>
