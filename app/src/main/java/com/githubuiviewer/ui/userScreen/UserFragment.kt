@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.UserFragmentBinding
@@ -15,6 +16,7 @@ import com.githubuiviewer.datasource.model.UserResponse
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.BaseFragment
+import com.githubuiviewer.ui.userScreen.adapter.ReposAdapter
 import javax.inject.Inject
 
 class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout.user_fragment) {
@@ -41,9 +43,14 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
 
         setupDi()
         setupLiveDataListeners()
+        setupRecyclerRepos()
 
         viewModel.userProfile = userProfile
         viewModel.getContent()
+    }
+
+    private fun setupRecyclerRepos() {
+        binding.rvRepositories.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
     private fun setupDi(){
@@ -63,7 +70,7 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
     private fun updateUser(state: State<UserResponse, String>) {
         when (state) {
             is State.Loading -> TODO("show loading" )
-            is State.Error -> Log.d(TAG, "update user error")//navigation.showLoginScreen()
+            is State.Error -> navigation.showLoginScreen()
             is State.Content -> {
                 binding.userGroup.apply {
                     setImage(state.data.avatar_url)
@@ -78,7 +85,7 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
             is State.Loading -> TODO("show loading" )
             is State.Error -> Log.d(TAG, "update repos error")
             is State.Content -> {
-
+                binding.rvRepositories.adapter = ReposAdapter(state.data)
             }
         }
     }
