@@ -1,5 +1,7 @@
 package com.githubuiviewer.datasource.api
 
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import okhttp3.Interceptor
 import okhttp3.Response
 import okhttp3.ResponseBody

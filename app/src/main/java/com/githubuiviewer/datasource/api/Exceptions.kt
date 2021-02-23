@@ -1,9 +1,9 @@
 package com.githubuiviewer.datasource.api
 
-import java.lang.Exception
+import java.io.IOException
 
-class DataLoadingException(message: String): Exception(message) // other
+class DataLoadingException(message: String): IOException(message) // other
 
-class UnauthorizedException(message: String): Exception(message) //401
+class UnauthorizedException(message: String): IOException(message) //401
 
-class NotFoundException(message: String): Exception(message) //404
+class NotFoundException(message: String): IOException(message) //404
