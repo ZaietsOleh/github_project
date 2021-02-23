@@ -1,4 +1,4 @@
-package com.githubuiviewer.tools
+package com.githubuiviewer.data.repository
 
 import android.content.Context
 import androidx.annotation.ColorRes

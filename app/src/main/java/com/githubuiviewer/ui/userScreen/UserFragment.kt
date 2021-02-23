@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
+import com.githubuiviewer.tools.MAIN_DEBUG_TAG
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.UserFragmentBinding
 import com.githubuiviewer.datasource.model.ReposResponse

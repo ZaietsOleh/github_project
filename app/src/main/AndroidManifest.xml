@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GithubUiViewer">
-        <activity android:name=".ui.NavigationActivity">
+        <activity android:name=".ui.mainActivity.NavigationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

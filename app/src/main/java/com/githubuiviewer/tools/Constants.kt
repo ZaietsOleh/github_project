@@ -1,4 +1,4 @@
-package com.githubuiviewer
+package com.githubuiviewer.tools
 
 const val ERROR_COUNT = 1
 const val DATA_NOT_FOUND = "DATA_NOT_FOUND"
@@ -8,4 +8,9 @@ const val clientSecret = "11db94ae53e6bbba4a298c7742b56d5530969c76"
 const val redirectUrl = "githubproject://callback"
 const val scopes = "repo, user"
 const val schema = "https"
+
 const val host = "api.github.com"
+const val logInHost = "github.com"
+
+
+const val MAIN_DEBUG_TAG = "MAIN_DEBUG_TAG"

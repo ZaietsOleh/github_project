@@ -3,19 +3,33 @@ package com.githubuiviewer.ui.loginScreen
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import com.githubuiviewer.*
+import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import com.githubuiviewer.databinding.LoginFragmentBinding
-import com.githubuiviewer.ui.BaseFragment
+import com.githubuiviewer.tools.*
 
-class LoginFragment : BaseFragment(R.layout.login_fragment) {
+//todo just fragment???
+class LoginFragment : DialogFragment() {
 
     private lateinit var binding : LoginFragmentBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = LoginFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = LoginFragmentBinding.bind(view)
+        Log.d(MAIN_DEBUG_TAG, "onViewCreated login dialog fragment")
+        isCancelable = false
         setupListeners()
     }
     
@@ -33,7 +47,7 @@ class LoginFragment : BaseFragment(R.layout.login_fragment) {
     private fun buildAuthGitHubUrl(): Uri {
         return Uri.Builder()
             .scheme(schema)
-            .authority(com.githubuiviewer.host)
+            .authority(logInHost)
             .appendEncodedPath("login/oauth/authorize")
             .appendQueryParameter("client_id", clientId)
             .appendQueryParameter("scope", scopes)

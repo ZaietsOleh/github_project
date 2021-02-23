@@ -5,15 +5,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.githubuiviewer.tools.MAIN_DEBUG_TAG
 import com.githubuiviewer.R
 import com.githubuiviewer.DATA_NOT_FOUND
 import com.githubuiviewer.datasource.api.*
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse
-import com.githubuiviewer.tools.ResourceRepository
+import com.githubuiviewer.data.repository.ResourceRepository
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
