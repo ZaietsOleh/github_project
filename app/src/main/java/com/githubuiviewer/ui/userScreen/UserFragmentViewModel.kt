@@ -1,5 +1,6 @@
 package com.githubuiviewer.ui.userScreen
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 class UserFragmentViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
-    private val resourceRepository: ResourceRepository
+    private val resourceRepository: ResourceRepository,
+    private val gitHubService: GitHubService
 ) : ViewModel() {
     lateinit var userProfile: UserProfile
 
@@ -27,6 +29,11 @@ class UserFragmentViewModel @Inject constructor(
 
     private val _reposLiveData = MutableLiveData<State<List<ReposResponse>, String>>()
     val reposLiveData: LiveData<State<List<ReposResponse>, String>> = _reposLiveData
+
+    init {
+        _userInfoLiveData.value = State.Loading
+        _reposLiveData.value = State.Loading
+    }
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         when (throwable) {
@@ -39,7 +46,7 @@ class UserFragmentViewModel @Inject constructor(
     }
 
     private fun setErrorToLiveData(textError: String) {
-        if (_userInfoLiveData.value == null) {
+        if (_userInfoLiveData.value is State.Loading) {
             _userInfoLiveData.value = State.Error(DATA_NOT_FOUND)
             _reposLiveData.value = State.Error(DATA_NOT_FOUND)
         } else {
@@ -51,13 +58,8 @@ class UserFragmentViewModel @Inject constructor(
     fun getContent() {
         viewModelScope.launch(exceptionHandler) {
             launch {
-//                _userInfoLiveData.value = State.Content(profileRepository.getUser(userProfile))
-                _userInfoLiveData.value =
-                    State.Content(profileRepository.getUser(UserProfile.PublicUser("ZGoblin")))
-                _reposLiveData.value =
-                    State.Content(profileRepository.getRepos(UserProfile.PublicUser("ZGobfdfdflin")))
-//                _reposLiveData.value =
-//                    State.Content(profileRepository.getRepos(UserProfile.PublicUser("ZGoblin")))
+                _userInfoLiveData.value = State.Content(profileRepository.getUser(userProfile))
+                _reposLiveData.value = State.Content(profileRepository.getRepos(userProfile))
             }
         }
     }

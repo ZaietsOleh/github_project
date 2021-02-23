@@ -47,4 +47,7 @@ interface GitHubService {
             @Path("comment_id") comment_id: Int,
             @Body reaction: String
     ): AccessTokenResponse
+
+    @GET("search/users")
+    suspend fun getSearcher(@Query("q") q: String): SearchResponse
 }

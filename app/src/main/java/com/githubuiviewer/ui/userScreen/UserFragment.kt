@@ -1,22 +1,21 @@
 package com.githubuiviewer.ui.userScreen
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
 import com.githubuiviewer.R
-import com.githubuiviewer.DATA_NOT_FOUND
 import com.githubuiviewer.databinding.UserFragmentBinding
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.BaseFragment
-import com.githubuiviewer.ui.userScreen.adapter.ReposAdapter
-import com.githubuiviewer.ui.userScreen.adapter.ReposRecyclerState
+import com.githubuiviewer.ui.userScreen.adapter.ProfileAdapter
+import com.githubuiviewer.ui.userScreen.adapter.ProfileRecyclerState
 import javax.inject.Inject
 
 class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout.user_fragment) {
@@ -28,6 +27,7 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
     lateinit var viewModel: UserFragmentViewModel
 
     private lateinit var binding: UserFragmentBinding
+    private val profileAdapter = ProfileAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,12 +40,25 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.rvRepositories.adapter = profileAdapter
+
         setupDi()
         setupLiveDataListeners()
         setupRecyclerRepos()
+        setupSearch()
 
         viewModel.userProfile = userProfile
         viewModel.getContent()
+    }
+
+    private fun setupSearch() {
+        binding.svSearchUser.setOnSearchClickListener {
+
+        }
+        binding.svSearchUser.setOnCloseListener {
+            Log.d("TRATRA", "On SERCK2")
+            false
+        }
     }
 
     private fun setupRecyclerRepos() {
@@ -68,7 +81,9 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
 
     private fun updateUser(state: State<UserResponse, String>) {
         when (state) {
-            is State.Loading -> TODO("show loading" )
+            is State.Loading -> {
+
+            }
             is State.Unauthorized -> navigation.showLoginScreen()
             is State.Error -> binding.userGroup.setName(state.error)
             is State.Content -> {
@@ -82,15 +97,19 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
 
     private fun updateRepos(state: State<List<ReposResponse>, String>) {
         when (state) {
-            is State.Loading -> TODO("show loading" )
+            is State.Loading -> {
+
+            }
             is State.Unauthorized -> navigation.showLoginScreen()
             is State.Error -> {
-                binding.rvRepositories.adapter = ReposAdapter(ReposRecyclerState.Error(state.error))
+                profileAdapter.submitList(listOf(ProfileRecyclerState.Error(state.error)))
             }
             is State.Content -> {
-                binding.rvRepositories.adapter = ReposAdapter(ReposRecyclerState.Content(state.data)) {
-                    navigation.showProjectScreen()
-                }
+                profileAdapter.submitList(
+                    state.data.map {
+                        ProfileRecyclerState.Repos(it)
+                    }
+                )
             }
         }
     }

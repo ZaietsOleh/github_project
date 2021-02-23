@@ -11,7 +11,7 @@ class ProfileRepository @Inject constructor(
         private val sharedPref: SharedPref
 ) {
     init {
-        sharedPref.token = "bearer 8d68a427bd4b6bc95025158a0c654e57719f99de"
+        sharedPref.token = "bearer 83e23a9d48ef39921212a26e309e642ef4574de1"
     }
 
     suspend fun getUser(userProfile: UserProfile) : UserResponse {
