@@ -3,4 +3,6 @@
     <string name="user_avatar">User avatar</string>
     <string name="sign_in">Sign in</string>
     <string name="error_user_loading">Not authorized</string>
+    <string name="error_not_found">Not Found</string>
+    <string name="error_data_loading">Oops! Something went wrong</string>
 </resources>
