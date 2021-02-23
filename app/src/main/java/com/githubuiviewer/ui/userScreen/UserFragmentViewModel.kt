@@ -5,9 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.githubuiviewer.MAIN_DEBUG_TAG
+import com.githubuiviewer.tools.MAIN_DEBUG_TAG
 import com.githubuiviewer.R
-import com.githubuiviewer.USER_NOT_FOUND
+import com.githubuiviewer.tools.USER_NOT_FOUND
 import com.githubuiviewer.data.repository.ProfileRepository
 import com.githubuiviewer.datasource.api.*
 import com.githubuiviewer.datasource.model.ReposResponse
@@ -57,13 +57,13 @@ class UserFragmentViewModel @Inject constructor(
     }
 
     fun getContent() {
-        viewModelScope.launch() {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
+                Log.d(MAIN_DEBUG_TAG, "get content start try")
                 _userInfoLiveData.value = State.Content(profileRepository.getUser(userProfile))
                 //_userInfoLiveData.value = State.Content(profileRepository.getUser(UserProfile.PublicUser("ZGoblin")))
+                _reposLiveData.value = State.Content(profileRepository.getRepos(userProfile))
                 //_reposLiveData.value = State.Content(profileRepository.getRepos(UserProfile.PublicUser("ZGoblin")))
-//                _reposLiveData.value =
-//                    State.Content(profileRepository.getRepos(UserProfile.PublicUser("ZGoblin")))
             }
             catch (e: UnauthorizedException){
                 Log.d(MAIN_DEBUG_TAG, "get content catch UnauthorizedException")

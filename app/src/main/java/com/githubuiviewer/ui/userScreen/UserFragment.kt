@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
-import com.githubuiviewer.MAIN_DEBUG_TAG
+import com.githubuiviewer.tools.MAIN_DEBUG_TAG
 import com.githubuiviewer.R
-import com.githubuiviewer.USER_NOT_FOUND
+import com.githubuiviewer.tools.USER_NOT_FOUND
 import com.githubuiviewer.databinding.UserFragmentBinding
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse

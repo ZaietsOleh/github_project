@@ -4,10 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.githubuiviewer.ERROR_COUNT
+import com.githubuiviewer.tools.ERROR_COUNT
 import com.githubuiviewer.R
-import com.githubuiviewer.datasource.model.ReposResponse
-import java.lang.Error
 
 class ReposAdapter(
     private val repositories: ReposRecyclerState,

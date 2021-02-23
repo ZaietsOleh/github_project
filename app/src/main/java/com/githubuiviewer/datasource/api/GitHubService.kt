@@ -5,7 +5,9 @@ import retrofit2.http.*
 
 interface GitHubService {
 
-    @POST("login/oauth/access_token")
+    //todo ask is it ok hardcode url?
+    @Headers("Accept: application/json")
+    @POST("https://github.com/login/oauth/access_token")
     @FormUrlEncoded
     suspend fun getAccessToken(
         @Field("client_id") clientId: String,

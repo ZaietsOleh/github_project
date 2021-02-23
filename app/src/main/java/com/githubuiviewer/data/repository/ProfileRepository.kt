@@ -12,8 +12,9 @@ class ProfileRepository @Inject constructor(
     private val gitHubService: GitHubService,
     private val sharedPref: SharedPref
 ) {
+    //todo for test error token
     /*init {
-        sharedPref.token = "bearer 5708a3a933119e20d1020161f6ed24b4a21ea9a7"
+        sharedPref.token = "be____arer 83e23a9d48ef39921212a26e309e642ef4574de1"
     }*/
 
     suspend fun getUser(userProfile: UserProfile) : UserResponse {

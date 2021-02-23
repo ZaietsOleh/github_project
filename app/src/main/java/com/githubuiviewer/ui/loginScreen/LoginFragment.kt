@@ -8,9 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import com.githubuiviewer.*
 import com.githubuiviewer.databinding.LoginFragmentBinding
+import com.githubuiviewer.tools.*
 
+//todo just fragment???
 class LoginFragment : DialogFragment() {
 
     private lateinit var binding : LoginFragmentBinding
@@ -27,7 +28,7 @@ class LoginFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d(MAIN_DEBUG_TAG, "onViewCreated Login fragment")
+        Log.d(MAIN_DEBUG_TAG, "onViewCreated login dialog fragment")
         isCancelable = false
         setupListeners()
     }
@@ -41,7 +42,6 @@ class LoginFragment : DialogFragment() {
     private fun startGitHubLogin() {
         val authIntent = Intent(Intent.ACTION_VIEW, buildAuthGitHubUrl())
         startActivity(authIntent)
-        this.dismiss()
     }
 
     private fun buildAuthGitHubUrl(): Uri {

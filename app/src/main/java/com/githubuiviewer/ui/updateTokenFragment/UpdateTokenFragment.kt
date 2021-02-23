@@ -2,20 +2,21 @@ package com.githubuiviewer.ui.updateTokenFragment
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.githubuiviewer.App
-import com.githubuiviewer.MAIN_DEBUG_TAG
+import com.githubuiviewer.tools.MAIN_DEBUG_TAG
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.UpadateTokenFragmentBinding
-import com.githubuiviewer.tools.State
+import com.githubuiviewer.tools.UpdatingState
 import com.githubuiviewer.tools.UserProfile
+import com.githubuiviewer.tools.navigator.BaseFragment
 import com.githubuiviewer.tools.navigator.Navigator
 import javax.inject.Inject
 
-class UpdateTokenFragment(private val code: String) : Fragment() {
+class UpdateTokenFragment(private val code: String) :
+    BaseFragment(R.layout.upadate_token_fragment) {
 
     private val navigator by lazy {
         Navigator(requireActivity().supportFragmentManager, R.id.basic_fragment_holder)
@@ -38,39 +39,58 @@ class UpdateTokenFragment(private val code: String) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupDi()
+        setupListeners()
         setupLivaDataListener()
         viewModel.updateToken(code)
     }
 
-    private fun setupDi(){
+    private fun setupDi() {
         val app = requireActivity().application as App
         app.getComponent().inject(this)
     }
 
-    private fun setupLivaDataListener(){
+    private fun setupLivaDataListener() {
         viewModel.updateStatusLiveData.observe(viewLifecycleOwner, {
-            when(it){
-                is State.Loading -> showProgressBar()
-                is State.Content -> openUserFragment()
-                is State.Error -> showError()
+            it?.let { updatingState ->
+                when (updatingState) {
+                    UpdatingState.LOADING -> showProgressBar()
+                    UpdatingState.COMPLETED -> openUserFragment()
+                    UpdatingState.ERROR -> showError()
+                }
             }
         })
     }
 
-    private fun showProgressBar(){
-        //todo
+    private fun setupListeners(){
+        binding.btnTryAgain.setOnClickListener {
+            viewModel.updateToken(code)
+        }
     }
 
-    private fun openUserFragment(){
-        //navigator.showUserScreen(UserProfile.AuthorizedUser)
+    private fun showProgressBar() {
+        binding.apply {
+            progressBar.visibility = View.VISIBLE
+            tvUpdatingData.visibility = View.VISIBLE
+            tvError.visibility = View.GONE
+            btnTryAgain.visibility = View.GONE
+        }
     }
 
-    private fun showError(){
+    private fun openUserFragment() {
+        navigator.showUserScreen(UserProfile.AuthorizedUser)
+    }
+
+    private fun showError() {
         Log.d(MAIN_DEBUG_TAG, "UpdateToken Fragment show error. Error get token")
-        binding.progressBar.setBackgroundColor(resources.getColor(R.color.design_default_color_error))
+        binding.apply {
+            progressBar.visibility = View.GONE
+            tvUpdatingData.visibility = View.GONE
+            tvError.visibility = View.VISIBLE
+            btnTryAgain.visibility = View.VISIBLE
+        }
     }
 
     companion object {
-        fun newInstance(code : String) = UpdateTokenFragment(code)
+        fun newInstance(code: String) = UpdateTokenFragment(code)
     }
 }

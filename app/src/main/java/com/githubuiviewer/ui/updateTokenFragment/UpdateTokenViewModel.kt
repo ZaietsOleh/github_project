@@ -5,37 +5,30 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.githubuiviewer.MAIN_DEBUG_TAG
+import com.githubuiviewer.tools.MAIN_DEBUG_TAG
 import com.githubuiviewer.data.repository.LogInRepository
-import com.githubuiviewer.tools.State
+import com.githubuiviewer.tools.UpdatingState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class UpdateTokenViewModel @Inject constructor(
     private val logInRepository: LogInRepository
-): ViewModel() {
+) : ViewModel() {
 
-    //todo not string in state
-    private val _updateStatusLiveData = MutableLiveData<State<Boolean, String>>().apply {
-        value = State.Loading
-    }
-    val updateStatusLiveData: LiveData<State<Boolean, String>> = _updateStatusLiveData
+    private val _updateStatusLiveData = MutableLiveData<UpdatingState>()
+    val updateStatusLiveData: LiveData<UpdatingState> = _updateStatusLiveData
 
-    fun updateToken(code: String){
+    fun updateToken(code: String) {
+        _updateStatusLiveData.postValue(UpdatingState.LOADING)
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 logInRepository.updateToken(code)
-                withContext(Dispatchers.Main) {
-                    Log.d(MAIN_DEBUG_TAG, "updateTokenVIEWMODEL -> update token-> put succes in live data")
-                    _updateStatusLiveData.value = State.Content(true)
-                }
-            } catch (e : Exception){
-                Log.d(MAIN_DEBUG_TAG, "errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr")
-                withContext(Dispatchers.Main) {
-                    _updateStatusLiveData.value = State.Error("error update")
-                }
+                Log.d(MAIN_DEBUG_TAG, "updateTokenVIEWMODEL -> update token-> put success in live data")
+                _updateStatusLiveData.postValue(UpdatingState.COMPLETED)
+            } catch (e: Exception) {
+                Log.d(MAIN_DEBUG_TAG, "error update token ${e.message}")
+                _updateStatusLiveData.postValue(UpdatingState.ERROR)
             }
         }
     }

@@ -3,14 +3,15 @@ package com.githubuiviewer.tools.navigator
 import android.util.Log
 import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentManager
-import com.githubuiviewer.MAIN_DEBUG_TAG
+import com.githubuiviewer.tools.MAIN_DEBUG_TAG
 import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.issueScreen.IssueFragment
 import com.githubuiviewer.ui.loginScreen.LoginFragment
 import com.githubuiviewer.ui.projectScreen.ProjectFragment
+import com.githubuiviewer.ui.updateTokenFragment.UpdateTokenFragment
 import com.githubuiviewer.ui.userScreen.UserFragment
 
-class Navigator (
+class Navigator(
     private val fragmentManager: FragmentManager,
     @IdRes private val container: Int
 ) {
@@ -23,14 +24,21 @@ class Navigator (
 
     fun showUserScreen(userProfile: UserProfile) {
         fragmentManager.beginTransaction()
-                .add(container, UserFragment.newInstance(userProfile))
-                .commit()
+            .replace(container, UserFragment.newInstance(userProfile))
+            .commit()
     }
 
     fun showLoginScreen() {
-        Log.d(MAIN_DEBUG_TAG, "NAVIGATOR FUN showLoginScreen")
+        Log.d(MAIN_DEBUG_TAG, "NAVIGATOR start showLoginScreen")
         fragmentManager.beginTransaction()
             .add(container, LoginFragment.newInstance())
+            .commit()
+    }
+
+    fun showFragmentUpdateToken(code: String) {
+        fragmentManager
+            .beginTransaction()
+            .add(container, UpdateTokenFragment.newInstance(code)) //todo tag
             .commit()
     }
 
