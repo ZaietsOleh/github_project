@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.githubuiviewer.R
-import com.githubuiviewer.USER_NOT_FOUND
+import com.githubuiviewer.DATA_NOT_FOUND
 import com.githubuiviewer.datasource.api.*
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse
@@ -28,30 +28,23 @@ class UserFragmentViewModel @Inject constructor(
     private val _reposLiveData = MutableLiveData<State<List<ReposResponse>, String>>()
     val reposLiveData: LiveData<State<List<ReposResponse>, String>> = _reposLiveData
 
-    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+    private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         when (throwable) {
-            is UnauthorizedException -> _userInfoLiveData.value =
-                State.Error(resourceRepository.getString(R.string.error_user_loading))
+            is UnauthorizedException -> _userInfoLiveData.value = State.Unauthorized
+            is NotFoundException ->
+                setErrorToLiveData(resourceRepository.getString(R.string.error_not_found))
+            is DataLoadingException ->
+                setErrorToLiveData(resourceRepository.getString(R.string.error_data_loading))
+        }
+    }
 
-            is NotFoundException -> {
-                if (_userInfoLiveData.value == null) {
-                    _userInfoLiveData.value =
-                        State.Error(USER_NOT_FOUND)
-                } else {
-                    _reposLiveData.value =
-                        State.Error(resourceRepository.getString(R.string.error_not_found))
-                }
-            }
-
-            is DataLoadingException -> {
-                if (_userInfoLiveData.value == null) {
-                    _userInfoLiveData.value =
-                        State.Error(USER_NOT_FOUND)
-                } else {
-                    _reposLiveData.value =
-                        State.Error(resourceRepository.getString(R.string.error_data_loading))
-                }
-            }
+    private fun setErrorToLiveData(textError: String) {
+        if (_userInfoLiveData.value == null) {
+            _userInfoLiveData.value = State.Error(DATA_NOT_FOUND)
+            _reposLiveData.value = State.Error(DATA_NOT_FOUND)
+        } else {
+            _reposLiveData.value =
+                State.Error(textError)
         }
     }
 
@@ -61,7 +54,8 @@ class UserFragmentViewModel @Inject constructor(
 //                _userInfoLiveData.value = State.Content(profileRepository.getUser(userProfile))
                 _userInfoLiveData.value =
                     State.Content(profileRepository.getUser(UserProfile.PublicUser("ZGoblin")))
-                _reposLiveData.value = State.Content(profileRepository.getRepos(UserProfile.PublicUser("ZGobfdfdflin")))
+                _reposLiveData.value =
+                    State.Content(profileRepository.getRepos(UserProfile.PublicUser("ZGobfdfdflin")))
 //                _reposLiveData.value =
 //                    State.Content(profileRepository.getRepos(UserProfile.PublicUser("ZGoblin")))
             }

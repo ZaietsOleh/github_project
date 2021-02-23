@@ -11,7 +11,7 @@ import java.lang.Error
 
 class ReposAdapter(
     private val repositories: ReposRecyclerState,
-    private val onClickListener: View.OnClickListener
+    private val onClickListener: View.OnClickListener? = null
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
