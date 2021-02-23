@@ -3,21 +3,32 @@ package com.githubuiviewer.ui.loginScreen
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.githubuiviewer.*
 import com.githubuiviewer.databinding.LoginFragmentBinding
-import com.githubuiviewer.ui.BaseFragment
 
 class LoginFragment : DialogFragment() {
 
     private lateinit var binding : LoginFragmentBinding
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = LoginFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d(MAIN_DEBUG_TAG, "onViewCreated Login fragment")
         isCancelable = false
-        binding = LoginFragmentBinding.bind(view)
         setupListeners()
     }
     
@@ -30,6 +41,7 @@ class LoginFragment : DialogFragment() {
     private fun startGitHubLogin() {
         val authIntent = Intent(Intent.ACTION_VIEW, buildAuthGitHubUrl())
         startActivity(authIntent)
+        this.dismiss()
     }
 
     private fun buildAuthGitHubUrl(): Uri {

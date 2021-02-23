@@ -3,9 +3,10 @@ package com.githubuiviewer.ui.mainActivity
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.githubuiviewer.*
 import com.githubuiviewer.tools.UserProfile
-import com.githubuiviewer.ui.Navigator
+import com.githubuiviewer.tools.navigator.Navigator
 import com.githubuiviewer.ui.updateTokenFragment.UpdateTokenFragment
 
 class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
@@ -18,13 +19,7 @@ class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)
 
-        setupDi()
         setupBasicFragment()
-    }
-
-    private fun setupDi() {
-        val app = application as App
-        app.getComponent().inject(this)
     }
 
     private fun setupBasicFragment() {
@@ -34,8 +29,10 @@ class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
     override fun onResume() {
         super.onResume()
 
+        Log.d(MAIN_DEBUG_TAG, "onResume")
         getCodeFromUri(uri = intent.data)?.let {
-            openUpdateFragmentDialog()
+            Log.d(MAIN_DEBUG_TAG, "getCodeFromUri has data")
+            openUpdateFragmentUpdateToken(it)
         }
     }
 
@@ -47,10 +44,11 @@ class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
         return uri.getQueryParameter("code")
     }
 
-    private fun openUpdateFragmentDialog() {
+    private fun openUpdateFragmentUpdateToken(code: String) {
+        Log.d(MAIN_DEBUG_TAG, "fun openUpdateFragmentDialog add UpdateTokenFragment")
         supportFragmentManager
             .beginTransaction()
-            .add(UpdateTokenFragment.newInstance(), "tag") //todo tag
+            .add(UpdateTokenFragment.newInstance(code), "tag") //todo tag
             .commit()
     }
 }
