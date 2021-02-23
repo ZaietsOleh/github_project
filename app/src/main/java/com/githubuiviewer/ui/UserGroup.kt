@@ -19,6 +19,10 @@ class UserGroup @JvmOverloads constructor(
         binding.tvUserName.text = name
     }
 
+    fun getName(): String {
+        return binding.tvUserName.text.toString()
+    }
+
     fun setImage(imageUrl: String) {
         Glide.with(this).load(imageUrl).into(binding.ivUserAvatar)
     }

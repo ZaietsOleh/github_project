@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.githubuiviewer.ERROR_COUNT
 import com.githubuiviewer.R
 
 class ProfileAdapter(

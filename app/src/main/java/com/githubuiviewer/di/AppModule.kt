@@ -1,11 +1,13 @@
 package com.githubuiviewer.di
 
 import android.content.Context
+import com.githubuiviewer.data.repository.ProfileRepository
 import com.githubuiviewer.datasource.api.GitHubService
 import com.githubuiviewer.datasource.api.ErrorInterceptor
 import com.githubuiviewer.datasource.api.HeaderInterceptor
 import com.githubuiviewer.tools.host
 import com.githubuiviewer.tools.schema
+import com.githubuiviewer.tools.sharedPrefsTools.SharedPref
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -29,6 +31,18 @@ class AppModule(private val context: Context) {
     @Singleton
     fun provideGitHubReposApi(retrofit: Retrofit): GitHubService {
         return retrofit.create(GitHubService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideProfileRepository(gitHubService: GitHubService, sharedPref: SharedPref): ProfileRepository {
+        return ProfileRepository(gitHubService, sharedPref)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSharedPref(context: Context): SharedPref {
+        return SharedPref(context)
     }
 
     @Provides

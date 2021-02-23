@@ -11,6 +11,7 @@ class UserHolder(view: View, private val onClickListener: View.OnClickListener?)
     fun onBind(userResponse: UserResponse) {
         binding = UserHolderBinding.bind(itemView)
         binding.ugUser.apply {
+            setOnClickListener(onClickListener)
             setName(userResponse.name)
             setImage(userResponse.avatar_url)
         }

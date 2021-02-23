@@ -5,13 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.githubuiviewer.tools.MAIN_DEBUG_TAG
 import com.githubuiviewer.R
-import com.githubuiviewer.DATA_NOT_FOUND
+import com.githubuiviewer.data.repository.ProfileRepository
 import com.githubuiviewer.datasource.api.*
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse
 import com.githubuiviewer.data.repository.ResourceRepository
+import com.githubuiviewer.datasource.model.SearchResponse
+import com.githubuiviewer.tools.DATA_NOT_FOUND
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -31,6 +32,9 @@ class UserFragmentViewModel @Inject constructor(
 
     private val _reposLiveData = MutableLiveData<State<List<ReposResponse>, String>>()
     val reposLiveData: LiveData<State<List<ReposResponse>, String>> = _reposLiveData
+
+    private val _searchLiveData = MutableLiveData<SearchResponse>()
+    val searchLiveData: LiveData<SearchResponse> = _searchLiveData
 
     init {
         _userInfoLiveData.value = State.Loading
@@ -62,6 +66,14 @@ class UserFragmentViewModel @Inject constructor(
             launch {
                 _userInfoLiveData.value = State.Content(profileRepository.getUser(userProfile))
                 _reposLiveData.value = State.Content(profileRepository.getRepos(userProfile))
+            }
+        }
+    }
+
+    fun getSearchable(query: String) {
+        viewModelScope.launch(exceptionHandler) {
+            launch {
+                _searchLiveData.value = gitHubService.getSearcher(query)
             }
         }
     }
