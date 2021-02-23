@@ -1,5 +1,7 @@
-package com.githubuiviewer.datasource.api
+package com.githubuiviewer.data.repository
 
+import android.util.Log
+import com.githubuiviewer.datasource.api.GitHubService
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse
 import com.githubuiviewer.tools.sharedPrefsTools.SharedPref
@@ -7,12 +9,12 @@ import com.githubuiviewer.tools.UserProfile
 import javax.inject.Inject
 
 class ProfileRepository @Inject constructor(
-        private val gitHubService: GitHubService,
-        private val sharedPref: SharedPref
+    private val gitHubService: GitHubService,
+    private val sharedPref: SharedPref
 ) {
-    init {
-        sharedPref.token = "bearer 8d68a427bd4b6bc95025158a0c654e57719f99de"
-    }
+    /*init {
+        sharedPref.token = "bearer 5708a3a933119e20d1020161f6ed24b4a21ea9a7"
+    }*/
 
     suspend fun getUser(userProfile: UserProfile) : UserResponse {
         return when (userProfile) {

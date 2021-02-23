@@ -8,7 +8,7 @@ class HeaderInterceptor : Interceptor {
         proceed(
             request()
                 .newBuilder()
-                .addHeader("Accept",  "application/vnd.github.v3+json")
+                .addHeader("Accept", "application/vnd.github.v3+json")
                 .build()
         )
     }

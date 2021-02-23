@@ -2,13 +2,13 @@ package com.githubuiviewer.ui.userScreen
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
+import com.githubuiviewer.MAIN_DEBUG_TAG
 import com.githubuiviewer.R
 import com.githubuiviewer.USER_NOT_FOUND
 import com.githubuiviewer.databinding.UserFragmentBinding
@@ -16,7 +16,7 @@ import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
-import com.githubuiviewer.ui.BaseFragment
+import com.githubuiviewer.tools.navigator.BaseFragment
 import com.githubuiviewer.ui.userScreen.adapter.ReposAdapter
 import com.githubuiviewer.ui.userScreen.adapter.ReposRecyclerState
 import javax.inject.Inject
@@ -77,6 +77,7 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
                     binding.userGroup.setName(USER_NOT_FOUND)
                 }
                 else {
+                    Log.d(MAIN_DEBUG_TAG, "UserFragment fun updateUser state error -> showLoginScreen")
                     navigation.showLoginScreen()
                 }
             }

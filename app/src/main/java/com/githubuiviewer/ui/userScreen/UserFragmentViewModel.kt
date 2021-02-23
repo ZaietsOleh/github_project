@@ -1,18 +1,22 @@
 package com.githubuiviewer.ui.userScreen
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.githubuiviewer.MAIN_DEBUG_TAG
 import com.githubuiviewer.R
 import com.githubuiviewer.USER_NOT_FOUND
+import com.githubuiviewer.data.repository.ProfileRepository
 import com.githubuiviewer.datasource.api.*
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse
-import com.githubuiviewer.tools.ResourceRepository
+import com.githubuiviewer.data.repository.ResourceRepository
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,13 +34,11 @@ class UserFragmentViewModel @Inject constructor(
 
     private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
         when (throwable) {
-            is UnauthorizedException -> _userInfoLiveData.value =
-                State.Error(resourceRepository.getString(R.string.error_user_loading))
+            is UnauthorizedException -> _userInfoLiveData.value = State.Error(resourceRepository.getString(R.string.error_user_loading))
 
             is NotFoundException -> {
                 if (_userInfoLiveData.value == null) {
-                    _userInfoLiveData.value =
-                        State.Error(USER_NOT_FOUND)
+                    _userInfoLiveData.value = State.Error(USER_NOT_FOUND)
                 } else {
                     _reposLiveData.value =
                         State.Error(resourceRepository.getString(R.string.error_not_found))
@@ -45,8 +47,7 @@ class UserFragmentViewModel @Inject constructor(
 
             is DataLoadingException -> {
                 if (_userInfoLiveData.value == null) {
-                    _userInfoLiveData.value =
-                        State.Error(USER_NOT_FOUND)
+                    _userInfoLiveData.value = State.Error(USER_NOT_FOUND)
                 } else {
                     _reposLiveData.value =
                         State.Error(resourceRepository.getString(R.string.error_data_loading))
@@ -56,14 +57,33 @@ class UserFragmentViewModel @Inject constructor(
     }
 
     fun getContent() {
-        viewModelScope.launch(exceptionHandler) {
-            launch {
-//                _userInfoLiveData.value = State.Content(profileRepository.getUser(userProfile))
-                _userInfoLiveData.value =
-                    State.Content(profileRepository.getUser(UserProfile.PublicUser("ZGoblin")))
-                _reposLiveData.value = State.Content(profileRepository.getRepos(UserProfile.PublicUser("ZGobfdfdflin")))
+        viewModelScope.launch() {
+            try {
+                _userInfoLiveData.value = State.Content(profileRepository.getUser(userProfile))
+                //_userInfoLiveData.value = State.Content(profileRepository.getUser(UserProfile.PublicUser("ZGoblin")))
+                //_reposLiveData.value = State.Content(profileRepository.getRepos(UserProfile.PublicUser("ZGoblin")))
 //                _reposLiveData.value =
 //                    State.Content(profileRepository.getRepos(UserProfile.PublicUser("ZGoblin")))
+            }
+            catch (e: UnauthorizedException){
+                Log.d(MAIN_DEBUG_TAG, "get content catch UnauthorizedException")
+                _userInfoLiveData.value = State.Error(resourceRepository.getString(R.string.error_user_loading))
+            }
+            catch (e: NotFoundException){
+                if (_userInfoLiveData.value == null) {
+                    _userInfoLiveData.value = State.Error(USER_NOT_FOUND)
+                } else {
+                    _reposLiveData.value =
+                        State.Error(resourceRepository.getString(R.string.error_not_found))
+                }
+            }
+            catch (e: DataLoadingException){
+                if (_userInfoLiveData.value == null) {
+                    _userInfoLiveData.value = State.Error(USER_NOT_FOUND)
+                } else {
+                    _reposLiveData.value =
+                        State.Error(resourceRepository.getString(R.string.error_data_loading))
+                }
             }
         }
     }

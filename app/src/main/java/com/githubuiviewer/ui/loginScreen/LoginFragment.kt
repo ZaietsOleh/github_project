@@ -4,17 +4,19 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.DialogFragment
 import com.githubuiviewer.*
 import com.githubuiviewer.databinding.LoginFragmentBinding
 import com.githubuiviewer.ui.BaseFragment
 
-class LoginFragment : BaseFragment(R.layout.login_fragment) {
+class LoginFragment : DialogFragment() {
 
     private lateinit var binding : LoginFragmentBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        isCancelable = false
         binding = LoginFragmentBinding.bind(view)
         setupListeners()
     }
@@ -33,7 +35,7 @@ class LoginFragment : BaseFragment(R.layout.login_fragment) {
     private fun buildAuthGitHubUrl(): Uri {
         return Uri.Builder()
             .scheme(schema)
-            .authority(com.githubuiviewer.host)
+            .authority(logInHost)
             .appendEncodedPath("login/oauth/authorize")
             .appendQueryParameter("client_id", clientId)
             .appendQueryParameter("scope", scopes)

@@ -1,14 +1,16 @@
-package com.githubuiviewer.ui
+package com.githubuiviewer.tools.navigator
 
+import android.util.Log
 import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentManager
+import com.githubuiviewer.MAIN_DEBUG_TAG
 import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.issueScreen.IssueFragment
 import com.githubuiviewer.ui.loginScreen.LoginFragment
 import com.githubuiviewer.ui.projectScreen.ProjectFragment
 import com.githubuiviewer.ui.userScreen.UserFragment
 
-class Navigator(
+class Navigator (
     private val fragmentManager: FragmentManager,
     @IdRes private val container: Int
 ) {
@@ -22,14 +24,13 @@ class Navigator(
     fun showUserScreen(userProfile: UserProfile) {
         fragmentManager.beginTransaction()
                 .add(container, UserFragment.newInstance(userProfile))
-                .addToBackStack(USER_SCREEN_FRAGMENT)
                 .commit()
     }
 
     fun showLoginScreen() {
+        Log.d(MAIN_DEBUG_TAG, "NAVIGATOR FUN showLoginScreen")
         fragmentManager.beginTransaction()
             .add(container, LoginFragment.newInstance())
-            .addToBackStack(LOGIN_SCREEN_FRAGMENT)
             .commit()
     }
 

@@ -9,3 +9,7 @@ const val redirectUrl = "githubproject://callback"
 const val scopes = "repo, user"
 const val schema = "https"
 const val host = "api.github.com"
+const val logInHost = "github.com"
+
+
+const val MAIN_DEBUG_TAG = "MAIN_DEBUG_TAG"
