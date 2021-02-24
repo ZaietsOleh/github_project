@@ -14,6 +14,7 @@ import com.githubuiviewer.datasource.model.SearchResponse
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -59,16 +60,16 @@ class UserFragmentViewModel @Inject constructor(
 
     fun getContent() {
         viewModelScope.launch(exceptionHandler) {
-            launch {
-                _userInfoLiveData.value = State.Content(profileRepository.getUser(userProfile))
-                _reposLiveData.value = State.Content(profileRepository.getRepos(userProfile))
+            launch(Dispatchers.IO) {
+                _userInfoLiveData.postValue(State.Content(profileRepository.getUser(userProfile)))
+                _reposLiveData.postValue(State.Content(profileRepository.getRepos(userProfile)))
             }
         }
     }
 
     fun getSearchable(query: String) {
         viewModelScope.launch(exceptionHandler) {
-            launch {
+            launch(Dispatchers.IO) {
                 _searchLiveData.value = gitHubService.getSearcher(query)
             }
         }
