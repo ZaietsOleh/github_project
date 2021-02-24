@@ -42,7 +42,7 @@ class Navigator(
             .commit()
     }
 
-    fun showProjectScreen() {
+    fun showProjectScreen(userProfile: UserProfile, projectName: String) {
         fragmentManager.beginTransaction()
             .add(container, ProjectFragment.newInstance())
             .addToBackStack(PROJECT_SCREEN_FRAGMENT)

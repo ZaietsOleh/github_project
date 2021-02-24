@@ -5,6 +5,7 @@ import kotlinx.coroutines.CoroutineScope
 import okhttp3.Interceptor
 import okhttp3.Response
 import okhttp3.ResponseBody
+import okhttp3.ResponseBody.Companion.toResponseBody
 
 class ErrorInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -19,7 +20,7 @@ class ErrorInterceptor : Interceptor {
 
         val bodyString = response.body!!.string()
         return response.newBuilder()
-            .body(ResponseBody.create(response.body?.contentType(), bodyString)) //todo deprecated create
+            .body(bodyString.toResponseBody(response.body?.contentType()))
             .build()
     }
 }

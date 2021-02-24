@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
 import com.githubuiviewer.R
@@ -31,9 +32,10 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
     lateinit var viewModel: UserFragmentViewModel
 
     private lateinit var binding: UserFragmentBinding
-    private val profileAdapter = ProfileAdapter() {
+    private val profileAdapter = ProfileAdapter {
         when (it) {
             is UserGroup -> navigation.showUserScreen(UserProfile.PublicUser(it.getName()))
+            is AppCompatTextView -> navigation.showProjectScreen(viewModel.userProfile, it.text.toString())
         }
     }
 
@@ -105,13 +107,13 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
         }
     }
 
-    private fun updateUser(state: State<UserResponse, String>) {
+    private fun updateUser(state: State<UserResponse, Int>) {
         when (state) {
             is State.Loading -> {
-
+                //TODO ADD LOADING
             }
             is State.Unauthorized -> navigation.showLoginScreen()
-            is State.Error -> binding.userGroup.setName(state.error)
+            is State.Error -> binding.userGroup.setName(getString(state.error))
             is State.Content -> {
                 binding.userGroup.apply {
                     setImage(state.data.avatar_url)
@@ -121,14 +123,14 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
         }
     }
 
-    private fun updateRepos(state: State<List<ReposResponse>, String>) {
+    private fun updateRepos(state: State<List<ReposResponse>, Int>) {
         when (state) {
             is State.Loading -> {
-
+                //TODO ADD LOADING
             }
             is State.Unauthorized -> navigation.showLoginScreen()
             is State.Error -> {
-                profileAdapter.submitList(listOf(ProfileRecyclerState.Error(state.error)))
+                profileAdapter.submitList(listOf(ProfileRecyclerState.Error(getString(state.error))))
             }
             is State.Content -> {
                 profileAdapter.submitList(

@@ -8,11 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import com.githubuiviewer.databinding.LoginFragmentBinding
 import com.githubuiviewer.tools.*
 
 //todo just fragment???
-class LoginFragment : DialogFragment() {
+class LoginFragment : Fragment() {
 
     private lateinit var binding : LoginFragmentBinding
 
@@ -29,7 +30,7 @@ class LoginFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         Log.d(MAIN_DEBUG_TAG, "onViewCreated login dialog fragment")
-        isCancelable = false
+        //isCancelable = false ??TODO THINK ABOUT THIS
         setupListeners()
     }
     

@@ -1,6 +1,6 @@
 package com.githubuiviewer.ui.userScreen
 
-import android.util.Log
+import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,28 +10,24 @@ import com.githubuiviewer.data.repository.ProfileRepository
 import com.githubuiviewer.datasource.api.*
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse
-import com.githubuiviewer.data.repository.ResourceRepository
 import com.githubuiviewer.datasource.model.SearchResponse
-import com.githubuiviewer.tools.DATA_NOT_FOUND
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class UserFragmentViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
-    private val resourceRepository: ResourceRepository,
     private val gitHubService: GitHubService
 ) : ViewModel() {
     lateinit var userProfile: UserProfile
 
-    private val _userInfoLiveData = MutableLiveData<State<UserResponse, String>>()
-    val userInfoLiveData: LiveData<State<UserResponse, String>> = _userInfoLiveData
+    private val _userInfoLiveData = MutableLiveData<State<UserResponse, Int>>()
+    val userInfoLiveData: LiveData<State<UserResponse, Int>> = _userInfoLiveData
 
-    private val _reposLiveData = MutableLiveData<State<List<ReposResponse>, String>>()
-    val reposLiveData: LiveData<State<List<ReposResponse>, String>> = _reposLiveData
+    private val _reposLiveData = MutableLiveData<State<List<ReposResponse>, Int>>()
+    val reposLiveData: LiveData<State<List<ReposResponse>, Int>> = _reposLiveData
 
     private val _searchLiveData = MutableLiveData<SearchResponse>()
     val searchLiveData: LiveData<SearchResponse> = _searchLiveData
@@ -45,16 +41,16 @@ class UserFragmentViewModel @Inject constructor(
         when (throwable) {
             is UnauthorizedException -> _userInfoLiveData.value = State.Unauthorized
             is NotFoundException ->
-                setErrorToLiveData(resourceRepository.getString(R.string.error_not_found))
+                setErrorToLiveData(R.string.error_not_found)
             is DataLoadingException ->
-                setErrorToLiveData(resourceRepository.getString(R.string.error_data_loading))
+                setErrorToLiveData(R.string.error_data_loading)
         }
     }
 
-    private fun setErrorToLiveData(textError: String) {
+    private fun setErrorToLiveData(@StringRes textError: Int) {
         if (_userInfoLiveData.value is State.Loading) {
-            _userInfoLiveData.value = State.Error(DATA_NOT_FOUND)
-            _reposLiveData.value = State.Error(DATA_NOT_FOUND)
+            _userInfoLiveData.value = State.Error(R.string.error_not_found)
+            _reposLiveData.value = State.Error(R.string.error_not_found)
         } else {
             _reposLiveData.value =
                 State.Error(textError)
