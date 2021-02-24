@@ -23,8 +23,6 @@ class LogInRepository @Inject constructor(
     }
 
     private suspend fun getAccessToken(code: String): AccessTokenResponse {
-        //todo clean up
-        Thread.sleep(5_000L)
         Log.d(MAIN_DEBUG_TAG, "getAccessToken go to internet")
         return gitHubService.getAccessToken(clientId, clientSecret, code)
     }

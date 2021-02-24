@@ -1,7 +1,7 @@
 package com.githubuiviewer.tools
 
 const val ERROR_COUNT = 1
-const val USER_NOT_FOUND = "USER_NOT_FOUND"
+const val DATA_NOT_FOUND = "DATA_NOT_FOUND"
 
 const val clientId = "eb3c99e036920ec13d29"
 const val clientSecret = "11db94ae53e6bbba4a298c7742b56d5530969c76"
