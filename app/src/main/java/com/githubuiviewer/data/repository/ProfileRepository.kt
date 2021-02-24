@@ -3,6 +3,7 @@ package com.githubuiviewer.data.repository
 import com.githubuiviewer.datasource.api.GitHubService
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse
+import com.githubuiviewer.tools.PER_PAGE
 import com.githubuiviewer.tools.sharedPrefsTools.SharedPref
 import com.githubuiviewer.tools.UserProfile
 import javax.inject.Inject
@@ -17,15 +18,15 @@ class ProfileRepository @Inject constructor(
 
     suspend fun getUser(userProfile: UserProfile) : UserResponse {
         return when (userProfile) {
-            is UserProfile.AuthorizedUser -> gitHubService.getUserByToken(sharedPref.token)
+            is UserProfile.AuthorizedUser -> gitHubService.getUserByToken()
             is UserProfile.PublicUser -> gitHubService.getUserByNickname(userProfile.userNickname)
         }
     }
 
     suspend fun getRepos(userProfile: UserProfile, currentPage: Int) : List<ReposResponse> {
         return when (userProfile) {
-            is UserProfile.AuthorizedUser -> gitHubService.getReposByToken(sharedPref.token, 40, currentPage)
-            is UserProfile.PublicUser -> gitHubService.getReposByNickname(userProfile.userNickname, 40, currentPage)
+            is UserProfile.AuthorizedUser -> gitHubService.getReposByToken(PER_PAGE, 0)
+            is UserProfile.PublicUser -> gitHubService.getReposByNickname(userProfile.userNickname, PER_PAGE, 0)
         }
     }
 }
