@@ -15,7 +15,7 @@ class ErrorInterceptor : Interceptor {
         when (response.code) {
             401 -> throw UnauthorizedException("Unauthorized")
             404 -> throw NotFoundException("Resource not found")
-            //in 400..500 -> throw DataLoadingException("Something went wrong") TODO uncomment
+            in 400..500 -> throw DataLoadingException("Something went wrong")
         }
 
         val bodyString = response.body!!.string()

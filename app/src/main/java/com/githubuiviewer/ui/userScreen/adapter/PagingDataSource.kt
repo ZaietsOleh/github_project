@@ -1,34 +1,31 @@
 package com.githubuiviewer.ui.userScreen.adapter
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.githubuiviewer.datasource.api.GitHubService
-import com.githubuiviewer.datasource.model.ReposResponse
-import java.lang.Exception
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.withContext
 
-class ReposDataSource(
-    private val gitHubService: GitHubService
-) : PagingSource<Int, ReposResponse>() {
+class PagingDataSource<V : Any>(
+    private val scope: CoroutineScope,
+    private val dataSource: suspend (currentPage: Int) -> List<V>,
+) : PagingSource<Int, V>() {
 
-    override fun getRefreshKey(state: PagingState<Int, ReposResponse>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, V>): Int? {
         return state.anchorPosition?.let {
             state.closestPageToPosition(it)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(it)?.nextKey?.minus(1)
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ReposResponse> {
-        return try {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, V> {
+        return withContext(scope.coroutineContext) {
             val nextPageNumber = params.key ?: 0
-            val response = gitHubService.getReposByNickname("square", 40, nextPageNumber)
+            val response = dataSource(nextPageNumber)
             LoadResult.Page(
                 data = response,
                 prevKey = if (nextPageNumber > 0) nextPageNumber - 1 else null,
                 nextKey = if (response.size <= 40) nextPageNumber + 1 else null
             )
-        } catch (e: Exception) {
-            LoadResult.Error(e)
         }
     }
 }

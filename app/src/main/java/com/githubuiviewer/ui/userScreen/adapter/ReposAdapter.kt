@@ -1,14 +1,15 @@
 package com.githubuiviewer.ui.userScreen.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.githubuiviewer.R
 import com.githubuiviewer.datasource.model.ReposResponse
 
-class ReposAdapter : PagingDataAdapter<ReposResponse, ReposHolder>(SearchComparator) {
-    object SearchComparator: DiffUtil.ItemCallback<ReposResponse>() {
+class ReposAdapter(private val onClickListener: View.OnClickListener? = null) : PagingDataAdapter<ReposResponse, ReposHolder>(SearchComparator) {
+    object SearchComparator : DiffUtil.ItemCallback<ReposResponse>() {
         override fun areItemsTheSame(oldItem: ReposResponse, newItem: ReposResponse): Boolean {
             return oldItem.name == newItem.name
         }
@@ -27,6 +28,6 @@ class ReposAdapter : PagingDataAdapter<ReposResponse, ReposHolder>(SearchCompara
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReposHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.repos_holder, parent, false)
 
-        return ReposHolder(view, null)
+        return ReposHolder(view, onClickListener)
     }
 }

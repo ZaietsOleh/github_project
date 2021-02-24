@@ -22,10 +22,10 @@ class ProfileRepository @Inject constructor(
         }
     }
 
-    suspend fun getRepos(userProfile: UserProfile) : List<ReposResponse> {
+    suspend fun getRepos(userProfile: UserProfile, currentPage: Int) : List<ReposResponse> {
         return when (userProfile) {
-            is UserProfile.AuthorizedUser -> gitHubService.getReposByToken(sharedPref.token, 30, 0)
-            is UserProfile.PublicUser -> gitHubService.getReposByNickname(userProfile.userNickname, 30, 0)
+            is UserProfile.AuthorizedUser -> gitHubService.getReposByToken(sharedPref.token, 40, currentPage)
+            is UserProfile.PublicUser -> gitHubService.getReposByNickname(userProfile.userNickname, 40, currentPage)
         }
     }
 }
