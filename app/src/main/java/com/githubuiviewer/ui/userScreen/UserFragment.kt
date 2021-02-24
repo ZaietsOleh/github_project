@@ -1,13 +1,12 @@
 package com.githubuiviewer.ui.userScreen
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
 import com.githubuiviewer.R
@@ -21,9 +20,13 @@ import com.githubuiviewer.tools.navigator.BaseFragment
 import com.githubuiviewer.ui.UserGroup
 import com.githubuiviewer.ui.userScreen.adapter.ProfileAdapter
 import com.githubuiviewer.ui.userScreen.adapter.ProfileRecyclerState
+import com.githubuiviewer.ui.userScreen.adapter.ReposAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout.user_fragment), SearchView.OnQueryTextListener {
+class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout.user_fragment),
+    SearchView.OnQueryTextListener {
     companion object {
         fun newInstance(userProfile: UserProfile) = UserFragment(userProfile)
     }
@@ -35,7 +38,20 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
     private val profileAdapter = ProfileAdapter {
         when (it) {
             is UserGroup -> navigation.showUserScreen(UserProfile.PublicUser(it.getName()))
-            is AppCompatTextView -> navigation.showProjectScreen(viewModel.userProfile, it.text.toString())
+            is AppCompatTextView -> navigation.showProjectScreen(
+                viewModel.userProfile,
+                it.text.toString()
+            )
+        }
+    }
+
+    private val reposAdapter = ReposAdapter() {
+        when (it) {
+            is UserGroup -> navigation.showUserScreen(UserProfile.PublicUser(it.getName()))
+            is AppCompatTextView -> navigation.showProjectScreen(
+                viewModel.userProfile,
+                it.text.toString()
+            )
         }
     }
 
@@ -76,7 +92,10 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
     }
 
     private fun setupRecyclerProfile() {
-        binding.rvRepositories.adapter = profileAdapter
+        binding.rvRepositories.adapter = reposAdapter
+        binding.rvRepositories.setHasFixedSize(true)
+        binding.rvRepositories.isNestedScrollingEnabled = false
+        viewModel.getRepos()
         binding.rvRepositories.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
@@ -92,7 +111,9 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
             updateUser(it)
         }
         viewModel.reposLiveData.observe(viewLifecycleOwner) {
-            updateRepos(it)
+            viewModel.baseScope.launch {
+                reposAdapter.submitData(it)
+            }
         }
         viewModel.searchLiveData.observe(viewLifecycleOwner) {
             updateSearch(it)
@@ -133,11 +154,14 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
                 profileAdapter.submitList(listOf(ProfileRecyclerState.Error(getString(state.error))))
             }
             is State.Content -> {
-                profileAdapter.submitList(
-                    state.data.map {
-                        ProfileRecyclerState.Repos(it)
-                    }
-                )
+//                lifecycleScope.launch {
+//                    reposAdapter.submitData(PagingData.from(state.data))
+//                }
+//                profileAdapter.submitList(
+//                    state.data.map {
+//                        ProfileRecyclerState.Repos(it)
+//                    }
+//                )
             }
         }
     }

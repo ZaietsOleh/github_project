@@ -30,7 +30,7 @@ interface GitHubService {
     suspend fun getReposByNickname(
         @Path("owner") owner: String,
         @Query("per_page") per_page: Int,
-        @Query("page") page: Int,
+        @Query("page") page: Int
     ): List<ReposResponse>
 
     @GET("/repos/{owner}/{repo}/contributors")
