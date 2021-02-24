@@ -22,7 +22,11 @@ interface GitHubService {
     suspend fun getUserByNickname(@Path("user") user: String): UserResponse
 
     @GET("/user/repos")
-    suspend fun getReposByToken(@Header("Authorization") auth: String): List<ReposResponse>
+    suspend fun getReposByToken(
+        @Header("Authorization") auth: String,
+        @Query("per_page") per_page: Int,
+        @Query("page") page: Int
+    ): List<ReposResponse>
 
     @GET("/users/{owner}/repos")
     suspend fun getReposByNickname(@Path("owner") owner: String): List<ReposResponse>
@@ -30,6 +34,8 @@ interface GitHubService {
     @GET("/repos/{owner}/{repo}/contributors")
     suspend fun getContributors(
         @Header("Authorization") auth: String,
+        @Query("per_page") per_page: Int,
+        @Query("page") page: Int,
         @Path("repo") repo: String,
         @Path("owner") owner: String
     ): List<UserResponse>
@@ -37,20 +43,25 @@ interface GitHubService {
     @GET("/repos/{owner}/{repo}/issues")
     suspend fun getIssues(
         @Header("Authorization") auth: String,
+        @Query("per_page") per_page: Int,
+        @Query("page") page: Int,
         @Path("repo") repo: String,
         @Path("owner") owner: String
     ): List<IssueRepos>
 
-    @GET("/repos/{owner}/{repo}/issues")
+    @GET("/repos/{owner}/{repo}/issues/{issue_number}")
     suspend fun getIssueDetail(
         @Header("Authorization") auth: String,
         @Path("repo") repo: String,
-        @Path("owner") owner: String
-    ): List<IssueRepos>
+        @Path("owner") owner: String,
+        @Path("issue_number") issue_number: Int
+    ): IssueDetailRepos
 
     @GET("/repos/{owner}/{repo}/issues/{issue_number}/comments")
     suspend fun getIssueComments(
         @Header("Authorization") auth: String,
+        @Query("per_page") per_page: Int,
+        @Query("page") page: Int,
         @Path("repo") repo: String,
         @Path("owner") owner: String,
         @Path("issue_number") issue_number: String
@@ -70,7 +81,7 @@ interface GitHubService {
         @Path("repo") repo: String,
         @Path("comment_id") comment_id: Int,
         @Body reaction: String
-    ): AccessTokenResponse
+    )
 
     @GET("search/users")
     suspend fun getSearcher(@Query("q") q: String): SearchResponse
