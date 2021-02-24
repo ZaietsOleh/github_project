@@ -21,11 +21,11 @@ class ReposDataSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ReposResponse> {
         return try {
             val nextPageNumber = params.key ?: 0
-            val response = gitHubService.getReposByNickname("square", 20, nextPageNumber)
+            val response = gitHubService.getReposByNickname("square", 40, nextPageNumber)
             LoadResult.Page(
                 data = response,
                 prevKey = if (nextPageNumber > 0) nextPageNumber - 1 else null,
-                nextKey = if (response.size < 20) nextPageNumber + 1 else null
+                nextKey = if (response.size <= 40) nextPageNumber + 1 else null
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

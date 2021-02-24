@@ -37,7 +37,7 @@ class UserFragmentViewModel @Inject constructor(
     private val _searchLiveData = MutableLiveData<SearchResponse>()
     val searchLiveData: LiveData<SearchResponse> = _searchLiveData
 
-    val repos = Pager(PagingConfig(20)) {
+    val repos = Pager(PagingConfig(40)) {
         ReposDataSource(gitHubService)
     }.flow.cachedIn(viewModelScope)
 
