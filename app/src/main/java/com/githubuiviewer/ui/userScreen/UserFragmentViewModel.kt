@@ -5,6 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.githubuiviewer.R
 import com.githubuiviewer.data.repository.ProfileRepository
 import com.githubuiviewer.datasource.api.*
@@ -13,6 +16,7 @@ import com.githubuiviewer.datasource.model.UserResponse
 import com.githubuiviewer.datasource.model.SearchResponse
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
+import com.githubuiviewer.ui.userScreen.adapter.ReposDataSource
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,6 +37,10 @@ class UserFragmentViewModel @Inject constructor(
     private val _searchLiveData = MutableLiveData<SearchResponse>()
     val searchLiveData: LiveData<SearchResponse> = _searchLiveData
 
+    val repos = Pager(PagingConfig(20)) {
+        ReposDataSource(gitHubService)
+    }.flow.cachedIn(viewModelScope)
+
     init {
         _userInfoLiveData.value = State.Loading
         _reposLiveData.value = State.Loading
@@ -40,7 +48,7 @@ class UserFragmentViewModel @Inject constructor(
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         when (throwable) {
-            is UnauthorizedException -> _userInfoLiveData.value = State.Unauthorized
+            is UnauthorizedException -> _userInfoLiveData.postValue(State.Unauthorized)
             is NotFoundException ->
                 setErrorToLiveData(R.string.error_not_found)
             is DataLoadingException ->
@@ -50,11 +58,10 @@ class UserFragmentViewModel @Inject constructor(
 
     private fun setErrorToLiveData(@StringRes textError: Int) {
         if (_userInfoLiveData.value is State.Loading) {
-            _userInfoLiveData.value = State.Error(R.string.error_not_found)
-            _reposLiveData.value = State.Error(R.string.error_not_found)
+            _userInfoLiveData.postValue(State.Error(R.string.error_not_found))
+            _reposLiveData.postValue(State.Error(R.string.error_not_found))
         } else {
-            _reposLiveData.value =
-                State.Error(textError)
+            _reposLiveData.postValue(State.Error(textError))
         }
     }
 
@@ -62,7 +69,8 @@ class UserFragmentViewModel @Inject constructor(
         viewModelScope.launch(exceptionHandler) {
             launch(Dispatchers.IO) {
                 _userInfoLiveData.postValue(State.Content(profileRepository.getUser(userProfile)))
-                _reposLiveData.postValue(State.Content(profileRepository.getRepos(userProfile)))
+                //_reposLiveData.postValue(State.Content(profileRepository.getRepos(userProfile)))
+                //_reposLiveData.postValue(State.Content(profileRepository.getRepos(UserProfile.PublicUser("square"))))
             }
         }
     }

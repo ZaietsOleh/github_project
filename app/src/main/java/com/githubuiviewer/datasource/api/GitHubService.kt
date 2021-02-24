@@ -29,7 +29,11 @@ interface GitHubService {
     ): List<ReposResponse>
 
     @GET("/users/{owner}/repos")
-    suspend fun getReposByNickname(@Path("owner") owner: String): List<ReposResponse>
+    suspend fun getReposByNickname(
+        @Path("owner") owner: String,
+        @Query("per_page") per_page: Int,
+        @Query("page") page: Int
+    ): List<ReposResponse>
 
     @GET("/repos/{owner}/{repo}/contributors")
     suspend fun getContributors(

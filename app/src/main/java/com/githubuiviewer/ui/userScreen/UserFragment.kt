@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
 import com.githubuiviewer.R
@@ -21,6 +23,10 @@ import com.githubuiviewer.tools.navigator.BaseFragment
 import com.githubuiviewer.ui.UserGroup
 import com.githubuiviewer.ui.userScreen.adapter.ProfileAdapter
 import com.githubuiviewer.ui.userScreen.adapter.ProfileRecyclerState
+import com.githubuiviewer.ui.userScreen.adapter.ReposAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout.user_fragment), SearchView.OnQueryTextListener {
@@ -38,6 +44,7 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
             is AppCompatTextView -> navigation.showProjectScreen(viewModel.userProfile, it.text.toString())
         }
     }
+    private val reposAdapter = ReposAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,7 +83,15 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
     }
 
     private fun setupRecyclerProfile() {
-        binding.rvRepositories.adapter = profileAdapter
+        //binding.rvRepositories.adapter = profileAdapter
+        binding.rvRepositories.adapter = reposAdapter
+        binding.rvRepositories.setHasFixedSize(true)
+        binding.rvRepositories.isNestedScrollingEnabled = false
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.repos.collectLatest { pagedData ->
+                reposAdapter.submitData(pagedData)
+            }
+        }
         binding.rvRepositories.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
@@ -133,11 +148,14 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
                 profileAdapter.submitList(listOf(ProfileRecyclerState.Error(getString(state.error))))
             }
             is State.Content -> {
-                profileAdapter.submitList(
-                    state.data.map {
-                        ProfileRecyclerState.Repos(it)
-                    }
-                )
+//                lifecycleScope.launch {
+//                    reposAdapter.submitData(PagingData.from(state.data))
+//                }
+//                profileAdapter.submitList(
+//                    state.data.map {
+//                        ProfileRecyclerState.Repos(it)
+//                    }
+//                )
             }
         }
     }
