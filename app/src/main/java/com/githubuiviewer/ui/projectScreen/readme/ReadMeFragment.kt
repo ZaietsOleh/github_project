@@ -55,7 +55,6 @@ class ReadMeFragment : BaseFragment(R.layout.read_me_fragment) {
                 is State.Content -> showContent(it.data)
                 is State.Error -> showError(it.error)
                 is State.Loading -> showProgressBar()
-                is State.Unauthorized -> TODO()
             }
         }
     }
