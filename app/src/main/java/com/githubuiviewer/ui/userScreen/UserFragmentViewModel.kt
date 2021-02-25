@@ -15,7 +15,7 @@ import com.githubuiviewer.tools.PER_PAGE
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.BaseViewModel
-import com.githubuiviewer.ui.userScreen.adapter.PagingDataSource
+import com.githubuiviewer.tools.PagingDataSource
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.lang.Exception

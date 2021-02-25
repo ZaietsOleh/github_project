@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.ContributorsFragmentBinding
-import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse
 import com.githubuiviewer.tools.FragmentArgsDelegate
 import com.githubuiviewer.tools.State
@@ -25,7 +23,7 @@ import javax.inject.Inject
 class ContributorsFragment : BaseFragment(R.layout.contributors_fragment) {
 
     @Inject
-    lateinit var viewModel: ContributorsViewModelFragment
+    lateinit var viewModel: ContributorsViewModel
 
     private var userAndRepoName by FragmentArgsDelegate<UserAndRepoName>(USER_KEY)
     private lateinit var binding: ContributorsFragmentBinding
@@ -66,7 +64,7 @@ class ContributorsFragment : BaseFragment(R.layout.contributors_fragment) {
     private fun setupLiveDataListener() {
         viewModel.contributorsLiveData.observe(viewLifecycleOwner){
             when(it){
-                is State.Loading -> TODO()
+                is State.Loading -> {}
                 is State.Content -> updateContributorsRecyclerView(it.data)
                 is State.Error -> TODO()
             }

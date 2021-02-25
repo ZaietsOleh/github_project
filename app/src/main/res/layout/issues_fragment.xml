@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.projectScreen.issues.IssuesFragment">
+    tools:context=".ui.projectScreen.issues.BriefInfoIssuesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_issues"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

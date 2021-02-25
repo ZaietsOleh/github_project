@@ -16,7 +16,7 @@ class GitHubRepository @Inject constructor(
 ) {
 
     /*init {
-        sharedPref.token = "bearer 8a9ac1887b041d1add447db491ebe421e4225cc7"
+        sharedPref.token = "bearer 6297b44c3ac15649fb1e7795a______780ee416d693f27"
     }*/
 
     suspend fun getReadMe(owner: String, repoName: String): String {

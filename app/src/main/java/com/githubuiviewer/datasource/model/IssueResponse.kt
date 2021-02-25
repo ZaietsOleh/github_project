@@ -2,7 +2,7 @@ package com.githubuiviewer.datasource.model
 
 import com.google.gson.annotations.SerializedName
 
-data class IssueRepos(
+data class IssueResponse(
     @SerializedName("number") val number: Int,
     @SerializedName("title") val title: String,
     @SerializedName("user") val user: UserResponse,

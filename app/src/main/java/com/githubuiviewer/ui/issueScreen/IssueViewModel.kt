@@ -11,7 +11,7 @@ import com.githubuiviewer.datasource.model.IssueCommentRepos
 import com.githubuiviewer.datasource.model.IssueDetailRepos
 import com.githubuiviewer.tools.PER_PAGE
 import com.githubuiviewer.ui.BaseViewModel
-import com.githubuiviewer.ui.userScreen.adapter.PagingDataSource
+import com.githubuiviewer.tools.PagingDataSource
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
