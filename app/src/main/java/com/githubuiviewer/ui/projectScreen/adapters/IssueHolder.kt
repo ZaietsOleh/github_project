@@ -13,6 +13,9 @@ class IssueHolder(
     fun onBind(issueResponse: IssueResponse) {
         binding = IssueBriefInfoItemBinding.bind(itemView)
         binding.apply {
+            root.setOnClickListener {
+                callback(issueResponse)
+            }
             tvIssueBriefInfo.text = issueResponse.title
         }
     }

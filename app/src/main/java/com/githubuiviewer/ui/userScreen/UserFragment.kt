@@ -15,10 +15,7 @@ import com.githubuiviewer.datasource.api.NetworkException
 import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse
-import com.githubuiviewer.tools.INPUT_DELAY
-import com.githubuiviewer.tools.State
-import com.githubuiviewer.tools.UserProfile
-import com.githubuiviewer.tools.hideKeyboard
+import com.githubuiviewer.tools.*
 import com.githubuiviewer.tools.navigator.BaseFragment
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import com.githubuiviewer.ui.userScreen.adapter.UserAdapter
@@ -29,15 +26,21 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
-class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout.user_fragment) {
+class UserFragment() : BaseFragment(R.layout.user_fragment) {
     companion object {
-        fun newInstance(userProfile: UserProfile) = UserFragment(userProfile)
+        fun newInstance(userProfile: UserProfile) =
+            UserFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(USER_KEY, userProfile)
+                }
+            }
     }
 
     @Inject
     lateinit var viewModel: UserFragmentViewModel
     private lateinit var binding: UserFragmentBinding
     private var searchJob: Job? = null
+    private var userProfile by FragmentArgsDelegate<UserProfile>(USER_KEY)
 
     private val userAdapter = UserAdapter(::onUserClick)
 
@@ -59,11 +62,6 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
         setupRecycler()
         setupSearch()
 
-        //TODO CLEAN
-        binding.userGroup.setOnClickListener {
-            navigation.showIssueScreen("", "", 0)
-        }
-
         viewModel.userProfile = userProfile
         viewModel.getContent()
     }
@@ -75,7 +73,7 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
     private fun onReposClick(reposResponse: ReposResponse) {
         navigation.showProjectScreen(
             UserAndRepoName(
-                binding.userGroup.getName(),
+                viewModel.currentUserName,
                 reposResponse.name
             )
         )
@@ -157,7 +155,6 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
     }
 
     private fun updateUser(state: State<UserResponse, Exception>) {
-        //todo
         when (state) {
             is State.Loading -> {
                 showLoading()
@@ -170,7 +167,6 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
                     is NetworkException -> showError(R.string.netwotk_error)
                 }
             }
-            is State.Error -> state.error.message?.let { binding.userGroup.setName(it) }
             is State.Content -> {
                 closeLoading()
                 binding.userGroup.apply {

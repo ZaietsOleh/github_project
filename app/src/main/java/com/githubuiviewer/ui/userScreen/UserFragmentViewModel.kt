@@ -39,11 +39,14 @@ class UserFragmentViewModel @Inject constructor(
     val searchLiveData: LiveData<PagingData<UserResponse>> = _searchLiveData
 
     val baseScope = baseViewModelScope
+    lateinit var currentUserName: String
 
     fun getContent() {
         _userInfoLiveData.value = State.Loading
         baseViewModelScope.launch {
-            _userInfoLiveData.postValue(State.Content(gitHubRepository.getUser(userProfile)))
+            val user = gitHubRepository.getUser(userProfile)
+            currentUserName = user.name
+            _userInfoLiveData.postValue(State.Content(user))
             reposFlow().collectLatest { pagedData ->
                 _reposLiveData.postValue(pagedData)
             }
@@ -64,14 +67,6 @@ class UserFragmentViewModel @Inject constructor(
                 _searchLiveData.postValue(pagedData)
             }
         }
-    }
-
-    private suspend fun reposFlow(): Flow<PagingData<ReposResponse>> {
-        return Pager(PagingConfig(PER_PAGE)) {
-            PagingDataSource(baseViewModelScope) { currentPage ->
-                gitHubRepository.getRepos(userProfile, currentPage)
-            }
-        }.flow.cachedIn(baseViewModelScope)
     }
 
     private suspend fun searchFlow(query: String): Flow<PagingData<UserResponse>> {

@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager
 import com.githubuiviewer.tools.MAIN_DEBUG_TAG
 import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.issueScreen.IssueFragment
+import com.githubuiviewer.ui.issueScreen.IssuesDetailsParameter
 import com.githubuiviewer.ui.loadingScreen.LoadingFragment
 import com.githubuiviewer.ui.loginScreen.LoginFragment
 import com.githubuiviewer.ui.projectScreen.ParenRepoProjectFragment
@@ -52,9 +53,9 @@ class Navigator(
             .commit()
     }
 
-    fun showIssueScreen(owner: String, repo: String, issue_number: Int) {
+    fun showDetailIssueScreen(issuesDetailsParameter: IssuesDetailsParameter) {
         fragmentManager.beginTransaction()
-            .add(container, IssueFragment.newInstance(owner, repo, issue_number))
+            .add(container, IssueFragment.newInstance(issuesDetailsParameter))
             .addToBackStack(ISSUE_SCREEN_FRAGMENT)
             .commit()
     }
