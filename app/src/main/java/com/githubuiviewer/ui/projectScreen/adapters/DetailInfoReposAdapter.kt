@@ -1,15 +1,16 @@
-package com.githubuiviewer.ui.projectScreen
+package com.githubuiviewer.ui.projectScreen.adapters
 
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.tools.navigator.BaseFragment
+import com.githubuiviewer.ui.projectScreen.Page
+import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import com.githubuiviewer.ui.projectScreen.contributors.ContributorsFragment
 import com.githubuiviewer.ui.projectScreen.issues.IssuesFragment
 import com.githubuiviewer.ui.projectScreen.readme.ReadMeFragment
 
-class RepoAdapter(
+class DetailInfoReposAdapter(
     fragment: BaseFragment,
     private val userAndRepoName: UserAndRepoName
 ) : FragmentStateAdapter(fragment) {

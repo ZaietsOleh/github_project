@@ -11,6 +11,7 @@ import com.githubuiviewer.datasource.model.UserResponse
 class UserAdapter(
     private var callback: ((UserResponse) -> Unit) = { }
 ) : PagingDataAdapter<UserResponse, UserHolder>(UserDiffCallback) {
+
     object UserDiffCallback : DiffUtil.ItemCallback<UserResponse>() {
         override fun areItemsTheSame(oldItem: UserResponse, newItem: UserResponse): Boolean {
             return oldItem.name == newItem.name
