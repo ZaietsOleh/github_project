@@ -8,6 +8,7 @@ import com.githubuiviewer.datasource.api.HeaderInterceptor
 import com.githubuiviewer.tools.host
 import com.githubuiviewer.tools.schema
 import com.githubuiviewer.tools.sharedPrefsTools.SharedPref
+import com.githubuiviewer.ui.BaseViewModel
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -65,5 +66,11 @@ class AppModule(private val context: Context) {
         return GsonConverterFactory.create(
             GsonBuilder().setLenient().create()
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideBaseViewModel(): BaseViewModel {
+        return BaseViewModel()
     }
 }

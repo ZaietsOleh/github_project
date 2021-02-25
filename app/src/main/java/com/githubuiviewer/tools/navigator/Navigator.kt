@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager
 import com.githubuiviewer.tools.MAIN_DEBUG_TAG
 import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.issueScreen.IssueFragment
+import com.githubuiviewer.ui.loadingScreen.LoadingFragment
 import com.githubuiviewer.ui.loginScreen.LoginFragment
 import com.githubuiviewer.ui.projectScreen.ProjectFragment
 import com.githubuiviewer.ui.updateTokenFragment.UpdateTokenFragment
@@ -20,6 +21,7 @@ class Navigator(
         private const val LOGIN_SCREEN_FRAGMENT = "LOGIN_SCREEN_FRAGMENT"
         private const val PROJECT_SCREEN_FRAGMENT = "PROJECT_SCREEN_FRAGMENT"
         private const val ISSUE_SCREEN_FRAGMENT = "ISSUE_SCREEN_FRAGMENT"
+        private const val LOADING_SCREEN_FRAGMENT = "LOADING_SCREEN_FRAGMENT"
     }
 
     fun showUserScreen(userProfile: UserProfile) {
@@ -54,5 +56,16 @@ class Navigator(
             .add(container, IssueFragment.newInstance())
             .addToBackStack(ISSUE_SCREEN_FRAGMENT)
             .commit()
+    }
+
+    fun showLoadingScreen() {
+        fragmentManager.beginTransaction()
+            .add(container, LoadingFragment.newInstance())
+            .addToBackStack(LOADING_SCREEN_FRAGMENT)
+            .commit()
+    }
+
+    fun closeLoadingScreen() {
+        fragmentManager.popBackStack(LOADING_SCREEN_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 }

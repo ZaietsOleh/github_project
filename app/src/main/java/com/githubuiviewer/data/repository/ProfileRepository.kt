@@ -12,9 +12,9 @@ class ProfileRepository @Inject constructor(
     private val gitHubService: GitHubService,
     private val sharedPref: SharedPref
 ) {
-//    init {
-//        sharedPref.token = "bearer 83e23a9d48ef39921212a26e309e642ef4574de1"
-//    }
+    init {
+        sharedPref.token = "bearer 83e23a9d48ef39921212a26e309e642ef4574de1"
+    }
 
     suspend fun getUser(userProfile: UserProfile) : UserResponse {
         return when (userProfile) {
@@ -25,8 +25,8 @@ class ProfileRepository @Inject constructor(
 
     suspend fun getRepos(userProfile: UserProfile, currentPage: Int) : List<ReposResponse> {
         return when (userProfile) {
-            is UserProfile.AuthorizedUser -> gitHubService.getReposByToken(PER_PAGE, 0)
-            is UserProfile.PublicUser -> gitHubService.getReposByNickname(userProfile.userNickname, PER_PAGE, 0)
+            is UserProfile.AuthorizedUser -> gitHubService.getReposByToken(PER_PAGE, currentPage)
+            is UserProfile.PublicUser -> gitHubService.getReposByNickname(userProfile.userNickname, PER_PAGE, currentPage)
         }
     }
 }

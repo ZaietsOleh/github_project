@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
 import com.githubuiviewer.R
@@ -14,14 +14,14 @@ import com.githubuiviewer.databinding.UserFragmentBinding
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.SearchResponse
 import com.githubuiviewer.datasource.model.UserResponse
+import com.githubuiviewer.tools.INPUT_DELAY
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.tools.navigator.BaseFragment
-import com.githubuiviewer.ui.UserGroup
-import com.githubuiviewer.ui.userScreen.adapter.ProfileAdapter
-import com.githubuiviewer.ui.userScreen.adapter.ProfileRecyclerState
+import com.githubuiviewer.ui.userScreen.adapter.UserAdapter
 import com.githubuiviewer.ui.userScreen.adapter.ReposAdapter
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -33,26 +33,15 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
 
     @Inject
     lateinit var viewModel: UserFragmentViewModel
-
     private lateinit var binding: UserFragmentBinding
-    private val profileAdapter = ProfileAdapter {
-        when (it) {
-            is UserGroup -> navigation.showUserScreen(UserProfile.PublicUser(it.getName()))
-            is AppCompatTextView -> navigation.showProjectScreen(
-                viewModel.userProfile,
-                it.text.toString()
-            )
-        }
+    private var searchJob: Job? = null
+
+    private val userAdapter = UserAdapter {
+        navigation.showUserScreen(UserProfile.PublicUser(it.name))
     }
 
-    private val reposAdapter = ReposAdapter() {
-        when (it) {
-            is UserGroup -> navigation.showUserScreen(UserProfile.PublicUser(it.getName()))
-            is AppCompatTextView -> navigation.showProjectScreen(
-                viewModel.userProfile,
-                it.text.toString()
-            )
-        }
+    private val reposAdapter = ReposAdapter {
+        navigation.showProjectScreen(viewModel.userProfile, it.name)
     }
 
     override fun onCreateView(
@@ -68,36 +57,38 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
 
         setupDi()
         setupLiveDataListeners()
-        setupRecyclerProfile()
+        setupRecycler()
         setupSearch()
 
+        viewModel.userProfile = userProfile
         viewModel.getContent()
     }
 
     private fun setupSearch() {
         binding.svSearchUser.apply {
             setOnSearchClickListener {
-                binding.apply {
-                    userGroup.visibility = View.GONE
-                }
-                profileAdapter.submitList(null)
+                binding.rvUsers.visibility = View.VISIBLE
             }
+
             setOnCloseListener {
-                binding.userGroup.visibility = View.VISIBLE
-                viewModel.getContent()
+                searchJob?.cancel()
+                binding.rvUsers.visibility = View.GONE
+                userAdapter.submitList(null)
                 false
             }
+
             setOnQueryTextListener(this@UserFragment)
         }
     }
 
-    private fun setupRecyclerProfile() {
-        binding.rvRepositories.adapter = reposAdapter
-        binding.rvRepositories.setHasFixedSize(true)
-        binding.rvRepositories.isNestedScrollingEnabled = false
-        viewModel.getRepos()
-        binding.rvRepositories.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    private fun setupRecycler() {
+        binding.apply {
+            rvRepositories.adapter = reposAdapter
+            rvRepositories.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+            rvUsers.adapter = userAdapter
+            rvUsers.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        }
     }
 
     private fun setupDi() {
@@ -106,32 +97,34 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
     }
 
     private fun setupLiveDataListeners() {
-        viewModel.userProfile = userProfile
         viewModel.userInfoLiveData.observe(viewLifecycleOwner) {
             updateUser(it)
         }
         viewModel.reposLiveData.observe(viewLifecycleOwner) {
-            viewModel.baseScope.launch {
-                reposAdapter.submitData(it)
-            }
+            updateRepos(it)
         }
         viewModel.searchLiveData.observe(viewLifecycleOwner) {
             updateSearch(it)
         }
     }
 
+    private fun updateRepos(pagingData: PagingData<ReposResponse>) {
+        viewModel.baseScope.launch {
+            reposAdapter.submitData(pagingData)
+        }
+        navigation.closeLoadingScreen()
+    }
+
     private fun updateSearch(searchResponse: SearchResponse?) {
         searchResponse?.let {
-            profileAdapter.submitList(searchResponse.items.map {
-                ProfileRecyclerState.User(it)
-            })
+            userAdapter.submitList(it.items)
         }
     }
 
     private fun updateUser(state: State<UserResponse, Int>) {
         when (state) {
             is State.Loading -> {
-                //TODO ADD LOADING
+                navigation.showLoadingScreen()
             }
             is State.Unauthorized -> navigation.showLoginScreen()
             is State.Error -> binding.userGroup.setName(getString(state.error))
@@ -144,35 +137,17 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
         }
     }
 
-    private fun updateRepos(state: State<List<ReposResponse>, Int>) {
-        when (state) {
-            is State.Loading -> {
-                //TODO ADD LOADING
-            }
-            is State.Unauthorized -> navigation.showLoginScreen()
-            is State.Error -> {
-                profileAdapter.submitList(listOf(ProfileRecyclerState.Error(getString(state.error))))
-            }
-            is State.Content -> {
-//                lifecycleScope.launch {
-//                    reposAdapter.submitData(PagingData.from(state.data))
-//                }
-//                profileAdapter.submitList(
-//                    state.data.map {
-//                        ProfileRecyclerState.Repos(it)
-//                    }
-//                )
-            }
-        }
-    }
-
     override fun onQueryTextSubmit(query: String?): Boolean {
         return false
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        newText?.let { query ->
-            viewModel.getSearchable(query)
+        searchJob?.cancel()
+        newText?.let {
+            searchJob = lifecycleScope.launch {
+                delay(INPUT_DELAY)
+                viewModel.getSearchable(newText)
+            }
         }
         return false
     }
