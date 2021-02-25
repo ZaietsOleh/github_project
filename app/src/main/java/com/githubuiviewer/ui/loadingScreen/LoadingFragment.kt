@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.githubuiviewer.R
 import com.githubuiviewer.tools.navigator.BaseFragment
 
-class LoadingFragment : BaseFragment(R.layout.issue_fragment) {
+class LoadingFragment : BaseFragment(R.layout.issue_detail_fragment) {
     companion object {
         fun newInstance() = LoadingFragment()
     }

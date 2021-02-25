@@ -7,7 +7,7 @@ import com.githubuiviewer.tools.navigator.BaseFragment
 import com.githubuiviewer.ui.projectScreen.Page
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import com.githubuiviewer.ui.projectScreen.contributors.ContributorsFragment
-import com.githubuiviewer.ui.projectScreen.issues.IssuesFragment
+import com.githubuiviewer.ui.projectScreen.issues.BriefInfoIssuesFragment
 import com.githubuiviewer.ui.projectScreen.readme.ReadMeFragment
 
 class DetailInfoReposAdapter(
@@ -26,7 +26,7 @@ class DetailInfoReposAdapter(
                 ContributorsFragment.newInstance(userAndRepoName)
             }
             Page.ISSUES -> {
-                IssuesFragment.newInstance(userAndRepoName)
+                BriefInfoIssuesFragment.newInstance(userAndRepoName)
             }
         }
     }

@@ -1,8 +1,6 @@
 package com.githubuiviewer.ui.issueScreen
 
-import android.os.Binder
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,14 +8,14 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
 import com.githubuiviewer.R
-import com.githubuiviewer.databinding.IssueFragmentBinding
+import com.githubuiviewer.databinding.IssueDetailFragmentBinding
 import com.githubuiviewer.datasource.model.IssueCommentRepos
 import com.githubuiviewer.tools.navigator.BaseFragment
 import com.githubuiviewer.ui.issueScreen.adapter.CommentAdapter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class IssueFragment : BaseFragment(R.layout.issue_fragment) {
+class IssueFragment : BaseFragment(R.layout.issue_detail_fragment) {
     companion object {
         private const val OWNER = "OWNER"
         private const val REPO = "REPO"
@@ -34,7 +32,7 @@ class IssueFragment : BaseFragment(R.layout.issue_fragment) {
 
     @Inject
     lateinit var viewModel: IssueViewModel
-    private lateinit var binding: IssueFragmentBinding
+    private lateinit var binding: IssueDetailFragmentBinding
     private val commentAdapter = CommentAdapter {
 
     }
@@ -44,7 +42,7 @@ class IssueFragment : BaseFragment(R.layout.issue_fragment) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = IssueFragmentBinding.inflate(inflater, container, false)
+        binding = IssueDetailFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 

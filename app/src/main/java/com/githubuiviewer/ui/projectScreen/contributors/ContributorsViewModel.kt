@@ -11,14 +11,14 @@ import com.githubuiviewer.datasource.model.UserResponse
 import com.githubuiviewer.tools.PER_PAGE
 import com.githubuiviewer.ui.BaseViewModel
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
-import com.githubuiviewer.ui.userScreen.adapter.PagingDataSource
+import com.githubuiviewer.tools.PagingDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import com.githubuiviewer.tools.State
 
-class ContributorsViewModelFragment @Inject constructor(
+class ContributorsViewModel @Inject constructor(
     private val gitHubService: GitHubService
 ) : BaseViewModel() {
 

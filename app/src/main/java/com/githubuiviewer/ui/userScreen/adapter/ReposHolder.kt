@@ -6,7 +6,9 @@ import com.githubuiviewer.databinding.ReposHolderBinding
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse
 
-class ReposHolder(view: View, private var callback: ((ReposResponse) -> Unit) = { }) : RecyclerView.ViewHolder(view) {
+class ReposHolder(
+    view: View, private var callback: ((ReposResponse) -> Unit) = { }
+) : RecyclerView.ViewHolder(view) {
     private lateinit var binding: ReposHolderBinding
 
     fun onBind(reposResponse: ReposResponse) {

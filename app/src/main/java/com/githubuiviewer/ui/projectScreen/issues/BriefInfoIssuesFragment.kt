@@ -1,4 +1,4 @@
-package com.githubuiviewer.ui.projectScreen.contributors
+package com.githubuiviewer.ui.projectScreen.issues
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,44 +8,43 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
 import com.githubuiviewer.R
-import com.githubuiviewer.databinding.ContributorsFragmentBinding
-import com.githubuiviewer.datasource.model.UserResponse
+import com.githubuiviewer.databinding.IssuesFragmentBinding
+import com.githubuiviewer.datasource.model.IssueResponse
 import com.githubuiviewer.tools.FragmentArgsDelegate
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.USER_KEY
-import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.tools.navigator.BaseFragment
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
-import com.githubuiviewer.ui.userScreen.adapter.UserAdapter
+import com.githubuiviewer.ui.projectScreen.adapters.IssuesAdapter
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ContributorsFragment : BaseFragment(R.layout.contributors_fragment) {
+class BriefInfoIssuesFragment : BaseFragment(R.layout.issues_fragment) {
 
     @Inject
-    lateinit var viewModel: ContributorsViewModel
+    lateinit var viewModel: IssuesViewModel
 
-    private var userAndRepoName by FragmentArgsDelegate<UserAndRepoName>(USER_KEY)
-    private lateinit var binding: ContributorsFragmentBinding
+    private lateinit var binding: IssuesFragmentBinding
+    private val userAndRepoName by FragmentArgsDelegate<UserAndRepoName>(USER_KEY)
 
-    private val userAdapter = UserAdapter {
-        navigation.showUserScreen(UserProfile.PublicUser(it.name))
+    private val issuesAdapter = IssuesAdapter(){
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = ContributorsFragmentBinding.inflate(inflater, container, false)
+        binding = IssuesFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
         setupDi()
         setupRecyclerView()
-        viewModel.getContributors(userAndRepoName)
+        viewModel.getIssues(userAndRepoName)
         setupLiveDataListener()
     }
 
@@ -56,33 +55,34 @@ class ContributorsFragment : BaseFragment(R.layout.contributors_fragment) {
 
     private fun setupRecyclerView(){
         binding.apply {
-            rvContributors.adapter = userAdapter
-            rvContributors.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            rvIssues.adapter = issuesAdapter
+            rvIssues.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         }
     }
 
     private fun setupLiveDataListener() {
-        viewModel.contributorsLiveData.observe(viewLifecycleOwner){
+        viewModel.issuesLiveData.observe(viewLifecycleOwner){
             when(it){
                 is State.Loading -> {}
-                is State.Content -> updateContributorsRecyclerView(it.data)
+                is State.Content -> updateIssuesRecyclerView(it.data)
                 is State.Error -> TODO()
             }
         }
     }
 
-    private fun updateContributorsRecyclerView(pagingData: PagingData<UserResponse>){
-        viewModel.baseView.launch {
-            userAdapter.submitData(pagingData)
+    private fun updateIssuesRecyclerView(pagingData: PagingData<IssueResponse>){
+        viewModel.viewModelScope.launch {
+            issuesAdapter.submitData(pagingData)
         }
     }
 
     companion object {
         fun newInstance(userAndRepoName: UserAndRepoName) =
-            ContributorsFragment().apply {
+            BriefInfoIssuesFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(USER_KEY, userAndRepoName)
                 }
             }
     }
+
 }
