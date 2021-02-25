@@ -12,7 +12,7 @@ class HeaderInterceptor @Inject constructor(
         proceed(
             request()
                 .newBuilder()
-                .addHeader("Accept", "application/vnd.github.v3+json")
+                .addHeader("Accept", "application/vnd.github.squirrel-girl-preview+json")
                 .addHeader("Authorization", sharedPref.token)
                 .build()
         )

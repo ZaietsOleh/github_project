@@ -1,5 +1,6 @@
 package com.githubuiviewer.ui.issueScreen
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.Pager
@@ -9,9 +10,13 @@ import androidx.paging.cachedIn
 import com.githubuiviewer.datasource.api.GitHubService
 import com.githubuiviewer.datasource.model.IssueCommentRepos
 import com.githubuiviewer.datasource.model.IssueDetailRepos
+import com.githubuiviewer.datasource.model.Reactions
+import com.githubuiviewer.tools.Emoji
 import com.githubuiviewer.tools.PER_PAGE
 import com.githubuiviewer.ui.BaseViewModel
 import com.githubuiviewer.ui.userScreen.adapter.PagingDataSource
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,26 +30,41 @@ class IssueViewModel @Inject constructor(
     private val _commentLiveData = MutableLiveData<PagingData<IssueCommentRepos>>()
     val commentLiveData: LiveData<PagingData<IssueCommentRepos>> = _commentLiveData
 
-    private val comments = Pager(PagingConfig(PER_PAGE)) {
-        PagingDataSource(baseViewModelScope) { currentPage ->
-            val result =
-                gitHubService.getIssueComments("square", "retrofit", 3513, PER_PAGE, currentPage)
-            if (currentPage == 0) {
-                addAuthor(result)
-            }
-            result
-        }
-    }.flow.cachedIn(baseViewModelScope)
-
     fun getContent() {
         baseViewModelScope.launch {
-            comments.collectLatest { pagedData ->
+            commentsFlow().collectLatest { pagedData ->
                 _commentLiveData.postValue(pagedData)
             }
         }
     }
 
-    private suspend fun addAuthor(comments: List<IssueCommentRepos>) : List<IssueCommentRepos> {
+    fun createReaction(reaction: Emoji, issueCommentRepos: IssueCommentRepos) {
+        baseViewModelScope.launch(Dispatchers.IO) {
+            Log.d("TAG", reaction.githubReaction)
+            gitHubService.createReactionForIssueComment("square", "retrofit", issueCommentRepos.id, content = reaction.githubReaction)
+        }
+    }
+
+    private suspend fun commentsFlow(): Flow<PagingData<IssueCommentRepos>> {
+        return Pager(PagingConfig(PER_PAGE)) {
+            PagingDataSource(baseViewModelScope) { currentPage ->
+                val result =
+                    gitHubService.getIssueComments(
+                        "square",
+                        "retrofit",
+                        3513,
+                        PER_PAGE,
+                        currentPage
+                    )
+                if (currentPage == 0) {
+                    return@PagingDataSource addAuthorContent(result)
+                }
+                return@PagingDataSource result
+            }
+        }.flow.cachedIn(baseViewModelScope)
+    }
+
+    private suspend fun addAuthorContent(comments: List<IssueCommentRepos>): List<IssueCommentRepos> {
         val author =
             mapToIssueCommentRepos(gitHubService.getIssueDetail("retrofit", "square", 3513))
         val mutable = comments.toMutableList()
@@ -54,9 +74,11 @@ class IssueViewModel @Inject constructor(
 
     private fun mapToIssueCommentRepos(issueDetail: IssueDetailRepos): IssueCommentRepos {
         return IssueCommentRepos(
+            id = 0,
             user = issueDetail.user,
             body = issueDetail.body,
-            created_at = issueDetail.created_at
+            created_at = issueDetail.created_at,
+            reactions = issueDetail.reactions
         )
     }
 }

@@ -79,4 +79,8 @@ dependencies {
 
     //viewpager
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
+
+    implementation 'com.android.support:support-emoji-appcompat:30.0.0'
+    implementation 'com.android.support:support-emoji-bundled:30.0.0'
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
 }

@@ -1,7 +1,10 @@
 package com.githubuiviewer.ui.issueScreen.adapter
 
+import android.provider.FontRequest
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.emoji.text.EmojiCompat
+import androidx.emoji.text.FontRequestEmojiCompatConfig
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.githubuiviewer.R
@@ -26,7 +29,6 @@ class CommentAdapter(private var callback: ((IssueCommentRepos) -> Unit) = { }) 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.issue_comment_holder, parent, false)
-
         return CommentHolder(view, callback)
     }
 }
