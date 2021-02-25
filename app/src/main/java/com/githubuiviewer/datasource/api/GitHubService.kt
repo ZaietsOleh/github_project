@@ -80,5 +80,9 @@ interface GitHubService {
     )
 
     @GET("search/users")
-    suspend fun getSearcher(@Query("q") q: String): SearchResponse
+    suspend fun getSearcher(
+        @Query("q") q: String,
+        @Query("per_page") per_page: Int,
+        @Query("page") page: Int
+    ): SearchResponse
 }

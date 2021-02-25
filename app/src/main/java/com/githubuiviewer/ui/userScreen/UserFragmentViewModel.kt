@@ -2,6 +2,8 @@ package com.githubuiviewer.ui.userScreen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.*
+import com.githubuiviewer.data.repository.ProfileRepository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -17,8 +19,10 @@ import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.BaseViewModel
 import com.githubuiviewer.ui.userScreen.adapter.PagingDataSource
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import okhttp3.internal.notify
+import okhttp3.internal.notifyAll
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -34,22 +38,16 @@ class UserFragmentViewModel @Inject constructor(
     private val _reposLiveData = MutableLiveData<PagingData<ReposResponse>>()
     val reposLiveData: LiveData<PagingData<ReposResponse>> = _reposLiveData
 
-    private val _searchLiveData = MutableLiveData<SearchResponse>()
-    val searchLiveData: LiveData<SearchResponse> = _searchLiveData
+    private val _searchLiveData = MutableLiveData<PagingData<UserResponse>>()
+    val searchLiveData: LiveData<PagingData<UserResponse>> = _searchLiveData
 
     val baseScope = baseViewModelScope
-
-    private val repos = Pager(PagingConfig(PER_PAGE)) {
-        PagingDataSource(baseViewModelScope) { currentPage ->
-            gitHubRepository.getRepos(userProfile, currentPage)
-        }
-    }.flow.cachedIn(baseViewModelScope)
 
     fun getContent() {
         _userInfoLiveData.value = State.Loading
         baseViewModelScope.launch {
-            _userInfoLiveData.postValue(State.Content(gitHubRepository.getUser(userProfile)))
-            repos.collectLatest { pagedData ->
+            _userInfoLiveData.postValue(State.Content(profileRepository.getUser(userProfile)))
+            reposFlow().collectLatest { pagedData ->
                 _reposLiveData.postValue(pagedData)
             }
         }
@@ -57,8 +55,26 @@ class UserFragmentViewModel @Inject constructor(
 
     fun getSearchable(query: String) {
         baseViewModelScope.launch {
-            _searchLiveData.postValue(gitHubService.getSearcher(query))
+            searchFlow(query).collectLatest { pagedData ->
+                _searchLiveData.postValue(pagedData)
+            }
         }
+    }
+
+    private suspend fun reposFlow(): Flow<PagingData<ReposResponse>> {
+        return Pager(PagingConfig(PER_PAGE)) {
+            PagingDataSource(baseViewModelScope) { currentPage ->
+                profileRepository.getRepos(userProfile, currentPage)
+            }
+        }.flow.cachedIn(baseViewModelScope)
+    }
+
+    private suspend fun searchFlow(query: String): Flow<PagingData<UserResponse>> {
+        return Pager(PagingConfig(PER_PAGE)) {
+            PagingDataSource(baseViewModelScope) { currentPage ->
+                gitHubService.getSearcher(query, PER_PAGE, currentPage).items
+            }
+        }.flow.cachedIn(baseViewModelScope)
     }
 
     override fun unauthorizedException() {

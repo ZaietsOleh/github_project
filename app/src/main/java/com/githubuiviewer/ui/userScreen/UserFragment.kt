@@ -18,6 +18,7 @@ import com.githubuiviewer.datasource.model.UserResponse
 import com.githubuiviewer.tools.INPUT_DELAY
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
+import com.githubuiviewer.tools.hideKeyboard
 import com.githubuiviewer.tools.navigator.BaseFragment
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import com.githubuiviewer.ui.userScreen.adapter.UserAdapter
@@ -25,6 +26,7 @@ import com.githubuiviewer.ui.userScreen.adapter.ReposAdapter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import okhttp3.internal.notify
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -80,7 +82,7 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
             setOnCloseListener {
                 searchJob?.cancel()
                 binding.rvUsers.visibility = View.GONE
-                userAdapter.submitList(null)
+                hideKeyboard()
                 false
             }
 
@@ -122,9 +124,9 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
         navigation.closeLoadingScreen()
     }
 
-    private fun updateSearch(searchResponse: SearchResponse?) {
-        searchResponse?.let {
-            userAdapter.submitList(it.items)
+    private fun updateSearch(pagingData: PagingData<UserResponse>) {
+        viewModel.baseScope.launch {
+            userAdapter.submitData(pagingData)
         }
     }
 
