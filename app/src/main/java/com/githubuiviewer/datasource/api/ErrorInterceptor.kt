@@ -2,6 +2,7 @@ package com.githubuiviewer.datasource.api
 
 import android.content.Context
 import android.net.ConnectivityManager
+import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -13,14 +14,18 @@ class ErrorInterceptor @Inject constructor(
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
+        if (!isConnected()) throw NetworkException()
         val response = chain.proceed(request)
 
-        if (!isConnected()) throw NetworkException()
+
 
         when (response.code) {
             401 -> throw UnauthorizedException()
             in 400..500 -> throw DataLoadingException()
         }
+
+        Log.d("TAG", response.message)
+        Log.d("TAG", response.networkResponse!!.message)
 
         val bodyString = response.body?.string() ?: "No info from response body(null)"
         return response.newBuilder()

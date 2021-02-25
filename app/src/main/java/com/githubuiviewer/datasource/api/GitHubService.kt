@@ -80,7 +80,7 @@ interface GitHubService {
         @Path("owner") owner: String,
         @Path("repo") repo: String,
         @Path("comment_id") comment_id: Int,
-        @Body reaction: String
+        @Body content: ReactionContent
     )
 
     @GET("search/users")

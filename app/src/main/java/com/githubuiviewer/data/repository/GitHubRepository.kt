@@ -53,5 +53,4 @@ class GitHubRepository @Inject constructor(
             )
         }
     }
-
 }

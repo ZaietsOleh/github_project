@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.emoji.widget.EmojiAppCompatTextView
+        android:id="@+id/like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="👍"
+        android:textSize="@dimen/emoji_size"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/dislike"
+        app:layout_constraintBottom_toTopOf="@id/confused"/>
+
+    <androidx.emoji.widget.EmojiAppCompatTextView
+        android:id="@+id/dislike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="👎"
+        android:textSize="@dimen/emoji_size"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/like"
+        app:layout_constraintEnd_toEndOf="@id/laugh"
+        app:layout_constraintBottom_toTopOf="@id/heart"/>
+
+    <androidx.emoji.widget.EmojiAppCompatTextView
+        android:id="@+id/laugh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="😄"
+        android:textSize="@dimen/emoji_size"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/dislike"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/hoorey"/>
+
+    <androidx.emoji.widget.EmojiAppCompatTextView
+        android:id="@+id/confused"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="😕"
+        android:textSize="@dimen/emoji_size"
+        app:layout_constraintTop_toBottomOf="@id/like"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/heart"
+        app:layout_constraintBottom_toTopOf="@id/rocket"/>
+
+    <androidx.emoji.widget.EmojiAppCompatTextView
+        android:id="@+id/heart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="❤"
+        android:textSize="@dimen/emoji_size"
+        app:layout_constraintTop_toBottomOf="@id/dislike"
+        app:layout_constraintStart_toEndOf="@id/confused"
+        app:layout_constraintEnd_toStartOf="@id/hoorey"
+        app:layout_constraintBottom_toTopOf="@id/rocket"/>
+
+    <androidx.emoji.widget.EmojiAppCompatTextView
+        android:id="@+id/hoorey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🎉"
+        android:textSize="@dimen/emoji_size"
+        app:layout_constraintTop_toBottomOf="@id/laugh"
+        app:layout_constraintStart_toEndOf="@id/heart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/eyes"/>
+
+    <androidx.emoji.widget.EmojiAppCompatTextView
+        android:id="@+id/rocket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🚀"
+        android:textSize="@dimen/emoji_size"
+        app:layout_constraintTop_toBottomOf="@id/confused"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/eyes"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <androidx.emoji.widget.EmojiAppCompatTextView
+        android:id="@+id/eyes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="👀"
+        android:textSize="@dimen/emoji_size"
+        app:layout_constraintTop_toBottomOf="@id/hoorey"
+        app:layout_constraintStart_toEndOf="@id/rocket"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

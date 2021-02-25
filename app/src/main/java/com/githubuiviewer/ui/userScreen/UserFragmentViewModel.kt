@@ -7,7 +7,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.githubuiviewer.data.repository.GitHubRepository
+import com.githubuiviewer.datasource.api.DataLoadingException
 import com.githubuiviewer.datasource.api.GitHubService
+import com.githubuiviewer.datasource.api.NetworkException
 import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse
@@ -64,6 +66,14 @@ class UserFragmentViewModel @Inject constructor(
         }
     }
 
+    private suspend fun reposFlow(): Flow<PagingData<ReposResponse>> {
+        return Pager(PagingConfig(PER_PAGE)) {
+            PagingDataSource(baseViewModelScope) { currentPage ->
+                gitHubRepository.getRepos(userProfile, currentPage)
+            }
+        }.flow.cachedIn(baseViewModelScope)
+    }
+
     private suspend fun searchFlow(query: String): Flow<PagingData<UserResponse>> {
         return Pager(PagingConfig(PER_PAGE)) {
             PagingDataSource(baseViewModelScope) { currentPage ->
@@ -73,6 +83,17 @@ class UserFragmentViewModel @Inject constructor(
     }
 
     override fun unauthorizedException() {
+        super.unauthorizedException()
         _userInfoLiveData.postValue(State.Error(UnauthorizedException()))
+    }
+
+    override fun networkException() {
+        super.networkException()
+        _userInfoLiveData.postValue(State.Error(NetworkException()))
+    }
+
+    override fun dataLoadingException() {
+        super.dataLoadingException()
+        _userInfoLiveData.postValue(State.Error(DataLoadingException()))
     }
 }
