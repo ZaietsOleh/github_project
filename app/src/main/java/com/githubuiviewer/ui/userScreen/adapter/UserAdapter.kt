@@ -2,6 +2,7 @@ package com.githubuiviewer.ui.userScreen.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.githubuiviewer.R
@@ -9,8 +10,8 @@ import com.githubuiviewer.datasource.model.UserResponse
 
 class UserAdapter(
     private var callback: ((UserResponse) -> Unit) = { }
-) : ListAdapter<UserResponse, UserHolder>(UserDiffCallback) {
-    object UserDiffCallback: DiffUtil.ItemCallback<UserResponse>() {
+) : PagingDataAdapter<UserResponse, UserHolder>(UserDiffCallback) {
+    object UserDiffCallback : DiffUtil.ItemCallback<UserResponse>() {
         override fun areItemsTheSame(oldItem: UserResponse, newItem: UserResponse): Boolean {
             return oldItem.name == newItem.name
         }
@@ -26,7 +27,8 @@ class UserAdapter(
     }
 
     override fun onBindViewHolder(holder: UserHolder, position: Int) {
-        holder.onBind(getItem(position))
+        getItem(position)?.let {
+            holder.onBind(it)
+        }
     }
 }
-

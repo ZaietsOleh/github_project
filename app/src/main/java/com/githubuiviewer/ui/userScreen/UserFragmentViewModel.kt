@@ -2,10 +2,7 @@ package com.githubuiviewer.ui.userScreen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
+import androidx.paging.*
 import com.githubuiviewer.data.repository.ProfileRepository
 import com.githubuiviewer.datasource.api.GitHubService
 import com.githubuiviewer.datasource.api.UnauthorizedException
@@ -17,8 +14,10 @@ import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.BaseViewModel
 import com.githubuiviewer.ui.userScreen.adapter.PagingDataSource
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import okhttp3.internal.notify
+import okhttp3.internal.notifyAll
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -34,8 +33,8 @@ class UserFragmentViewModel @Inject constructor(
     private val _reposLiveData = MutableLiveData<PagingData<ReposResponse>>()
     val reposLiveData: LiveData<PagingData<ReposResponse>> = _reposLiveData
 
-    private val _searchLiveData = MutableLiveData<SearchResponse>()
-    val searchLiveData: LiveData<SearchResponse> = _searchLiveData
+    private val _searchLiveData = MutableLiveData<PagingData<UserResponse>>()
+    val searchLiveData: LiveData<PagingData<UserResponse>> = _searchLiveData
 
     val baseScope = baseViewModelScope
 
@@ -57,8 +56,18 @@ class UserFragmentViewModel @Inject constructor(
 
     fun getSearchable(query: String) {
         baseViewModelScope.launch {
-            _searchLiveData.postValue(gitHubService.getSearcher(query))
+            searchFlow(query).collectLatest { pagedData ->
+                _searchLiveData.postValue(pagedData)
+            }
         }
+    }
+
+    private suspend fun searchFlow(query: String): Flow<PagingData<UserResponse>> {
+        return Pager(PagingConfig(PER_PAGE)) {
+            PagingDataSource(baseViewModelScope) { currentPage ->
+                gitHubService.getSearcher(query, PER_PAGE, currentPage).items
+            }
+        }.flow.cachedIn(baseViewModelScope)
     }
 
     override fun unauthorizedException() {
