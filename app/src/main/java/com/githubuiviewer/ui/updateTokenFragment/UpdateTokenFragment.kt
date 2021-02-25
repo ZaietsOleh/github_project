@@ -15,12 +15,9 @@ import com.githubuiviewer.tools.navigator.BaseFragment
 import com.githubuiviewer.tools.navigator.Navigator
 import javax.inject.Inject
 
-class UpdateTokenFragment(private val code: String) :
-    BaseFragment(R.layout.upadate_token_fragment) {
-
-    private val navigator by lazy {
-        Navigator(requireActivity().supportFragmentManager, R.id.basic_fragment_holder)
-    }
+class UpdateTokenFragment(
+    private val code: String
+) : BaseFragment(R.layout.upadate_token_fragment) {
 
     private lateinit var binding: UpadateTokenFragmentBinding
 
@@ -61,7 +58,7 @@ class UpdateTokenFragment(private val code: String) :
         })
     }
 
-    private fun setupListeners(){
+    private fun setupListeners() {
         binding.btnTryAgain.setOnClickListener {
             viewModel.updateToken(code)
         }
@@ -77,7 +74,7 @@ class UpdateTokenFragment(private val code: String) :
     }
 
     private fun openUserFragment() {
-        navigator.showUserScreen(UserProfile.AuthorizedUser)
+        navigation.showUserScreen(UserProfile.AuthorizedUser)
     }
 
     private fun showError() {

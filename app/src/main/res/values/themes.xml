@@ -13,4 +13,13 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="TabLayoutStyle">
+        <item name="tabIndicatorColor">@color/teal_200</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabPaddingStart">8dp</item>
+        <item name="tabPaddingEnd">8dp</item>
+        <item name="tabBackground">@color/purple_200</item>
+        <item name="tabSelectedTextColor">@color/purple_500</item>
+    </style>
 </resources>

@@ -33,6 +33,12 @@ interface GitHubService {
         @Query("page") page: Int
     ): List<ReposResponse>
 
+    @GET("https://raw.githubusercontent.com/{owner}/{repo}/master/README.md")
+    suspend fun getReadme(
+        @Path("owner") owner: String,
+        @Path("repo") repo: String,
+    ): ReadMeModel
+
     @GET("/repos/{owner}/{repo}/contributors")
     suspend fun getContributors(
         @Path("owner") owner: String,
@@ -64,12 +70,6 @@ interface GitHubService {
         @Query("per_page") per_page: Int,
         @Query("page") page: Int
     ): List<IssueCommentRepos>
-
-    @GET(" https://raw.githubusercontent.com/{owner}/{repo}/master/README.md")
-    suspend fun getReadme(
-        @Path("owner") owner: String,
-        @Path("repo") repo: String,
-    ): String
 
     @POST("/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions")
     suspend fun createReactionForIssueComment(

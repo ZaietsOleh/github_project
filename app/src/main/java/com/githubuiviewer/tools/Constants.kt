@@ -12,5 +12,5 @@ const val schema = "https"
 const val host = "api.github.com"
 const val logInHost = "github.com"
 
-
+const val USER_KEY = "USER_KEY"
 const val MAIN_DEBUG_TAG = "MAIN_DEBUG_TAG"
