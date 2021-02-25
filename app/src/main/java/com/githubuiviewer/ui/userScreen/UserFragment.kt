@@ -19,6 +19,7 @@ import com.githubuiviewer.tools.INPUT_DELAY
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.tools.navigator.BaseFragment
+import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import com.githubuiviewer.ui.userScreen.adapter.UserAdapter
 import com.githubuiviewer.ui.userScreen.adapter.ReposAdapter
 import kotlinx.coroutines.Job
@@ -43,7 +44,7 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
     }
 
     private val reposAdapter = ReposAdapter {
-        navigation.showProjectScreen(viewModel.userProfile, it.name)
+        navigation.showProjectScreen(UserAndRepoName(binding.userGroup.getName(), it.name))
     }
 
     override fun onCreateView(

@@ -62,6 +62,6 @@ class UserFragmentViewModel @Inject constructor(
     }
 
     override fun unauthorizedException() {
-        _userInfoLiveData.postValue(State.Error(UnauthorizedException("")))
+        _userInfoLiveData.postValue(State.Error(UnauthorizedException()))
     }
 }

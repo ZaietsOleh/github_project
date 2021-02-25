@@ -9,6 +9,7 @@ import com.githubuiviewer.ui.issueScreen.IssueFragment
 import com.githubuiviewer.ui.loadingScreen.LoadingFragment
 import com.githubuiviewer.ui.loginScreen.LoginFragment
 import com.githubuiviewer.ui.projectScreen.ProjectFragment
+import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import com.githubuiviewer.ui.updateTokenFragment.UpdateTokenFragment
 import com.githubuiviewer.ui.userScreen.UserFragment
 
@@ -44,9 +45,9 @@ class Navigator(
             .commit()
     }
 
-    fun showProjectScreen(userProfile: UserProfile, projectName: String) {
+    fun showProjectScreen(userAndRepoName: UserAndRepoName) {
         fragmentManager.beginTransaction()
-            .add(container, ProjectFragment.newInstance())
+            .add(container, ProjectFragment.newInstance(userAndRepoName))
             .addToBackStack(PROJECT_SCREEN_FRAGMENT)
             .commit()
     }
