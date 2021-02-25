@@ -26,7 +26,19 @@ class IssueViewModel @Inject constructor(
 
     private val comments = Pager(PagingConfig(PER_PAGE)) {
         PagingDataSource(baseViewModelScope) { currentPage ->
-            gitHubService.getIssueComments("square", "retrofit", 3513, PER_PAGE, currentPage)
+            val result = gitHubService.getIssueComments("square", "retrofit", 3513, PER_PAGE, currentPage)
+            if (currentPage == 0) {
+                val authorRaw = gitHubService.getIssueDetail("retrofit", "square", 3513)
+                val author = IssueCommentRepos(
+                    user = authorRaw.user,
+                    body = authorRaw.body,
+                    created_at = authorRaw.created_at
+                )
+                val mutable = result.toMutableList()
+                mutable.add(0, author)
+                return@PagingDataSource mutable.toList()
+            }
+            return@PagingDataSource result
         }
     }.flow.cachedIn(baseViewModelScope)
 
