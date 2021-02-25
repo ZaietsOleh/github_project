@@ -18,6 +18,7 @@ import com.githubuiviewer.datasource.model.UserResponse
 import com.githubuiviewer.tools.INPUT_DELAY
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
+import com.githubuiviewer.tools.hideKeyboard
 import com.githubuiviewer.tools.navigator.BaseFragment
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import com.githubuiviewer.ui.userScreen.adapter.UserAdapter
@@ -81,6 +82,7 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
             setOnCloseListener {
                 searchJob?.cancel()
                 binding.rvUsers.visibility = View.GONE
+                hideKeyboard()
                 false
             }
 

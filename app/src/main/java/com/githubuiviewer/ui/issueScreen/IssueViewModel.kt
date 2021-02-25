@@ -30,13 +30,9 @@ class IssueViewModel @Inject constructor(
             val result =
                 gitHubService.getIssueComments("square", "retrofit", 3513, PER_PAGE, currentPage)
             if (currentPage == 0) {
-                val author =
-                    mapToIssueCommentRepos(gitHubService.getIssueDetail("retrofit", "square", 3513))
-                val mutable = result.toMutableList()
-                mutable.add(0, author)
-                return@PagingDataSource mutable.toList()
+                addAuthor(result)
             }
-            return@PagingDataSource result
+            result
         }
     }.flow.cachedIn(baseViewModelScope)
 
@@ -46,6 +42,14 @@ class IssueViewModel @Inject constructor(
                 _commentLiveData.postValue(pagedData)
             }
         }
+    }
+
+    private suspend fun addAuthor(comments: List<IssueCommentRepos>) : List<IssueCommentRepos> {
+        val author =
+            mapToIssueCommentRepos(gitHubService.getIssueDetail("retrofit", "square", 3513))
+        val mutable = comments.toMutableList()
+        mutable.add(0, author)
+        return mutable.toList()
     }
 
     private fun mapToIssueCommentRepos(issueDetail: IssueDetailRepos): IssueCommentRepos {

@@ -38,17 +38,11 @@ class UserFragmentViewModel @Inject constructor(
 
     val baseScope = baseViewModelScope
 
-    private val repos = Pager(PagingConfig(PER_PAGE)) {
-        PagingDataSource(baseViewModelScope) { currentPage ->
-            profileRepository.getRepos(userProfile, currentPage)
-        }
-    }.flow.cachedIn(baseViewModelScope)
-
     fun getContent() {
         _userInfoLiveData.value = State.Loading
         baseViewModelScope.launch {
             _userInfoLiveData.postValue(State.Content(profileRepository.getUser(userProfile)))
-            repos.collectLatest { pagedData ->
+            reposFlow().collectLatest { pagedData ->
                 _reposLiveData.postValue(pagedData)
             }
         }
@@ -60,6 +54,14 @@ class UserFragmentViewModel @Inject constructor(
                 _searchLiveData.postValue(pagedData)
             }
         }
+    }
+
+    private suspend fun reposFlow(): Flow<PagingData<ReposResponse>> {
+        return Pager(PagingConfig(PER_PAGE)) {
+            PagingDataSource(baseViewModelScope) { currentPage ->
+                profileRepository.getRepos(userProfile, currentPage)
+            }
+        }.flow.cachedIn(baseViewModelScope)
     }
 
     private suspend fun searchFlow(query: String): Flow<PagingData<UserResponse>> {
