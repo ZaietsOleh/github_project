@@ -2,13 +2,14 @@ package com.githubuiviewer.ui.userScreen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.*
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.githubuiviewer.data.repository.GitHubRepository
+import com.githubuiviewer.datasource.api.DataLoadingException
 import com.githubuiviewer.datasource.api.GitHubService
+import com.githubuiviewer.datasource.api.NetworkException
 import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse
@@ -74,6 +75,17 @@ class UserFragmentViewModel @Inject constructor(
     }
 
     override fun unauthorizedException() {
+        super.unauthorizedException()
         _userInfoLiveData.postValue(State.Error(UnauthorizedException()))
+    }
+
+    override fun networkException() {
+        super.networkException()
+        _userInfoLiveData.postValue(State.Error(NetworkException()))
+    }
+
+    override fun dataLoadingException() {
+        super.dataLoadingException()
+        _userInfoLiveData.postValue(State.Error(DataLoadingException()))
     }
 }
