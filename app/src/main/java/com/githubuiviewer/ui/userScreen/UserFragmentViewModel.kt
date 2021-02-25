@@ -4,6 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.*
 import com.githubuiviewer.data.repository.ProfileRepository
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.githubuiviewer.data.repository.GitHubRepository
 import com.githubuiviewer.datasource.api.GitHubService
 import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.datasource.model.ReposResponse
@@ -22,7 +27,7 @@ import java.lang.Exception
 import javax.inject.Inject
 
 class UserFragmentViewModel @Inject constructor(
-    private val profileRepository: ProfileRepository,
+    private val gitHubRepository: GitHubRepository,
     private val gitHubService: GitHubService
 ) : BaseViewModel() {
     lateinit var userProfile: UserProfile

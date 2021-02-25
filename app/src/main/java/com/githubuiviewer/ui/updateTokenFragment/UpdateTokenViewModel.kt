@@ -6,14 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.githubuiviewer.tools.MAIN_DEBUG_TAG
-import com.githubuiviewer.data.repository.LogInRepository
+import com.githubuiviewer.data.repository.GitHubRepository
 import com.githubuiviewer.tools.UpdatingState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class UpdateTokenViewModel @Inject constructor(
-    private val logInRepository: LogInRepository
+    private val logInRepository: GitHubRepository
 ) : ViewModel() {
 
     private val _updateStatusLiveData = MutableLiveData<UpdatingState>()

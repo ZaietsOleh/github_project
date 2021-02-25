@@ -33,7 +33,7 @@ interface GitHubService {
         @Query("page") page: Int
     ): List<ReposResponse>
 
-    @GET("https://raw.githubusercontent.com/{owner}/{repo}/master/README.md")
+    @GET("repos/{owner}/{repo}/readme")
     suspend fun getReadme(
         @Path("owner") owner: String,
         @Path("repo") repo: String,
