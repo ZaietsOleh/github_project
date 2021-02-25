@@ -76,8 +76,8 @@ interface GitHubService {
         @Path("owner") owner: String,
         @Path("repo") repo: String,
         @Path("comment_id") comment_id: Int,
-        @Body content: String
-    ): ReactionResponse
+        @Body content: ReactionContent
+    )
 
     @GET("search/users")
     suspend fun getSearcher(

@@ -2,7 +2,6 @@ package com.githubuiviewer.datasource.api
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.Response
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -18,10 +17,7 @@ class ErrorInterceptor @Inject constructor(private val context: Context) : Inter
 
         when (response.code) {
             401 -> throw UnauthorizedException()
-            in 400..500 -> {
-                Log.d("TAG", response.code.toString())
-                throw DataLoadingException()
-            }
+            in 400..500 -> throw DataLoadingException()
         }
 
         val bodyString = response.body?.string() ?: "No info from response body(null)"

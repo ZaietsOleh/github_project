@@ -135,7 +135,9 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
             is State.Loading -> {
                 navigation.showLoadingScreen()
             }
-            is State.Error -> binding.userGroup.setName(state.error.message!!)
+            is State.Error -> {
+                navigation.showLoginScreen()
+            }
             is State.Content -> {
                 binding.userGroup.apply {
                     setImage(state.data.avatar_url)

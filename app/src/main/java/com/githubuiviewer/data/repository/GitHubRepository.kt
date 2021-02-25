@@ -13,9 +13,6 @@ class GitHubRepository @Inject constructor(
     private val gitHubService: GitHubService,
     private val sharedPref: SharedPref
 ) {
-    init {
-        sharedPref.token = "fdsfsdfdsf"
-    }
 
     suspend fun updateToken(code: String){
         Log.d(MAIN_DEBUG_TAG,"LogInRepository start updateToken")

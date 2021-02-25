@@ -10,7 +10,7 @@ import androidx.paging.cachedIn
 import com.githubuiviewer.datasource.api.GitHubService
 import com.githubuiviewer.datasource.model.IssueCommentRepos
 import com.githubuiviewer.datasource.model.IssueDetailRepos
-import com.githubuiviewer.datasource.model.Reactions
+import com.githubuiviewer.datasource.model.ReactionContent
 import com.githubuiviewer.tools.Emoji
 import com.githubuiviewer.tools.PER_PAGE
 import com.githubuiviewer.ui.BaseViewModel
@@ -40,8 +40,8 @@ class IssueViewModel @Inject constructor(
 
     fun createReaction(reaction: Emoji, issueCommentRepos: IssueCommentRepos) {
         baseViewModelScope.launch(Dispatchers.IO) {
-            Log.d("TAG", reaction.githubReaction)
-            gitHubService.createReactionForIssueComment("square", "retrofit", issueCommentRepos.id, content = reaction.githubReaction)
+            gitHubService.createReactionForIssueComment("square", "retrofit", issueCommentRepos.id, content = ReactionContent(reaction.githubReaction))
+            getContent()
         }
     }
 
