@@ -2,6 +2,7 @@ package com.githubuiviewer.ui.userScreen.adapter
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.githubuiviewer.tools.PER_PAGE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 
@@ -24,7 +25,7 @@ class PagingDataSource<V : Any>(
             LoadResult.Page(
                 data = response,
                 prevKey = if (nextPageNumber > 0) nextPageNumber - 1 else null,
-                nextKey = if (response.size <= 40) nextPageNumber + 1 else null
+                nextKey = if (response.size < PER_PAGE) null else nextPageNumber + 1
             )
         }
     }

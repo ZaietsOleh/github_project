@@ -34,4 +34,16 @@
         app:layout_constraintTop_toBottomOf="@id/user_group"
         tools:listitem="@android:layout/simple_list_item_multiple_choice" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_users"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sv_search_user"
+        tools:listitem="@android:layout/simple_list_item_multiple_choice" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -25,8 +25,8 @@ class ProfileRepository @Inject constructor(
 
     suspend fun getRepos(userProfile: UserProfile, currentPage: Int) : List<ReposResponse> {
         return when (userProfile) {
-            is UserProfile.AuthorizedUser -> gitHubService.getReposByToken(PER_PAGE, 0)
-            is UserProfile.PublicUser -> gitHubService.getReposByNickname(userProfile.userNickname, PER_PAGE, 0)
+            is UserProfile.AuthorizedUser -> gitHubService.getReposByToken(PER_PAGE, currentPage)
+            is UserProfile.PublicUser -> gitHubService.getReposByNickname(userProfile.userNickname, PER_PAGE, currentPage)
         }
     }
 }

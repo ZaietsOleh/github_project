@@ -18,7 +18,7 @@ class ErrorInterceptor : Interceptor {
             in 400..500 -> throw DataLoadingException("Something went wrong")
         }
 
-        val bodyString = response.body!!.string()
+        val bodyString = response.body?.string() ?: "No info from response body(null)"
         return response.newBuilder()
             .body(bodyString.toResponseBody(response.body?.contentType()))
             .build()

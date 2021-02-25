@@ -1,6 +1,9 @@
 package com.githubuiviewer.di
 
 import android.content.Context
+import com.githubuiviewer.tools.navigator.BaseFragment
+import com.githubuiviewer.ui.issueScreen.IssueFragment
+import com.githubuiviewer.ui.mainActivity.NavigationActivity
 import com.githubuiviewer.ui.projectScreen.contributors.ContributorsFragment
 import com.githubuiviewer.ui.projectScreen.issues.IssuesFragment
 import com.githubuiviewer.ui.projectScreen.readme.ReadMeFragment
@@ -18,7 +21,14 @@ interface AppComponent {
 
     fun inject(fragment: UpdateTokenFragment)
 
+    fun inject(fragment: BaseFragment)
+
+    fun inject(fragment: IssueFragment)
+
     fun inject(fragment: ReadMeFragment)
+  
     fun inject(fragment: IssuesFragment)
+  
     fun inject(fragment: ContributorsFragment)
+  
 }
