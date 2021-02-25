@@ -6,7 +6,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.githubuiviewer.data.repository.ProfileRepository
+import com.githubuiviewer.data.repository.GitHubRepository
 import com.githubuiviewer.datasource.api.GitHubService
 import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.datasource.model.ReposResponse
@@ -23,7 +23,7 @@ import java.lang.Exception
 import javax.inject.Inject
 
 class UserFragmentViewModel @Inject constructor(
-    private val profileRepository: ProfileRepository,
+    private val gitHubRepository: GitHubRepository,
     private val gitHubService: GitHubService
 ) : BaseViewModel() {
     lateinit var userProfile: UserProfile
@@ -41,14 +41,14 @@ class UserFragmentViewModel @Inject constructor(
 
     private val repos = Pager(PagingConfig(PER_PAGE)) {
         PagingDataSource(baseViewModelScope) { currentPage ->
-            profileRepository.getRepos(userProfile, currentPage)
+            gitHubRepository.getRepos(userProfile, currentPage)
         }
     }.flow.cachedIn(baseViewModelScope)
 
     fun getContent() {
         _userInfoLiveData.value = State.Loading
         baseViewModelScope.launch {
-            _userInfoLiveData.postValue(State.Content(profileRepository.getUser(userProfile)))
+            _userInfoLiveData.postValue(State.Content(gitHubRepository.getUser(userProfile)))
             repos.collectLatest { pagedData ->
                 _reposLiveData.postValue(pagedData)
             }

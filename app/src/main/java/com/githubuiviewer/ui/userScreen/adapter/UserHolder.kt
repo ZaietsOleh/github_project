@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.githubuiviewer.databinding.UserHolderBinding
 import com.githubuiviewer.datasource.model.UserResponse
 
-class UserHolder(view: View, private val callback: ((UserResponse) -> Unit) = { }) : RecyclerView.ViewHolder(view) {
+class UserHolder(view: View, private val callback: ((UserResponse) -> Unit)) : RecyclerView.ViewHolder(view) {
     private lateinit var binding: UserHolderBinding
 
     fun onBind(userResponse: UserResponse) {
