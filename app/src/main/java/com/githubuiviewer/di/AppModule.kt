@@ -1,7 +1,7 @@
 package com.githubuiviewer.di
 
 import android.content.Context
-import com.githubuiviewer.data.repository.ProfileRepository
+import com.githubuiviewer.data.repository.GitHubRepository
 import com.githubuiviewer.datasource.api.GitHubService
 import com.githubuiviewer.datasource.api.ErrorInterceptor
 import com.githubuiviewer.datasource.api.HeaderInterceptor
@@ -36,8 +36,8 @@ class AppModule(private val context: Context) {
 
     @Provides
     @Singleton
-    fun provideProfileRepository(gitHubService: GitHubService, sharedPref: SharedPref): ProfileRepository {
-        return ProfileRepository(gitHubService, sharedPref)
+    fun provideProfileRepository(gitHubService: GitHubService, sharedPref: SharedPref): GitHubRepository {
+        return GitHubRepository(gitHubService, sharedPref)
     }
 
     @Provides

@@ -10,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 
 open class BaseViewModel: ViewModel() {
-    private val TAG = "BaseViewModel"
+    private val TAG = "TAG"
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
         when (throwable) {

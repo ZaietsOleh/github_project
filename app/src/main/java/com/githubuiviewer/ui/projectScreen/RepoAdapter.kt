@@ -9,22 +9,22 @@ import com.githubuiviewer.ui.projectScreen.contributors.ContributorsFragment
 import com.githubuiviewer.ui.projectScreen.issues.IssuesFragment
 import com.githubuiviewer.ui.projectScreen.readme.ReadMeFragment
 
-class RepoAdapter(fragment: BaseFragment, val userAndRepoName: UserAndRepoName) : FragmentStateAdapter(fragment){
+class RepoAdapter(
+    fragment: BaseFragment,
+    private val userAndRepoName: UserAndRepoName
+) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount() = Page.values().size
 
     override fun createFragment(position: Int): Fragment {
         return when (Page.values()[position]) {
             Page.README -> {
-                //todo without new instance
                 ReadMeFragment.newInstance(userAndRepoName)
             }
             Page.CONTRIBUTORS -> {
-                //todo without new instance
                 ContributorsFragment.newInstance(userAndRepoName)
             }
             Page.ISSUES -> {
-                //todo without new instance
                 IssuesFragment.newInstance(userAndRepoName)
             }
         }

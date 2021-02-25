@@ -9,25 +9,22 @@ import com.githubuiviewer.R
 import com.githubuiviewer.databinding.ReadMeFragmentBinding
 import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.datasource.model.ReadMeModel
+import com.githubuiviewer.tools.FragmentArgsDelegate
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.USER_KEY
 import com.githubuiviewer.tools.navigator.BaseFragment
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
-import java.io.IOException
 import java.lang.Exception
+import javax.inject.Inject
 
 class ReadMeFragment : BaseFragment(R.layout.read_me_fragment) {
 
-    private lateinit var userAndRepoName: UserAndRepoName
-    private lateinit var viewModel: ReadMeViewModelFragment
+    @Inject
+    lateinit var viewModel: ReadMeViewModelFragment
+
     private lateinit var binding: ReadMeFragmentBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            userAndRepoName = it.getParcelable(USER_KEY) ?: UserAndRepoName("", "")
-        }
-    }
+    private var userAndRepoName by FragmentArgsDelegate<UserAndRepoName>(USER_KEY)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -59,21 +56,20 @@ class ReadMeFragment : BaseFragment(R.layout.read_me_fragment) {
         }
     }
 
-    private fun showContent(readMeModel: ReadMeModel) {
-        binding.tvReadMe.text = readMeModel.content
+    private fun showContent(readMeModel: String) {
+        binding.tvReadMe.text = readMeModel
     }
 
-    private fun showError(e: Exception) {
-        when (e) {
+    private fun showError(error: Exception) {
+        when (error) {
             is UnauthorizedException -> {
                 navigation.showLoginScreen()
             }
-            else -> navigation.showLoginScreen()
+            else -> showProgressBar()
         }
     }
 
-    private fun showProgressBar(){
-
+    private fun showProgressBar() {
 
     }
 
