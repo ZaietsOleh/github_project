@@ -18,13 +18,6 @@ class ParenRepoProjectFragment : BaseFragment(R.layout.project_fragment) {
     private lateinit var binding: ProjectFragmentBinding
     private lateinit var viewPagerAdapter: DetailInfoReposAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            userAndRepoName = it.getParcelable(USER_KEY) ?: UserAndRepoName("", "")
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -14,6 +14,7 @@ import com.githubuiviewer.tools.FragmentArgsDelegate
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.USER_KEY
 import com.githubuiviewer.tools.navigator.BaseFragment
+import com.githubuiviewer.ui.issueScreen.IssuesDetailsParameter
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import com.githubuiviewer.ui.projectScreen.adapters.IssuesAdapter
 import kotlinx.coroutines.launch
@@ -27,8 +28,14 @@ class BriefInfoIssuesFragment : BaseFragment(R.layout.issues_fragment) {
     private lateinit var binding: IssuesFragmentBinding
     private val userAndRepoName by FragmentArgsDelegate<UserAndRepoName>(USER_KEY)
 
-    private val issuesAdapter = IssuesAdapter(){
+    private val issuesAdapter = IssuesAdapter(::onIssueClick)
 
+    private fun onIssueClick(issueResponse: IssueResponse) {
+        navigation.showDetailIssueScreen(IssuesDetailsParameter(
+            owner = userAndRepoName.userName,
+            repo = userAndRepoName.repoName,
+            issue_number = issueResponse.number
+        ))
     }
 
     override fun onCreateView(

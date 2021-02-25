@@ -17,7 +17,6 @@ import com.githubuiviewer.tools.Emoji
 import com.githubuiviewer.tools.PER_PAGE
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.ui.BaseViewModel
-import com.githubuiviewer.ui.userScreen.adapter.PagingDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import com.githubuiviewer.tools.PagingDataSource
@@ -31,6 +30,7 @@ class IssueViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     val baseScope = baseViewModelScope
+    lateinit var issuesDetailsParameter: IssuesDetailsParameter
 
     private val _commentLiveData =
         MutableLiveData<State<PagingData<IssueCommentRepos>, IOException>>()
@@ -49,8 +49,8 @@ class IssueViewModel @Inject constructor(
     fun createReaction(reaction: Emoji, issueCommentRepos: IssueCommentRepos) {
         baseViewModelScope.launch(Dispatchers.IO) {
             gitHubService.createReactionForIssueComment(
-                owner = "square",
-                repo = "retrofit",
+                owner = issuesDetailsParameter.owner,
+                repo = issuesDetailsParameter.repo,
                 comment_id = issueCommentRepos.id,
                 content = ReactionContent(reaction.githubReaction)
             )
@@ -63,9 +63,9 @@ class IssueViewModel @Inject constructor(
             PagingDataSource(baseViewModelScope) { currentPage ->
                 val result =
                     gitHubService.getIssueComments(
-                        owner = "square",
-                        repo = "retrofit",
-                        issue_number = 3513,
+                        owner = issuesDetailsParameter.owner,
+                        repo = issuesDetailsParameter.repo,
+                        issue_number = issuesDetailsParameter.issue_number,
                         per_page = PER_PAGE,
                         page = currentPage
                     )
@@ -81,9 +81,9 @@ class IssueViewModel @Inject constructor(
         val author =
             mapToIssueCommentRepos(
                 gitHubService.getIssueDetail(
-                    repo = "retrofit",
-                    owner = "square",
-                    issue_number = 3513
+                    owner = issuesDetailsParameter.owner,
+                    repo = issuesDetailsParameter.repo,
+                    issue_number = issuesDetailsParameter.issue_number,
                 )
             )
         val mutable = comments.toMutableList()

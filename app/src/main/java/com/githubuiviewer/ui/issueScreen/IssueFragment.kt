@@ -11,40 +11,39 @@ import com.afollestad.materialdialogs.customview.customView
 import com.githubuiviewer.App
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.EmojiChooserDialogBinding
-import com.githubuiviewer.databinding.IssueFragmentBinding
 import com.githubuiviewer.datasource.api.DataLoadingException
 import com.githubuiviewer.datasource.api.NetworkException
 import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.databinding.IssueDetailFragmentBinding
 import com.githubuiviewer.datasource.model.IssueCommentRepos
 import com.githubuiviewer.tools.Emoji
+import com.githubuiviewer.tools.FragmentArgsDelegate
 import com.githubuiviewer.tools.State
+import com.githubuiviewer.tools.USER_KEY
 import com.githubuiviewer.tools.navigator.BaseFragment
 import com.githubuiviewer.ui.issueScreen.adapter.CommentAdapter
+import com.githubuiviewer.ui.projectScreen.ParenRepoProjectFragment
+import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import kotlinx.coroutines.launch
 import java.io.IOException
-import java.lang.Error
 import javax.inject.Inject
 
 class IssueFragment : BaseFragment(R.layout.issue_detail_fragment) {
     companion object {
-        private const val OWNER = "OWNER"
-        private const val REPO = "REPO"
-        private const val ISSUE_NUMBER = "ISSUE_NUMBER"
+        private const val ISSUE_KEY = "ISSUE_KEY"
 
-        fun newInstance(owner: String, repo: String, issue_number: Int) = IssueFragment().apply {
+        fun newInstance(issuesDetailsParameter: IssuesDetailsParameter) = IssueFragment().apply {
             arguments = Bundle().apply {
-                putString(OWNER, owner)
-                putString(REPO, repo)
-                putInt(ISSUE_NUMBER, issue_number)
+                putParcelable(ISSUE_KEY, issuesDetailsParameter)
             }
         }
     }
 
     @Inject
     lateinit var viewModel: IssueViewModel
-    private lateinit var binding: IssueFragmentBinding
+    private lateinit var binding: IssueDetailFragmentBinding
     private val commentAdapter = CommentAdapter(::createReaction)
+    private val issuesDetailsParameter by FragmentArgsDelegate<IssuesDetailsParameter>(ISSUE_KEY)
 
     private fun createReaction(issueCommentRepos: IssueCommentRepos) {
         val emojiBinding = EmojiChooserDialogBinding.inflate(layoutInflater)
@@ -112,7 +111,8 @@ class IssueFragment : BaseFragment(R.layout.issue_detail_fragment) {
         setupDi()
         setupAdapter()
         setupObserver()
-
+        
+        viewModel.issuesDetailsParameter = issuesDetailsParameter
         viewModel.getContent()
     }
 
