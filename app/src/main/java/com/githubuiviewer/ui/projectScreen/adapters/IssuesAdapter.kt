@@ -25,7 +25,7 @@ class IssuesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IssueHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.issue_comment_holder, parent, false)
+            .inflate(R.layout.issue_brief_info_item, parent, false)
         return IssueHolder(view, callback)
     }
 

@@ -22,7 +22,7 @@ import javax.inject.Inject
 class BriefInfoIssuesFragment : BaseFragment(R.layout.issues_fragment) {
 
     @Inject
-    lateinit var viewModel: IssuesViewModel
+    lateinit var viewModel: IssuesBriefInfoViewModel
 
     private lateinit var binding: IssuesFragmentBinding
     private val userAndRepoName by FragmentArgsDelegate<UserAndRepoName>(USER_KEY)
@@ -65,7 +65,7 @@ class BriefInfoIssuesFragment : BaseFragment(R.layout.issues_fragment) {
             when(it){
                 is State.Loading -> {}
                 is State.Content -> updateIssuesRecyclerView(it.data)
-                is State.Error -> TODO()
+                is State.Error -> {}
             }
         }
     }
