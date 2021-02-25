@@ -23,7 +23,6 @@ class ReadMeFragment : BaseFragment(R.layout.read_me_fragment) {
     lateinit var viewModel: ReadMeViewModelFragment
 
     private lateinit var binding: ReadMeFragmentBinding
-
     private var userAndRepoName by FragmentArgsDelegate<UserAndRepoName>(USER_KEY)
 
     override fun onCreateView(
@@ -76,9 +75,7 @@ class ReadMeFragment : BaseFragment(R.layout.read_me_fragment) {
     companion object {
         fun newInstance(userAndRepoName: UserAndRepoName) =
             ReadMeFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(USER_KEY, userAndRepoName)
-                }
+                this.userAndRepoName = userAndRepoName
             }
     }
 }

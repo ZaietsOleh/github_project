@@ -65,6 +65,7 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
         setupRecycler()
         setupSearch()
 
+        //TODO CLEAN
         binding.userGroup.setOnClickListener {
             navigation.showIssueScreen("", "", 0)
         }
@@ -131,11 +132,12 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
     }
 
     private fun updateUser(state: State<UserResponse, Exception>) {
+        //todo
         when (state) {
             is State.Loading -> {
                 navigation.showLoadingScreen()
             }
-            is State.Error -> binding.userGroup.setName(state.error.message!!)
+            is State.Error -> state.error.message?.let { binding.userGroup.setName(it) }
             is State.Content -> {
                 binding.userGroup.apply {
                     setImage(state.data.avatar_url)

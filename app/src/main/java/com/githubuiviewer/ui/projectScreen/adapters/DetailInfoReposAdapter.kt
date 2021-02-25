@@ -3,7 +3,6 @@ package com.githubuiviewer.ui.projectScreen
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.tools.navigator.BaseFragment
 import com.githubuiviewer.ui.projectScreen.contributors.ContributorsFragment
 import com.githubuiviewer.ui.projectScreen.issues.IssuesFragment

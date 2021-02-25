@@ -2,8 +2,6 @@ package com.githubuiviewer.ui.userScreen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.*
-import com.githubuiviewer.data.repository.ProfileRepository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -12,7 +10,6 @@ import com.githubuiviewer.data.repository.GitHubRepository
 import com.githubuiviewer.datasource.api.GitHubService
 import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.datasource.model.ReposResponse
-import com.githubuiviewer.datasource.model.SearchResponse
 import com.githubuiviewer.datasource.model.UserResponse
 import com.githubuiviewer.tools.PER_PAGE
 import com.githubuiviewer.tools.State
@@ -21,8 +18,6 @@ import com.githubuiviewer.ui.BaseViewModel
 import com.githubuiviewer.ui.userScreen.adapter.PagingDataSource
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import okhttp3.internal.notify
-import okhttp3.internal.notifyAll
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -46,11 +41,19 @@ class UserFragmentViewModel @Inject constructor(
     fun getContent() {
         _userInfoLiveData.value = State.Loading
         baseViewModelScope.launch {
-            _userInfoLiveData.postValue(State.Content(profileRepository.getUser(userProfile)))
+            _userInfoLiveData.postValue(State.Content(gitHubRepository.getUser(userProfile)))
             reposFlow().collectLatest { pagedData ->
                 _reposLiveData.postValue(pagedData)
             }
         }
+    }
+
+    private suspend fun reposFlow(): Flow<PagingData<ReposResponse>> {
+        return Pager(PagingConfig(PER_PAGE)) {
+            PagingDataSource(baseViewModelScope) { currentPage ->
+                gitHubRepository.getRepos(userProfile, currentPage)
+            }
+        }.flow.cachedIn(baseViewModelScope)
     }
 
     fun getSearchable(query: String) {
@@ -59,14 +62,6 @@ class UserFragmentViewModel @Inject constructor(
                 _searchLiveData.postValue(pagedData)
             }
         }
-    }
-
-    private suspend fun reposFlow(): Flow<PagingData<ReposResponse>> {
-        return Pager(PagingConfig(PER_PAGE)) {
-            PagingDataSource(baseViewModelScope) { currentPage ->
-                profileRepository.getRepos(userProfile, currentPage)
-            }
-        }.flow.cachedIn(baseViewModelScope)
     }
 
     private suspend fun searchFlow(query: String): Flow<PagingData<UserResponse>> {

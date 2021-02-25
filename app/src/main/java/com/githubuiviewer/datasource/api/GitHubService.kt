@@ -39,7 +39,7 @@ interface GitHubService {
         @Path("repo") repo: String,
     ): ReadMeModel
 
-    @GET("/repos/{owner}/{repo}/contributors")
+    @GET("qqqqqqq/repos/{owner}/{repo}/contributors")
     suspend fun getContributors(
         @Path("owner") owner: String,
         @Path("repo") repo: String,
@@ -62,6 +62,7 @@ interface GitHubService {
         @Path("issue_number") issue_number: Int
     ): IssueDetailRepos
 
+    @Headers("Accept: application/vnd.github.squirrel-girl-preview+json")
     @GET("/repos/{owner}/{repo}/issues/{issue_number}/comments")
     suspend fun getIssueComments(
         @Path("owner") owner: String,
@@ -71,6 +72,7 @@ interface GitHubService {
         @Query("page") page: Int
     ): List<IssueCommentRepos>
 
+    @Headers("Accept: application/vnd.github.squirrel-girl-preview")
     @POST("/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions")
     suspend fun createReactionForIssueComment(
         @Path("owner") owner: String,
