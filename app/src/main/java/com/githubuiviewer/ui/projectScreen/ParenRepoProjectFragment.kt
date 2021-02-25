@@ -6,18 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.ProjectFragmentBinding
-import com.githubuiviewer.databinding.UserFragmentBinding
+import com.githubuiviewer.tools.FragmentArgsDelegate
 import com.githubuiviewer.tools.USER_KEY
 import com.githubuiviewer.tools.navigator.BaseFragment
-import com.githubuiviewer.tools.navigator.Navigator
-import com.githubuiviewer.ui.projectScreen.readme.ReadMeFragment
+import com.githubuiviewer.ui.projectScreen.adapters.DetailInfoReposAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
-class ProjectFragment : BaseFragment(R.layout.project_fragment) {
+class ParenRepoProjectFragment : BaseFragment(R.layout.project_fragment) {
 
-    private lateinit var userAndRepoName: UserAndRepoName
+    private var userAndRepoName by FragmentArgsDelegate<UserAndRepoName>(USER_KEY)
     private lateinit var binding: ProjectFragmentBinding
-    private lateinit var viewPagerAdapter: RepoAdapter
+    private lateinit var viewPagerAdapter: DetailInfoReposAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +41,7 @@ class ProjectFragment : BaseFragment(R.layout.project_fragment) {
     }
 
     private fun setupTabLayout() {
-        viewPagerAdapter = RepoAdapter(this, userAndRepoName)
+        viewPagerAdapter = DetailInfoReposAdapter(this, userAndRepoName)
         binding.viewPagerProject.adapter = viewPagerAdapter
 
         TabLayoutMediator(binding.tabLayoutProject, binding.viewPagerProject) { tab, position ->
@@ -52,7 +51,7 @@ class ProjectFragment : BaseFragment(R.layout.project_fragment) {
 
     companion object {
         fun newInstance(userAndRepoName: UserAndRepoName) =
-            ProjectFragment().apply {
+            ParenRepoProjectFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(USER_KEY, userAndRepoName)
                 }

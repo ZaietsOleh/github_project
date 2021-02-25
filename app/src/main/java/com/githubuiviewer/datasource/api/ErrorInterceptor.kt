@@ -9,7 +9,9 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import javax.inject.Inject
 
 
-class ErrorInterceptor @Inject constructor(private val context: Context) : Interceptor {
+class ErrorInterceptor @Inject constructor(
+    private val context: Context
+) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         if (!isConnected()) throw NetworkException()

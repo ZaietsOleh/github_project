@@ -59,6 +59,7 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
         setupRecycler()
         setupSearch()
 
+        //TODO CLEAN
         binding.userGroup.setOnClickListener {
             navigation.showIssueScreen("", "", 0)
         }
@@ -156,6 +157,7 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
     }
 
     private fun updateUser(state: State<UserResponse, Exception>) {
+        //todo
         when (state) {
             is State.Loading -> {
                 showLoading()
@@ -168,6 +170,7 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
                     is NetworkException -> showError(R.string.netwotk_error)
                 }
             }
+            is State.Error -> state.error.message?.let { binding.userGroup.setName(it) }
             is State.Content -> {
                 closeLoading()
                 binding.userGroup.apply {

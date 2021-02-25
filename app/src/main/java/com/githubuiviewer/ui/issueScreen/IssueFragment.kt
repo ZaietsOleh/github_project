@@ -15,6 +15,7 @@ import com.githubuiviewer.databinding.IssueFragmentBinding
 import com.githubuiviewer.datasource.api.DataLoadingException
 import com.githubuiviewer.datasource.api.NetworkException
 import com.githubuiviewer.datasource.api.UnauthorizedException
+import com.githubuiviewer.databinding.IssueDetailFragmentBinding
 import com.githubuiviewer.datasource.model.IssueCommentRepos
 import com.githubuiviewer.tools.Emoji
 import com.githubuiviewer.tools.State
@@ -25,7 +26,7 @@ import java.io.IOException
 import java.lang.Error
 import javax.inject.Inject
 
-class IssueFragment : BaseFragment(R.layout.issue_fragment) {
+class IssueFragment : BaseFragment(R.layout.issue_detail_fragment) {
     companion object {
         private const val OWNER = "OWNER"
         private const val REPO = "REPO"
@@ -101,7 +102,7 @@ class IssueFragment : BaseFragment(R.layout.issue_fragment) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = IssueFragmentBinding.inflate(inflater, container, false)
+        binding = IssueDetailFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 

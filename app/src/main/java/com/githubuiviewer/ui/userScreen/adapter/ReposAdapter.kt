@@ -7,8 +7,11 @@ import androidx.recyclerview.widget.DiffUtil
 import com.githubuiviewer.R
 import com.githubuiviewer.datasource.model.ReposResponse
 
-class ReposAdapter(private var callback: ((ReposResponse) -> Unit) = { }) :
-    PagingDataAdapter<ReposResponse, ReposHolder>(SearchComparator) {
+
+class ReposAdapter(
+    private var callback: ((ReposResponse) -> Unit) = { }
+) : PagingDataAdapter<ReposResponse, ReposHolder>(SearchComparator) {
+
     object SearchComparator : DiffUtil.ItemCallback<ReposResponse>() {
         override fun areItemsTheSame(oldItem: ReposResponse, newItem: ReposResponse): Boolean {
             return oldItem.name == newItem.name
@@ -27,7 +30,6 @@ class ReposAdapter(private var callback: ((ReposResponse) -> Unit) = { }) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReposHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.repos_holder, parent, false)
-
         return ReposHolder(view, callback)
     }
 }

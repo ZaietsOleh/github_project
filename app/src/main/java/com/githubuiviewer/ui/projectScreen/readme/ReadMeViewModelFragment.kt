@@ -4,6 +4,7 @@ import android.util.Base64
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.githubuiviewer.data.repository.GitHubRepository
 import com.githubuiviewer.datasource.api.GitHubService
 import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.datasource.model.ReadMeModel
@@ -13,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class   ReadMeViewModelFragment @Inject constructor(
-    private val gitHubService: GitHubService
+    private val gitHubRepository: GitHubRepository
 ) : BaseViewModel() {
 
     private val _readMeLiveData = MutableLiveData<State<String, Exception>>()
@@ -23,9 +24,8 @@ class   ReadMeViewModelFragment @Inject constructor(
     fun getReadme(owner: String, repoName: String) {
         baseViewModelScope.launch {
             _readMeLiveData.postValue(State.Loading)
-            val text = gitHubService.getReadme(owner, repoName)
-            val t = Base64.decode(text.content, 0).decodeToString()
-            _readMeLiveData.postValue(State.Content(t))
+            val readMe = gitHubRepository.getReadMe(owner, repoName)
+            _readMeLiveData.postValue(State.Content(readMe))
         }
     }
 
@@ -37,6 +37,4 @@ class   ReadMeViewModelFragment @Inject constructor(
     override fun dataLoadingException() {
         Log.d("TAG", "dataLoadingException")
     }
-
-    //todo errors
 }

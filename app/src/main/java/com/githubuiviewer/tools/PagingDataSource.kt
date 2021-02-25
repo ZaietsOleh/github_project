@@ -1,8 +1,7 @@
-package com.githubuiviewer.ui.userScreen.adapter
+package com.githubuiviewer.tools
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.githubuiviewer.tools.PER_PAGE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 

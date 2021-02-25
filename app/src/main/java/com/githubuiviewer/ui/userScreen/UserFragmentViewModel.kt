@@ -17,7 +17,7 @@ import com.githubuiviewer.tools.PER_PAGE
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.BaseViewModel
-import com.githubuiviewer.ui.userScreen.adapter.PagingDataSource
+import com.githubuiviewer.tools.PagingDataSource
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -48,6 +48,14 @@ class UserFragmentViewModel @Inject constructor(
                 _reposLiveData.postValue(pagedData)
             }
         }
+    }
+
+    private suspend fun reposFlow(): Flow<PagingData<ReposResponse>> {
+        return Pager(PagingConfig(PER_PAGE)) {
+            PagingDataSource(baseViewModelScope) { currentPage ->
+                gitHubRepository.getRepos(userProfile, currentPage)
+            }
+        }.flow.cachedIn(baseViewModelScope)
     }
 
     fun getSearchable(query: String) {

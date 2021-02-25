@@ -20,6 +20,7 @@ import com.githubuiviewer.ui.BaseViewModel
 import com.githubuiviewer.ui.userScreen.adapter.PagingDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import com.githubuiviewer.tools.PagingDataSource
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.io.IOException

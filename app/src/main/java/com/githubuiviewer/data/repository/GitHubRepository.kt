@@ -1,5 +1,6 @@
 package com.githubuiviewer.data.repository
 
+import android.util.Base64
 import android.util.Log
 import com.githubuiviewer.datasource.api.GitHubService
 import com.githubuiviewer.datasource.model.AccessTokenResponse
@@ -14,11 +15,19 @@ class GitHubRepository @Inject constructor(
     private val sharedPref: SharedPref
 ) {
 
-    suspend fun updateToken(code: String){
-        Log.d(MAIN_DEBUG_TAG,"LogInRepository start updateToken")
+    /*init {
+        sharedPref.token = "bearer 6297b44c3ac15649fb1e7795a______780ee416d693f27"
+    }*/
+
+    suspend fun getReadMe(owner: String, repoName: String): String {
+        return Base64.decode(gitHubService.getReadme(owner, repoName).content, 0).decodeToString()
+    }
+
+    suspend fun updateToken(code: String) {
+        Log.d(MAIN_DEBUG_TAG, "LogInRepository start updateToken")
         val response = getAccessToken(code)
         val token = "${response.tokenType} ${response.accessToken}"
-        Log.d(MAIN_DEBUG_TAG,"LogInRepository download new token  $token")
+        Log.d(MAIN_DEBUG_TAG, "LogInRepository download new token  $token")
         sharedPref.token = token
     }
 
@@ -27,17 +36,21 @@ class GitHubRepository @Inject constructor(
         return gitHubService.getAccessToken(clientId, clientSecret, code)
     }
 
-    suspend fun getUser(userProfile: UserProfile) : UserResponse {
+    suspend fun getUser(userProfile: UserProfile): UserResponse {
         return when (userProfile) {
             is UserProfile.AuthorizedUser -> gitHubService.getUserByToken()
             is UserProfile.PublicUser -> gitHubService.getUserByNickname(userProfile.userNickname)
         }
     }
 
-    suspend fun getRepos(userProfile: UserProfile, currentPage: Int) : List<ReposResponse> {
+    suspend fun getRepos(userProfile: UserProfile, currentPage: Int): List<ReposResponse> {
         return when (userProfile) {
             is UserProfile.AuthorizedUser -> gitHubService.getReposByToken(PER_PAGE, currentPage)
-            is UserProfile.PublicUser -> gitHubService.getReposByNickname(userProfile.userNickname, PER_PAGE, currentPage)
+            is UserProfile.PublicUser -> gitHubService.getReposByNickname(
+                userProfile.userNickname,
+                PER_PAGE,
+                currentPage
+            )
         }
     }
 }

@@ -8,7 +8,7 @@ import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.issueScreen.IssueFragment
 import com.githubuiviewer.ui.loadingScreen.LoadingFragment
 import com.githubuiviewer.ui.loginScreen.LoginFragment
-import com.githubuiviewer.ui.projectScreen.ProjectFragment
+import com.githubuiviewer.ui.projectScreen.ParenRepoProjectFragment
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import com.githubuiviewer.ui.updateTokenFragment.UpdateTokenFragment
 import com.githubuiviewer.ui.userScreen.UserFragment
@@ -47,7 +47,7 @@ class Navigator(
 
     fun showProjectScreen(userAndRepoName: UserAndRepoName) {
         fragmentManager.beginTransaction()
-            .add(container, ProjectFragment.newInstance(userAndRepoName))
+            .add(container, ParenRepoProjectFragment.newInstance(userAndRepoName))
             .addToBackStack(PROJECT_SCREEN_FRAGMENT)
             .commit()
     }

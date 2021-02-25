@@ -1,39 +1,80 @@
 package com.githubuiviewer.ui.projectScreen.contributors
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagingData
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.githubuiviewer.App
 import com.githubuiviewer.R
+import com.githubuiviewer.databinding.ContributorsFragmentBinding
+import com.githubuiviewer.datasource.model.UserResponse
+import com.githubuiviewer.tools.FragmentArgsDelegate
+import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.USER_KEY
+import com.githubuiviewer.tools.UserProfile
+import com.githubuiviewer.tools.navigator.BaseFragment
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
-import com.githubuiviewer.ui.projectScreen.readme.ReadMeFragment
+import com.githubuiviewer.ui.userScreen.adapter.UserAdapter
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ContributorsFragment : Fragment() {
+class ContributorsFragment : BaseFragment(R.layout.contributors_fragment) {
 
-    private lateinit var userAndRepoName: UserAndRepoName
-    private lateinit var viewModel: ContributorsViewModelFragment
+    @Inject
+    lateinit var viewModel: ContributorsViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            userAndRepoName = it.getParcelable(USER_KEY) ?: UserAndRepoName("", "")
-        }
+    private var userAndRepoName by FragmentArgsDelegate<UserAndRepoName>(USER_KEY)
+    private lateinit var binding: ContributorsFragmentBinding
+
+    private val userAdapter = UserAdapter {
+        navigation.showUserScreen(UserProfile.PublicUser(it.name))
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.contributors_fragment, container, false)
+    ): View {
+        binding = ContributorsFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ContributorsViewModelFragment::class.java)
-        // TODO: Use the ViewModel
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupDi()
+        setupRecyclerView()
+        viewModel.getContributors(userAndRepoName)
+        setupLiveDataListener()
+    }
+
+    private fun setupDi() {
+        val app = requireActivity().application as App
+        app.getComponent().inject(this)
+    }
+
+    private fun setupRecyclerView(){
+        binding.apply {
+            rvContributors.adapter = userAdapter
+            rvContributors.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        }
+    }
+
+    private fun setupLiveDataListener() {
+        viewModel.contributorsLiveData.observe(viewLifecycleOwner){
+            when(it){
+                is State.Loading -> {}
+                is State.Content -> updateContributorsRecyclerView(it.data)
+                is State.Error -> TODO()
+            }
+        }
+    }
+
+    private fun updateContributorsRecyclerView(pagingData: PagingData<UserResponse>){
+        viewModel.baseView.launch {
+            userAdapter.submitData(pagingData)
+        }
     }
 
     companion object {

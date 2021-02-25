@@ -47,14 +47,16 @@ interface GitHubService {
         @Query("page") page: Int,
     ): List<UserResponse>
 
+    @Headers("Accept: application/vnd.github.squirrel-girl-preview")
     @GET("/repos/{owner}/{repo}/issues")
     suspend fun getIssues(
         @Path("owner") owner: String,
         @Path("repo") repo: String,
         @Query("per_page") per_page: Int,
         @Query("page") page: Int
-    ): List<IssueRepos>
+    ): List<IssueResponse>
 
+    @Headers("Accept: application/vnd.github.squirrel-girl-preview")
     @GET("/repos/{owner}/{repo}/issues/{issue_number}")
     suspend fun getIssueDetail(
         @Path("repo") repo: String,
@@ -62,6 +64,7 @@ interface GitHubService {
         @Path("issue_number") issue_number: Int
     ): IssueDetailRepos
 
+    @Headers("Accept: application/vnd.github.squirrel-girl-preview+json")
     @GET("/repos/{owner}/{repo}/issues/{issue_number}/comments")
     suspend fun getIssueComments(
         @Path("owner") owner: String,
@@ -71,6 +74,7 @@ interface GitHubService {
         @Query("page") page: Int
     ): List<IssueCommentRepos>
 
+    @Headers("Accept: application/vnd.github.squirrel-girl-preview")
     @POST("/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions")
     suspend fun createReactionForIssueComment(
         @Path("owner") owner: String,
