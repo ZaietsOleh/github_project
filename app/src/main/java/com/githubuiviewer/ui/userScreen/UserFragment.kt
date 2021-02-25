@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
 import com.githubuiviewer.R
@@ -21,7 +20,6 @@ import com.githubuiviewer.ui.UserGroup
 import com.githubuiviewer.ui.userScreen.adapter.ProfileAdapter
 import com.githubuiviewer.ui.userScreen.adapter.ProfileRecyclerState
 import com.githubuiviewer.ui.userScreen.adapter.ReposAdapter
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

@@ -8,4 +8,8 @@
     <string name="updating_data">Updating data…</string>
     <string name="error_update_token">Error update token</string>
     <string name="try_again">Try again</string>
+
+    <string name="page_readme_title">README</string>
+    <string name="page_contributors_title">Contributors</string>
+    <string name="page_issues_title">Issues</string>
 </resources>

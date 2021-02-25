@@ -33,20 +33,26 @@ interface GitHubService {
         @Query("page") page: Int
     ): List<ReposResponse>
 
+    @GET("https://raw.githubusercontent.com/{owner}/{repo}/master/README.md")
+    suspend fun getReadme(
+        @Path("owner") owner: String,
+        @Path("repo") repo: String,
+    ): ReadMeModel
+
     @GET("/repos/{owner}/{repo}/contributors")
     suspend fun getContributors(
         @Query("per_page") per_page: Int,
         @Query("page") page: Int,
-        @Path("repo") repo: String,
-        @Path("owner") owner: String
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
     ): List<UserResponse>
 
     @GET("/repos/{owner}/{repo}/issues")
     suspend fun getIssues(
         @Query("per_page") per_page: Int,
         @Query("page") page: Int,
-        @Path("repo") repo: String,
-        @Path("owner") owner: String
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
     ): List<IssueRepos>
 
     @GET("/repos/{owner}/{repo}/issues/{issue_number}")
@@ -64,12 +70,6 @@ interface GitHubService {
         @Path("owner") owner: String,
         @Path("issue_number") issue_number: String
     ): List<IssueCommentRepos>
-
-    @GET(" https://raw.githubusercontent.com/{owner}/{repo}/master/README.md")
-    suspend fun getReadme(
-        @Path("owner") owner: String,
-        @Path("repo") repo: String,
-    ): String
 
     @POST("/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions")
     suspend fun createReactionForIssueComment(
