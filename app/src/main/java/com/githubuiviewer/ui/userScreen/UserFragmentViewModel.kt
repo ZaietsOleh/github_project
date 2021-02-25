@@ -8,6 +8,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.githubuiviewer.data.repository.ProfileRepository
 import com.githubuiviewer.datasource.api.GitHubService
+import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.SearchResponse
 import com.githubuiviewer.datasource.model.UserResponse
@@ -18,6 +19,7 @@ import com.githubuiviewer.ui.BaseViewModel
 import com.githubuiviewer.ui.userScreen.adapter.PagingDataSource
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 class UserFragmentViewModel @Inject constructor(
@@ -26,8 +28,8 @@ class UserFragmentViewModel @Inject constructor(
 ) : BaseViewModel() {
     lateinit var userProfile: UserProfile
 
-    private val _userInfoLiveData = MutableLiveData<State<UserResponse, Int>>()
-    val userInfoLiveData: LiveData<State<UserResponse, Int>> = _userInfoLiveData
+    private val _userInfoLiveData = MutableLiveData<State<UserResponse, Exception>>()
+    val userInfoLiveData: LiveData<State<UserResponse, Exception>> = _userInfoLiveData
 
     private val _reposLiveData = MutableLiveData<PagingData<ReposResponse>>()
     val reposLiveData: LiveData<PagingData<ReposResponse>> = _reposLiveData
@@ -60,6 +62,6 @@ class UserFragmentViewModel @Inject constructor(
     }
 
     override fun unauthorizedException() {
-        _userInfoLiveData.postValue(State.Unauthorized)
+        _userInfoLiveData.postValue(State.Error(UnauthorizedException("")))
     }
 }

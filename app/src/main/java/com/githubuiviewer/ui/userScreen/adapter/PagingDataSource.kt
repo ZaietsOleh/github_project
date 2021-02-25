@@ -25,7 +25,7 @@ class PagingDataSource<V : Any>(
             LoadResult.Page(
                 data = response,
                 prevKey = if (nextPageNumber > 0) nextPageNumber - 1 else null,
-                nextKey = if (response.size <= PER_PAGE) nextPageNumber + 1 else null
+                nextKey = if (response.size < PER_PAGE) null else nextPageNumber + 1
             )
         }
     }

@@ -35,18 +35,18 @@ interface GitHubService {
 
     @GET("/repos/{owner}/{repo}/contributors")
     suspend fun getContributors(
+        @Path("owner") owner: String,
+        @Path("repo") repo: String,
         @Query("per_page") per_page: Int,
         @Query("page") page: Int,
-        @Path("repo") repo: String,
-        @Path("owner") owner: String
     ): List<UserResponse>
 
     @GET("/repos/{owner}/{repo}/issues")
     suspend fun getIssues(
-        @Query("per_page") per_page: Int,
-        @Query("page") page: Int,
+        @Path("owner") owner: String,
         @Path("repo") repo: String,
-        @Path("owner") owner: String
+        @Query("per_page") per_page: Int,
+        @Query("page") page: Int
     ): List<IssueRepos>
 
     @GET("/repos/{owner}/{repo}/issues/{issue_number}")
@@ -58,11 +58,11 @@ interface GitHubService {
 
     @GET("/repos/{owner}/{repo}/issues/{issue_number}/comments")
     suspend fun getIssueComments(
-        @Query("per_page") per_page: Int,
-        @Query("page") page: Int,
-        @Path("repo") repo: String,
         @Path("owner") owner: String,
-        @Path("issue_number") issue_number: String
+        @Path("repo") repo: String,
+        @Path("issue_number") issue_number: Int,
+        @Query("per_page") per_page: Int,
+        @Query("page") page: Int
     ): List<IssueCommentRepos>
 
     @GET(" https://raw.githubusercontent.com/{owner}/{repo}/master/README.md")

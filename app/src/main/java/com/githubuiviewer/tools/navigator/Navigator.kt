@@ -51,9 +51,9 @@ class Navigator(
             .commit()
     }
 
-    fun showIssueScreen() {
+    fun showIssueScreen(owner: String, repo: String, issue_number: Int) {
         fragmentManager.beginTransaction()
-            .add(container, IssueFragment.newInstance())
+            .add(container, IssueFragment.newInstance(owner, repo, issue_number))
             .addToBackStack(ISSUE_SCREEN_FRAGMENT)
             .commit()
     }

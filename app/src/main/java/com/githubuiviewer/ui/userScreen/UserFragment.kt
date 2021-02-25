@@ -23,6 +23,7 @@ import com.githubuiviewer.ui.userScreen.adapter.ReposAdapter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout.user_fragment),
@@ -59,6 +60,10 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
         setupLiveDataListeners()
         setupRecycler()
         setupSearch()
+
+        binding.userGroup.setOnClickListener {
+            navigation.showIssueScreen("", "", 0)
+        }
 
         viewModel.userProfile = userProfile
         viewModel.getContent()
@@ -121,13 +126,12 @@ class UserFragment(private val userProfile: UserProfile) : BaseFragment(R.layout
         }
     }
 
-    private fun updateUser(state: State<UserResponse, Int>) {
+    private fun updateUser(state: State<UserResponse, Exception>) {
         when (state) {
             is State.Loading -> {
                 navigation.showLoadingScreen()
             }
-            is State.Unauthorized -> navigation.showLoginScreen()
-            is State.Error -> binding.userGroup.setName(getString(state.error))
+            is State.Error -> binding.userGroup.setName(state.error.message!!)
             is State.Content -> {
                 binding.userGroup.apply {
                     setImage(state.data.avatar_url)
