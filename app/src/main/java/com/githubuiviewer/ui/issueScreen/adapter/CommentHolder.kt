@@ -13,41 +13,41 @@ class CommentHolder(view: View, private val callback: (IssueCommentRepos) -> Uni
     RecyclerView.ViewHolder(view) {
     private lateinit var binding: IssueCommentHolderBinding
 
-    private fun toEmojiString(reactions: Reactions): String {
-        val builder =  StringBuilder()
-        if (reactions.confused > 0) {
-            builder.append(Emoji.CONFUSED.emojiCode)
-            builder.append(reactions.confused)
-        }
-        if (reactions.like > 0) {
-            builder.append(Emoji.LIKE.emojiCode)
-            builder.append(reactions.like)
-        }
-        if (reactions.dislike > 0) {
-            builder.append(Emoji.DISLIKE.emojiCode)
-            builder.append(reactions.dislike)
-        }
-        if (reactions.eyes > 0) {
-            builder.append(Emoji.EYES.emojiCode)
-            builder.append(reactions.eyes)
-        }
-        if (reactions.heart > 0) {
-            builder.append(Emoji.HEART.emojiCode)
-            builder.append(reactions.heart)
-        }
-        if (reactions.rocket > 0) {
-            builder.append(Emoji.ROCKET.emojiCode)
-            builder.append(reactions.rocket)
-        }
-        if (reactions.laugh > 0) {
-            builder.append(Emoji.LAUGH.emojiCode)
-            builder.append(reactions.laugh)
-        }
-        if (reactions.hooray > 0) {
-            builder.append(Emoji.HOORAY.emojiCode)
-            builder.append(reactions.hooray)
-        }
-        return builder.toString()
+    private fun collectReaction(reactions: Reactions): String {
+        return StringBuilder().apply {
+            if (reactions.confused > 0) {
+                append(Emoji.CONFUSED.emojiCode)
+                append(reactions.confused)
+            }
+            if (reactions.like > 0) {
+                append(Emoji.LIKE.emojiCode)
+                append(reactions.like)
+            }
+            if (reactions.dislike > 0) {
+                append(Emoji.DISLIKE.emojiCode)
+                append(reactions.dislike)
+            }
+            if (reactions.eyes > 0) {
+                append(Emoji.EYES.emojiCode)
+                append(reactions.eyes)
+            }
+            if (reactions.heart > 0) {
+                append(Emoji.HEART.emojiCode)
+                append(reactions.heart)
+            }
+            if (reactions.rocket > 0) {
+                append(Emoji.ROCKET.emojiCode)
+                append(reactions.rocket)
+            }
+            if (reactions.laugh > 0) {
+                append(Emoji.LAUGH.emojiCode)
+                append(reactions.laugh)
+            }
+            if (reactions.hooray > 0) {
+                append(Emoji.HOORAY.emojiCode)
+                append(reactions.hooray)
+            }
+        }.toString()
     }
 
     fun onBind(comment: IssueCommentRepos) {
@@ -61,7 +61,7 @@ class CommentHolder(view: View, private val callback: (IssueCommentRepos) -> Uni
             root.setOnClickListener {
                 callback(comment)
             }
-            etvEmoji.text = EmojiCompat.get().process(toEmojiString(comment.reactions))
+            etvEmoji.text = EmojiCompat.get().process(collectReaction(comment.reactions))
             root.setOnClickListener {
                 callback(comment)
             }
