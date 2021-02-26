@@ -3,7 +3,7 @@
     package="com.githubuiviewer">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".App"
@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GithubUiViewer">
-        <activity android:name=".ui.mainActivity.NavigationActivity">
+        <activity android:name=".ui.mainActivity.NavigationActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,8 +27,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="githubproject"
-                    android:host="callback" />
+                    android:host="callback"
+                    android:scheme="githubproject" />
             </intent-filter>
         </activity>
     </application>

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.githubuiviewer.App
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.ReadMeFragmentBinding
@@ -19,6 +20,8 @@ import javax.inject.Inject
 
 class ReadMeFragment : BaseFragment(R.layout.read_me_fragment) {
 
+    override var parentContainer: ConstraintLayout? = null
+
     @Inject
     lateinit var viewModel: ReadMeViewModel
 
@@ -29,6 +32,7 @@ class ReadMeFragment : BaseFragment(R.layout.read_me_fragment) {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = ReadMeFragmentBinding.inflate(inflater, container, false)
+        parentContainer = binding.container
         return binding.root
     }
 

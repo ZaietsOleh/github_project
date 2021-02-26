@@ -34,6 +34,8 @@ class IssueFragment : BaseFragment(R.layout.issue_detail_fragment) {
     private val commentAdapter = CommentAdapter(::createReaction)
     private val issuesDetailsParameter by FragmentArgsDelegate<IssuesDetailsParameter>(ISSUE_KEY)
 
+    override var parentContainer: ConstraintLayout? = null
+
     private fun createReaction(issueCommentRepos: IssueCommentRepos) {
         val emojiBinding = EmojiChooserDialogBinding.inflate(layoutInflater)
         val dialog = MaterialDialog(requireContext())
@@ -85,14 +87,13 @@ class IssueFragment : BaseFragment(R.layout.issue_detail_fragment) {
         }
     }
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = IssueDetailFragmentBinding.inflate(inflater, container, false)
+        parentContainer = binding.container
         return binding.root
     }
 
