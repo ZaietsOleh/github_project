@@ -16,7 +16,6 @@ import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.USER_KEY
 import com.githubuiviewer.ui.navigator.BaseFragment
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
-import java.lang.Exception
 import javax.inject.Inject
 
 class ReadMeFragment : BaseFragment(R.layout.read_me_fragment) {
@@ -25,7 +24,7 @@ class ReadMeFragment : BaseFragment(R.layout.read_me_fragment) {
         get() = binding.root
 
     @Inject
-    lateinit var viewModel: ReadMeViewModelFragment
+    lateinit var viewModel: ReadMeViewModel
 
     private lateinit var binding: ReadMeFragmentBinding
     private var userAndRepoName by FragmentArgsDelegate<UserAndRepoName>(USER_KEY)
