@@ -7,7 +7,7 @@
     android:clickable="true"
     android:focusable="true"
     tools:context=".ui.updateTokenFragment.UpdateTokenFragment">
-    ​
+
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    ​
+
     <TextView
         android:id="@+id/tv_updating_data"
         android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/progress_bar" />
-    ​
+
     <TextView
         android:id="@+id/tv_error"
         android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    ​
+
     <Button
         android:id="@+id/btn_try_again"
         android:layout_width="wrap_content"
@@ -56,5 +56,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.8" />
-    ​
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     tools:context=".ui.userScreen.UserFragment">
-    ​
+
     <SearchView
         android:id="@+id/sv_search_user"
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    ​
+
     <com.githubuiviewer.ui.UserGroup
         android:id="@+id/user_group"
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sv_search_user" />
-    ​
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_repositories"
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/user_group"
         tools:listitem="@android:layout/simple_list_item_multiple_choice" />
-    ​
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_users"
         android:layout_width="match_parent"
@@ -48,5 +48,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sv_search_user"
         tools:listitem="@android:layout/simple_list_item_multiple_choice" />
-    ​
+
 </androidx.constraintlayout.widget.ConstraintLayout>
