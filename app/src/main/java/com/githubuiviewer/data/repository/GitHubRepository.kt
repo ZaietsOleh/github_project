@@ -3,11 +3,10 @@ package com.githubuiviewer.data.repository
 import android.util.Base64
 import android.util.Log
 import com.githubuiviewer.datasource.api.GitHubService
-import com.githubuiviewer.datasource.model.AccessTokenResponse
-import com.githubuiviewer.datasource.model.ReposResponse
-import com.githubuiviewer.datasource.model.UserResponse
+import com.githubuiviewer.datasource.model.*
 import com.githubuiviewer.tools.*
 import com.githubuiviewer.tools.sharedPrefsTools.SharedPref
+import com.githubuiviewer.ui.issueScreen.IssuesDetailsParameter
 import javax.inject.Inject
 
 class GitHubRepository @Inject constructor(
@@ -52,5 +51,50 @@ class GitHubRepository @Inject constructor(
                 currentPage
             )
         }
+    }
+
+    suspend fun getIssueComment(
+        issuesDetailsParameter: IssuesDetailsParameter,
+        page: Int
+    ): List<IssueCommentRepos> {
+        val result =
+            gitHubService.getIssueComments(
+                owner = issuesDetailsParameter.owner,
+                repo = issuesDetailsParameter.repo,
+                issue_number = issuesDetailsParameter.issue_number,
+                per_page = PER_PAGE,
+                page = page
+            )
+        if (page == 0) {
+            return addAuthorContent(result, issuesDetailsParameter)
+        }
+        return result
+    }
+
+    private suspend fun addAuthorContent(
+        comments: List<IssueCommentRepos>,
+        issuesDetailsParameter: IssuesDetailsParameter
+    ): List<IssueCommentRepos> {
+        val author =
+            mapToIssueCommentRepos(
+                gitHubService.getIssueDetail(
+                    owner = issuesDetailsParameter.owner,
+                    repo = issuesDetailsParameter.repo,
+                    issue_number = issuesDetailsParameter.issue_number,
+                )
+            )
+        val mutable = comments.toMutableList()
+        mutable.add(0, author)
+        return mutable.toList()
+    }
+
+    private fun mapToIssueCommentRepos(issueDetail: IssueDetailRepos): IssueCommentRepos {
+        return IssueCommentRepos(
+            id = issueDetail.number,
+            user = issueDetail.user,
+            body = issueDetail.body,
+            created_at = issueDetail.created_at,
+            reactions = issueDetail.reactions
+        )
     }
 }

@@ -1,3 +1,6 @@
+package com.githubuiviewer.tools.navigator
+
+import androidx.annotation.StringRes
 package com.githubuiviewer.ui.navigator
 
 import androidx.constraintlayout.widget.ConstraintSet.*

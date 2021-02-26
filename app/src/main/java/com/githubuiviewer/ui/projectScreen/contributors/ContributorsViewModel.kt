@@ -6,7 +6,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.githubuiviewer.datasource.api.DataLoadingException
 import com.githubuiviewer.datasource.api.GitHubService
+import com.githubuiviewer.datasource.api.NetworkException
+import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.datasource.model.UserResponse
 import com.githubuiviewer.tools.PER_PAGE
 import com.githubuiviewer.ui.BaseViewModel
@@ -51,10 +54,16 @@ class ContributorsViewModel @Inject constructor(
 
     override fun unauthorizedException() {
         super.unauthorizedException()
-        //_contributorsLiveData.value = State.Error()
+        _contributorsLiveData.value = State.Error(UnauthorizedException())
     }
 
     override fun dataLoadingException() {
         super.dataLoadingException()
+        _contributorsLiveData.value = State.Error(DataLoadingException())
+    }
+
+    override fun networkException() {
+        super.networkException()
+        _contributorsLiveData.value = State.Error(NetworkException())
     }
 }

@@ -8,9 +8,9 @@
         android:id="@+id/tv_repos_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="24sp"
+        android:textSize="@dimen/repos_name_text_size"
         android:textColor="@color/black"
         android:gravity="center"
-        android:padding="8dp"/>
+        android:padding="@dimen/beutiful_indent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

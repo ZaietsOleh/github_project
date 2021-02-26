@@ -8,6 +8,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.githubuiviewer.App
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.ReadMeFragmentBinding
+import com.githubuiviewer.datasource.api.DataLoadingException
+import com.githubuiviewer.datasource.api.NetworkException
 import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.tools.FragmentArgsDelegate
 import com.githubuiviewer.tools.State
@@ -51,28 +53,25 @@ class ReadMeFragment : BaseFragment(R.layout.read_me_fragment) {
     private fun setupLiveDataListener() {
         viewModel.readMeLiveData.observe(viewLifecycleOwner) {
             when (it) {
-                is State.Content -> showContent(it.data)
-                is State.Error -> showError(it.error)
-                is State.Loading -> showProgressBar()
+                is State.Content -> {
+                    closeLoading()
+                    showContent(it.data)
+                }
+                is State.Error -> {
+                    closeLoading()
+                    when (it.error) {
+                        is UnauthorizedException -> navigation.showLoginScreen()
+                        is DataLoadingException -> showError(R.string.dataloading_error)
+                        is NetworkException -> showError(R.string.netwotk_error)
+                    }
+                }
+                is State.Loading -> showLoading()
             }
         }
     }
 
     private fun showContent(readMeModel: String) {
         binding.tvReadMe.text = readMeModel
-    }
-
-    private fun showError(error: Exception) {
-        when (error) {
-            is UnauthorizedException -> {
-                navigation.showLoginScreen()
-            }
-            else -> showProgressBar()
-        }
-    }
-
-    private fun showProgressBar() {
-
     }
 
     companion object {

@@ -89,4 +89,13 @@ interface GitHubService {
         @Query("per_page") per_page: Int,
         @Query("page") page: Int
     ): SearchResponse
+
+    @Headers("Accept: application/vnd.github.squirrel-girl-preview")
+    @POST("/repos/{owner}/{repo}/issues/{issue_number}/reactions")
+    suspend fun createReactionForIssue(
+        @Path("owner") owner: String,
+        @Path("repo") repo: String,
+        @Path("issue_number") issue_number: Int,
+        @Body content: ReactionContent
+    )
 }

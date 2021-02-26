@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.IssuesFragmentBinding
+import com.githubuiviewer.datasource.api.DataLoadingException
+import com.githubuiviewer.datasource.api.NetworkException
+import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.datasource.model.IssueResponse
 import com.githubuiviewer.tools.FragmentArgsDelegate
 import com.githubuiviewer.tools.State
@@ -74,9 +77,19 @@ class BriefInfoIssuesFragment : BaseFragment(R.layout.issues_fragment) {
     private fun setupLiveDataListener() {
         viewModel.issuesLiveData.observe(viewLifecycleOwner){
             when(it){
-                is State.Loading -> {}
-                is State.Content -> updateIssuesRecyclerView(it.data)
-                is State.Error -> {}
+                is State.Loading -> showLoading()
+                is State.Content -> {
+                    closeLoading()
+                    updateIssuesRecyclerView(it.data)
+                }
+                is State.Error -> {
+                    closeLoading()
+                    when (it.error) {
+                        is UnauthorizedException -> navigation.showLoginScreen()
+                        is DataLoadingException -> showError(R.string.dataloading_error)
+                        is NetworkException -> showError(R.string.netwotk_error)
+                    }
+                }
             }
         }
     }

@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.ContributorsFragmentBinding
+import com.githubuiviewer.datasource.api.DataLoadingException
+import com.githubuiviewer.datasource.api.NetworkException
+import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.datasource.model.UserResponse
 import com.githubuiviewer.tools.FragmentArgsDelegate
 import com.githubuiviewer.tools.State
@@ -67,9 +70,19 @@ class ContributorsFragment : BaseFragment(R.layout.contributors_fragment) {
     private fun setupLiveDataListener() {
         viewModel.contributorsLiveData.observe(viewLifecycleOwner){
             when(it){
-                is State.Loading -> {}
-                is State.Content -> updateContributorsRecyclerView(it.data)
-                is State.Error -> TODO()
+                is State.Loading -> showLoading()
+                is State.Content ->  {
+                    closeLoading()
+                    updateContributorsRecyclerView(it.data)
+                }
+                is State.Error -> {
+                    closeLoading()
+                    when (it.error) {
+                        is UnauthorizedException -> navigation.showLoginScreen()
+                        is DataLoadingException -> showError(R.string.dataloading_error)
+                        is NetworkException -> showError(R.string.netwotk_error)
+                    }
+                }
             }
         }
     }
