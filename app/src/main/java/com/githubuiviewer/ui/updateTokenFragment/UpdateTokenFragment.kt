@@ -8,18 +8,20 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.githubuiviewer.App
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.UpadateTokenFragmentBinding
+import com.githubuiviewer.tools.FragmentArgsDelegate
 import com.githubuiviewer.tools.UpdatingState
 import com.githubuiviewer.tools.UserProfile
+import com.githubuiviewer.ui.issueScreen.IssueFragment
+import com.githubuiviewer.ui.issueScreen.IssuesDetailsParameter
 import com.githubuiviewer.ui.navigator.BaseFragment
 import javax.inject.Inject
 
-class UpdateTokenFragment(
-    private val code: String
-) : BaseFragment(R.layout.upadate_token_fragment) {
+class UpdateTokenFragment : BaseFragment(R.layout.upadate_token_fragment) {
 
     override var parentContainer: ConstraintLayout? = null
 
     private lateinit var binding: UpadateTokenFragmentBinding
+    private val refreshKey by FragmentArgsDelegate<String>(REFRESH_KEY)
 
     @Inject
     lateinit var viewModel: UpdateTokenViewModel
@@ -39,7 +41,7 @@ class UpdateTokenFragment(
         setupDi()
         setupListeners()
         setupLivaDataListener()
-        viewModel.updateToken(code)
+        viewModel.updateToken(refreshKey)
     }
 
     private fun setupDi() {
@@ -61,7 +63,7 @@ class UpdateTokenFragment(
 
     private fun setupListeners() {
         binding.btnTryAgain.setOnClickListener {
-            viewModel.updateToken(code)
+            viewModel.updateToken(refreshKey)
         }
     }
 
@@ -88,6 +90,12 @@ class UpdateTokenFragment(
     }
 
     companion object {
-        fun newInstance(code: String) = UpdateTokenFragment(code)
+        private const val REFRESH_KEY = "REFRESH_KEY"
+
+        fun newInstance(code: String) = UpdateTokenFragment().apply {
+            arguments = Bundle().apply {
+                putString(REFRESH_KEY, code)
+            }
+        }
     }
 }
