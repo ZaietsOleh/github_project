@@ -12,4 +12,12 @@
     <string name="page_readme_title">README</string>
     <string name="page_contributors_title">Contributors</string>
     <string name="page_issues_title">Issues</string>
+    <string name="emoji_like">👍</string>
+    <string name="emoji_dislike">👎</string>
+    <string name="emoji_laugh">😄</string>
+    <string name="emoji_confused">😕</string>
+    <string name="emoji_heart">❤</string>
+    <string name="emoji_hoorey">🎉</string>
+    <string name="emoji_rocket">🚀</string>
+    <string name="emoji_eyes">👀</string>
 </resources>

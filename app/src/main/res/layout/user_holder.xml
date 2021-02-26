@@ -6,7 +6,7 @@
 
     <com.githubuiviewer.ui.UserGroup
         android:id="@+id/ug_user"
-        android:padding="12dp"
+        android:padding="@dimen/usergroug_padding"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
