@@ -29,6 +29,7 @@ class Navigator(
     fun showUserScreen(userProfile: UserProfile) {
         fragmentManager.beginTransaction()
             .replace(container, UserFragment.newInstance(userProfile))
+            .addToBackStack(USER_SCREEN_FRAGMENT)
             .commit()
     }
 

@@ -79,6 +79,12 @@ class UserFragment : BaseFragment(R.layout.user_fragment) {
         )
     }
 
+    override fun onStop() {
+        super.onStop()
+        binding.svSearchUser.isIconified = true
+        binding.svSearchUser.onActionViewCollapsed()
+    }
+
     private fun setupSearch() {
         binding.svSearchUser.apply {
             setOnSearchClickListener {
@@ -95,9 +101,11 @@ class UserFragment : BaseFragment(R.layout.user_fragment) {
             setOnQueryTextListener(SearchListener { query ->
                 searchJob?.cancel()
                 query?.let {
-                    searchJob = lifecycleScope.launch {
-                        delay(INPUT_DELAY)
-                        viewModel.getSearchable(query)
+                    if (query.isNotEmpty()) {
+                        searchJob = lifecycleScope.launch {
+                            delay(INPUT_DELAY)
+                            viewModel.getSearchable(query)
+                        }
                     }
                 }
             })
