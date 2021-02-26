@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
@@ -26,8 +25,7 @@ import javax.inject.Inject
 
 class BriefInfoIssuesFragment : BaseFragment(R.layout.issues_fragment) {
 
-    override val parentContainer: ConstraintLayout
-        get() = binding.root
+
 
     @Inject
     lateinit var viewModel: IssuesBriefInfoViewModel
@@ -108,5 +106,4 @@ class BriefInfoIssuesFragment : BaseFragment(R.layout.issues_fragment) {
                 }
             }
     }
-
 }

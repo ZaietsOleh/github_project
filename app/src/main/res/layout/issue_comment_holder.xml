@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="@dimen/card_corner_radius"
-    android:layout_margin="@dimen/beutiful_indent"
+    android:layout_margin="@dimen/padding_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#E1E1E1"
-        android:padding="@dimen/beutiful_indent">
+        android:padding="@dimen/padding_view">
 
         <com.githubuiviewer.ui.UserGroup
             android:id="@+id/ug_user"

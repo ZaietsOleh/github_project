@@ -21,7 +21,6 @@ open class BaseViewModel: ViewModel() {
     }
     protected val baseViewModelScope = CoroutineScope(SupervisorJob() + exceptionHandler)
 
-    //corutine context
     protected open fun unauthorizedException() {
         Log.d(TAG, "unauthorizedException")
     }

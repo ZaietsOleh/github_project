@@ -35,8 +35,7 @@ class ContributorsFragment : BaseFragment(R.layout.contributors_fragment) {
     private val userAdapter = UserAdapter {
         navigation.showUserScreen(UserProfile.PublicUser(it.name))
     }
-    override val parentContainer: ConstraintLayout
-        get() = binding.root
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

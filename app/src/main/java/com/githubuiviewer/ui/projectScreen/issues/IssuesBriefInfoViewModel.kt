@@ -35,7 +35,7 @@ class IssuesBriefInfoViewModel
 
     fun getIssues(userAndRepoName: UserAndRepoName) {
         baseViewModelScope.launch {
-            //_issuesLiveData.postValue(State.Loading)
+            _issuesLiveData.postValue(State.Loading)
             reposFlow(
                 userAndRepoName.userName,
                 userAndRepoName.repoName
@@ -55,16 +55,16 @@ class IssuesBriefInfoViewModel
 
     override fun unauthorizedException() {
         super.unauthorizedException()
-        _issuesLiveData.value = State.Error(UnauthorizedException())
+        _issuesLiveData.postValue(State.Error(UnauthorizedException()))
     }
 
     override fun dataLoadingException() {
         super.dataLoadingException()
-        _issuesLiveData.value = State.Error(DataLoadingException())
+        _issuesLiveData.postValue(State.Error(DataLoadingException()))
     }
 
     override fun networkException() {
         super.networkException()
-        _issuesLiveData.value = State.Error(NetworkException())
+        _issuesLiveData.postValue(State.Error(NetworkException()))
     }
 }

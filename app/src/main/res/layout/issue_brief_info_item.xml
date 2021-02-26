@@ -8,7 +8,7 @@
         android:id="@+id/tv_issue_brief_info"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="24sp"
+        android:textSize="@dimen/issue_brief_text_size"
         android:textColor="@color/black"
         android:gravity="center"/>
 

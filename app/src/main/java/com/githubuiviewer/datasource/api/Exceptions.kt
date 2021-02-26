@@ -2,8 +2,8 @@ package com.githubuiviewer.datasource.api
 
 import java.io.IOException
 
-class DataLoadingException : IOException() // other
+class DataLoadingException : IOException()
 
-class UnauthorizedException : IOException() //401
+class UnauthorizedException : IOException()
 
 class NetworkException : IOException()

@@ -17,12 +17,10 @@ class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d(MAIN_DEBUG_TAG, "onCreate main actvity")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_navigation)
 
         getCodeFromUri(uri = intent.data)?.let {
-            Log.d(MAIN_DEBUG_TAG, "getCodeFromUri has data")
             openFragmentUpdateToken(it)
             return
         }
@@ -43,7 +41,6 @@ class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
     }
 
     private fun openFragmentUpdateToken(code: String) {
-        Log.d(MAIN_DEBUG_TAG, "start from activity UpdateTokenFragment")
         navigator.showFragmentUpdateToken(code)
     }
 }

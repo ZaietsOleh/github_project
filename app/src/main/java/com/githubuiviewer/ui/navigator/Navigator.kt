@@ -45,7 +45,7 @@ class Navigator(
     fun showFragmentUpdateToken(code: String) {
         fragmentManager
             .beginTransaction()
-            .add(container, UpdateTokenFragment.newInstance(code)) //todo tag
+            .add(container, UpdateTokenFragment.newInstance(code))
             .commit()
     }
 

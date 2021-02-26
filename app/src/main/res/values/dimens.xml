@@ -2,10 +2,12 @@
 <resources>
     <dimen name="emoji_size">32sp</dimen>
     <dimen name="issue_comment_text_size">20sp</dimen>
-    <dimen name="beutiful_indent">8dp</dimen>
+    <dimen name="padding_view">8dp</dimen>
     <dimen name="card_corner_radius">12dp</dimen>
     <dimen name="readme_text_size">24sp</dimen>
     <dimen name="repos_name_text_size">24sp</dimen>
     <dimen name="uupdating_text_size">24sp</dimen>
     <dimen name="usergroug_padding">12dp</dimen>
+    <dimen name="issue_brief_text_size">24sp</dimen>
+    <dimen name="update_token_text_size">24sp</dimen>
 </resources>

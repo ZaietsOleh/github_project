@@ -54,16 +54,16 @@ class ContributorsViewModel @Inject constructor(
 
     override fun unauthorizedException() {
         super.unauthorizedException()
-        _contributorsLiveData.value = State.Error(UnauthorizedException())
+        _contributorsLiveData.postValue(State.Error(UnauthorizedException()))
     }
 
     override fun dataLoadingException() {
         super.dataLoadingException()
-        _contributorsLiveData.value = State.Error(DataLoadingException())
+        _contributorsLiveData.postValue(State.Error(DataLoadingException()))
     }
 
     override fun networkException() {
         super.networkException()
-        _contributorsLiveData.value = State.Error(NetworkException())
+        _contributorsLiveData.postValue(State.Error(NetworkException()))
     }
 }
