@@ -8,7 +8,7 @@ import com.githubuiviewer.R
 import com.githubuiviewer.databinding.ProjectFragmentBinding
 import com.githubuiviewer.tools.FragmentArgsDelegate
 import com.githubuiviewer.tools.USER_KEY
-import com.githubuiviewer.tools.navigator.BaseFragment
+import com.githubuiviewer.ui.navigator.BaseFragment
 import com.githubuiviewer.ui.projectScreen.adapters.DetailInfoReposAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 

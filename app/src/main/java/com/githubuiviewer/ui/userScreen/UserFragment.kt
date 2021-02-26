@@ -16,7 +16,7 @@ import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse
 import com.githubuiviewer.tools.*
-import com.githubuiviewer.tools.navigator.BaseFragment
+import com.githubuiviewer.ui.navigator.BaseFragment
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import com.githubuiviewer.ui.userScreen.adapter.UserAdapter
 import com.githubuiviewer.ui.userScreen.adapter.ReposAdapter

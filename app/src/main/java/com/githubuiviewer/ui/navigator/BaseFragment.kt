@@ -1,5 +1,6 @@
-package com.githubuiviewer.tools.navigator
+package com.githubuiviewer.ui.navigator
 
+import android.view.View
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
@@ -25,4 +26,12 @@ abstract class BaseFragment(layoutId: Int) : Fragment(layoutId) {
             message(error)
         }
     }
+
+    /*abstract val parentCont
+
+    fun showLoadView(){
+        View(requireContext()).apply{
+
+        }
+    }*/
 }

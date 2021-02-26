@@ -1,7 +1,7 @@
 package com.githubuiviewer.di
 
 import android.content.Context
-import com.githubuiviewer.tools.navigator.BaseFragment
+import com.githubuiviewer.ui.navigator.BaseFragment
 import com.githubuiviewer.ui.issueScreen.IssueFragment
 import com.githubuiviewer.ui.projectScreen.contributors.ContributorsFragment
 import com.githubuiviewer.ui.projectScreen.issues.BriefInfoIssuesFragment

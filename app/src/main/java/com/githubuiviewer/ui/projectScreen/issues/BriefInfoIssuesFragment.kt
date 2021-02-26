@@ -13,7 +13,7 @@ import com.githubuiviewer.datasource.model.IssueResponse
 import com.githubuiviewer.tools.FragmentArgsDelegate
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.USER_KEY
-import com.githubuiviewer.tools.navigator.BaseFragment
+import com.githubuiviewer.ui.navigator.BaseFragment
 import com.githubuiviewer.ui.issueScreen.IssuesDetailsParameter
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import com.githubuiviewer.ui.projectScreen.adapters.IssuesAdapter

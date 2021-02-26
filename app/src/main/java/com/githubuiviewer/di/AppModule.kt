@@ -24,7 +24,7 @@ import javax.inject.Singleton
 class AppModule(private val context: Context) {
 
     @Singleton
-    @Provides //todo scope is not necessary for parameters stored within the module
+    @Provides
     fun context(): Context {
         return context
     }

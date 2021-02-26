@@ -11,8 +11,7 @@ import com.githubuiviewer.R
 import com.githubuiviewer.databinding.UpadateTokenFragmentBinding
 import com.githubuiviewer.tools.UpdatingState
 import com.githubuiviewer.tools.UserProfile
-import com.githubuiviewer.tools.navigator.BaseFragment
-import com.githubuiviewer.tools.navigator.Navigator
+import com.githubuiviewer.ui.navigator.BaseFragment
 import javax.inject.Inject
 
 class UpdateTokenFragment(
@@ -74,7 +73,7 @@ class UpdateTokenFragment(
     }
 
     private fun openUserFragment() {
-        navigation.showUserScreen(UserProfile.AuthorizedUser)
+        navigation.showMainUserProfile(UserProfile.AuthorizedUser)
     }
 
     private fun showError() {
