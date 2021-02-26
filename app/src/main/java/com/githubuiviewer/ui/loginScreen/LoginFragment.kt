@@ -3,13 +3,10 @@ package com.githubuiviewer.ui.loginScreen
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.LoginFragmentBinding
 import com.githubuiviewer.tools.*

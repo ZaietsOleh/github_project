@@ -3,9 +3,7 @@ package com.githubuiviewer.ui.mainActivity
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.githubuiviewer.*
-import com.githubuiviewer.tools.MAIN_DEBUG_TAG
 import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.navigator.Navigator
 import com.githubuiviewer.tools.redirectUrl
