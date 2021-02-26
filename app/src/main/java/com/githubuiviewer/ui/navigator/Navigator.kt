@@ -5,7 +5,6 @@ import androidx.fragment.app.FragmentManager
 import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.issueScreen.IssueFragment
 import com.githubuiviewer.ui.issueScreen.IssuesDetailsParameter
-import com.githubuiviewer.ui.loadingScreen.LoadingFragment
 import com.githubuiviewer.ui.loginScreen.LoginFragment
 import com.githubuiviewer.ui.projectScreen.ParenRepoProjectFragment
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
@@ -61,16 +60,5 @@ class Navigator(
             .add(container, IssueFragment.newInstance(issuesDetailsParameter))
             .addToBackStack(ISSUE_SCREEN_FRAGMENT)
             .commit()
-    }
-
-    fun showLoadingScreen() {
-        fragmentManager.beginTransaction()
-            .add(container, LoadingFragment.newInstance())
-            .addToBackStack(LOADING_SCREEN_FRAGMENT)
-            .commit()
-    }
-
-    fun closeLoadingScreen() {
-        fragmentManager.popBackStack(LOADING_SCREEN_FRAGMENT, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 }

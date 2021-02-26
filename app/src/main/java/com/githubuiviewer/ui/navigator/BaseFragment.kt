@@ -47,10 +47,10 @@ abstract class BaseFragment(layoutId: Int) : Fragment(layoutId) {
         parentContainer?.addView(progressBar)
 
         val constraintSet = ConstraintSet()
-        constraintSet.connect(progressBarId, TOP, PARENT_ID, TOP, 300)
-        constraintSet.connect(progressBarId, BOTTOM, PARENT_ID, BOTTOM, 300)
-        constraintSet.connect(progressBarId, START, PARENT_ID, START, 300)
-        constraintSet.connect(progressBarId, END, PARENT_ID, END, 300)
+        constraintSet.connect(progressBarId, TOP, PARENT_ID, TOP, R.dimen.loading_margin)
+        constraintSet.connect(progressBarId, BOTTOM, PARENT_ID, BOTTOM, R.dimen.loading_margin)
+        constraintSet.connect(progressBarId, START, PARENT_ID, START, R.dimen.loading_margin)
+        constraintSet.connect(progressBarId, END, PARENT_ID, END, R.dimen.loading_margin)
         constraintSet.applyTo(parentContainer)
     }
 

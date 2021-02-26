@@ -10,4 +10,5 @@
     <dimen name="usergroug_padding">12dp</dimen>
     <dimen name="issue_brief_text_size">24sp</dimen>
     <dimen name="update_token_text_size">24sp</dimen>
+    <dimen name="loading_margin">300</dimen>
 </resources>
