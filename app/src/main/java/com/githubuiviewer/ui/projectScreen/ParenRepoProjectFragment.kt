@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.ProjectFragmentBinding
 import com.githubuiviewer.tools.FragmentArgsDelegate
 import com.githubuiviewer.tools.USER_KEY
-import com.githubuiviewer.tools.navigator.BaseFragment
+import com.githubuiviewer.ui.navigator.BaseFragment
 import com.githubuiviewer.ui.projectScreen.adapters.DetailInfoReposAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -17,6 +18,8 @@ class ParenRepoProjectFragment : BaseFragment(R.layout.project_fragment) {
     private var userAndRepoName by FragmentArgsDelegate<UserAndRepoName>(USER_KEY)
     private lateinit var binding: ProjectFragmentBinding
     private lateinit var viewPagerAdapter: DetailInfoReposAdapter
+    override val parentContainer: ConstraintLayout
+        get() = binding.root
 
     override fun onCreateView(
         inflater: LayoutInflater,

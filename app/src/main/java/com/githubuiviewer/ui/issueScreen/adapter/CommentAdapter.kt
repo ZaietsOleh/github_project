@@ -7,22 +7,18 @@ import androidx.recyclerview.widget.DiffUtil
 import com.githubuiviewer.R
 import com.githubuiviewer.datasource.model.IssueCommentRepos
 
-class CommentAdapter(private var callback: ((IssueCommentRepos) -> Unit) = { }) :
-    PagingDataAdapter<IssueCommentRepos, CommentHolder>(CommentComparator) {
-    object CommentComparator : DiffUtil.ItemCallback<IssueCommentRepos>() {
-        override fun areItemsTheSame(
-            oldItem: IssueCommentRepos,
-            newItem: IssueCommentRepos
-        ): Boolean {
-            return oldItem.id == newItem.id
-        }
+class CommentAdapter(
+    private var callback: ((IssueCommentRepos) -> Unit) = { }
+) : PagingDataAdapter<IssueCommentRepos, CommentHolder>(CommentComparator) {
 
-        override fun areContentsTheSame(
-            oldItem: IssueCommentRepos,
-            newItem: IssueCommentRepos
-        ): Boolean {
-            return oldItem == newItem
-        }
+    object CommentComparator : DiffUtil.ItemCallback<IssueCommentRepos>() {
+        override fun areItemsTheSame(oldItem: IssueCommentRepos, newItem: IssueCommentRepos) =
+            oldItem.id == newItem.id
+
+
+        override fun areContentsTheSame(oldItem: IssueCommentRepos, newItem: IssueCommentRepos) =
+            oldItem == newItem
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentHolder {

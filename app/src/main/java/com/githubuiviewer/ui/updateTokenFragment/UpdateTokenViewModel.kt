@@ -24,7 +24,10 @@ class UpdateTokenViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 logInRepository.updateToken(code)
-                Log.d(MAIN_DEBUG_TAG, "updateTokenVIEWMODEL -> update token-> put success in live data")
+                Log.d(
+                    MAIN_DEBUG_TAG,
+                    "updateTokenVIEWMODEL -> update token-> put success in live data"
+                )
                 _updateStatusLiveData.postValue(UpdatingState.COMPLETED)
             } catch (e: Exception) {
                 Log.d(MAIN_DEBUG_TAG, "error update token ${e.message}")

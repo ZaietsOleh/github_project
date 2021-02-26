@@ -14,3 +14,5 @@ const val logInHost = "github.com"
 
 const val USER_KEY = "USER_KEY"
 const val MAIN_DEBUG_TAG = "MAIN_DEBUG_TAG"
+
+const val PRIVATE_SHARED_PREF = "PRIVATE_SHARED_PREF"

@@ -33,10 +33,9 @@ class IssueViewModel @Inject constructor(
     val baseScope = baseViewModelScope
     lateinit var issuesDetailsParameter: IssuesDetailsParameter
 
-    private val _commentLiveData =
-        MutableLiveData<State<PagingData<IssueCommentRepos>, IOException>>()
-    val commentLiveData: LiveData<State<PagingData<IssueCommentRepos>, IOException>> =
-        _commentLiveData
+    private val _commentLiveData = MutableLiveData<State<PagingData<IssueCommentRepos>, IOException>>()
+    val commentLiveData
+        get() = _commentLiveData as LiveData<State<PagingData<IssueCommentRepos>, IOException>>
 
     fun getContent() {
         _commentLiveData.postValue(State.Loading)
