@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
-class UserFragment() : BaseFragment(R.layout.user_fragment) {
+class UserFragment : BaseFragment(R.layout.user_fragment) {
     companion object {
         fun newInstance(userProfile: UserProfile) =
             UserFragment().apply {

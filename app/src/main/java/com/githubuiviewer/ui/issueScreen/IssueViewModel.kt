@@ -48,12 +48,21 @@ class IssueViewModel @Inject constructor(
 
     fun createReaction(reaction: Emoji, issueCommentRepos: IssueCommentRepos) {
         baseViewModelScope.launch(Dispatchers.IO) {
-            gitHubService.createReactionForIssueComment(
-                owner = issuesDetailsParameter.owner,
-                repo = issuesDetailsParameter.repo,
-                comment_id = issueCommentRepos.id,
-                content = ReactionContent(reaction.githubReaction)
-            )
+            if (issueCommentRepos.id == issuesDetailsParameter.issue_number) {
+                gitHubService.createReactionForIssue(
+                    owner = issuesDetailsParameter.owner,
+                    repo = issuesDetailsParameter.repo,
+                    issue_number = issuesDetailsParameter.issue_number,
+                    content = ReactionContent(reaction.githubReaction)
+                )
+            } else {
+                gitHubService.createReactionForIssueComment(
+                    owner = issuesDetailsParameter.owner,
+                    repo = issuesDetailsParameter.repo,
+                    comment_id = issueCommentRepos.id,
+                    content = ReactionContent(reaction.githubReaction)
+                )
+            }
             getContent()
         }
     }
@@ -93,7 +102,7 @@ class IssueViewModel @Inject constructor(
 
     private fun mapToIssueCommentRepos(issueDetail: IssueDetailRepos): IssueCommentRepos {
         return IssueCommentRepos(
-            id = 0,
+            id = issueDetail.number,
             user = issueDetail.user,
             body = issueDetail.body,
             created_at = issueDetail.created_at,
