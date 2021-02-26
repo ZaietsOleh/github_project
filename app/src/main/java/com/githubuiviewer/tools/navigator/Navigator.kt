@@ -20,10 +20,15 @@ class Navigator(
 ) {
     companion object {
         private const val USER_SCREEN_FRAGMENT = "USER_SCREEN_FRAGMENT"
-        private const val LOGIN_SCREEN_FRAGMENT = "LOGIN_SCREEN_FRAGMENT"
         private const val PROJECT_SCREEN_FRAGMENT = "PROJECT_SCREEN_FRAGMENT"
         private const val ISSUE_SCREEN_FRAGMENT = "ISSUE_SCREEN_FRAGMENT"
         private const val LOADING_SCREEN_FRAGMENT = "LOADING_SCREEN_FRAGMENT"
+    }
+
+    fun showMainUserProfile(userProfile: UserProfile){
+        fragmentManager.beginTransaction()
+            .replace(container, UserFragment.newInstance(userProfile))
+            .commit()
     }
 
     fun showUserScreen(userProfile: UserProfile) {
@@ -34,7 +39,6 @@ class Navigator(
     }
 
     fun showLoginScreen() {
-        Log.d(MAIN_DEBUG_TAG, "NAVIGATOR start showLoginScreen")
         fragmentManager.beginTransaction()
             .add(container, LoginFragment.newInstance())
             .commit()
