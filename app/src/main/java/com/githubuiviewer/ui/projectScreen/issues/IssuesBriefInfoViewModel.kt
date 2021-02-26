@@ -6,7 +6,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.githubuiviewer.datasource.api.DataLoadingException
 import com.githubuiviewer.datasource.api.GitHubService
+import com.githubuiviewer.datasource.api.NetworkException
+import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.datasource.model.IssueResponse
 import com.githubuiviewer.tools.PER_PAGE
 import com.githubuiviewer.tools.State
@@ -48,5 +51,20 @@ class IssuesBriefInfoViewModel
                 gitHubService.getIssues(owner, repoName, PER_PAGE, currentPage)
             }
         }.flow.cachedIn(baseViewModelScope)
+    }
+
+    override fun unauthorizedException() {
+        super.unauthorizedException()
+        _issuesLiveData.value = State.Error(UnauthorizedException())
+    }
+
+    override fun dataLoadingException() {
+        super.dataLoadingException()
+        _issuesLiveData.value = State.Error(DataLoadingException())
+    }
+
+    override fun networkException() {
+        super.networkException()
+        _issuesLiveData.value = State.Error(NetworkException())
     }
 }

@@ -5,7 +5,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.githubuiviewer.data.repository.GitHubRepository
+import com.githubuiviewer.datasource.api.DataLoadingException
 import com.githubuiviewer.datasource.api.GitHubService
+import com.githubuiviewer.datasource.api.NetworkException
 import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.datasource.model.ReadMeModel
 import com.githubuiviewer.tools.State
@@ -35,6 +37,12 @@ class   ReadMeViewModelFragment @Inject constructor(
     }
 
     override fun dataLoadingException() {
-        Log.d("TAG", "dataLoadingException")
+        super.dataLoadingException()
+        _readMeLiveData.value = State.Error(DataLoadingException())
+    }
+
+    override fun networkException() {
+        super.networkException()
+        _readMeLiveData.value = State.Error(NetworkException())
     }
 }
