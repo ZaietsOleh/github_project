@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
-class UserFragmentViewModel @Inject constructor(
+class UserViewModel @Inject constructor(
     private val gitHubRepository: GitHubRepository,
     private val gitHubService: GitHubService
 ) : BaseViewModel() {

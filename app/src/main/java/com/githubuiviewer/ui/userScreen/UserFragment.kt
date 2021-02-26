@@ -37,7 +37,7 @@ class UserFragment : BaseFragment(R.layout.user_fragment) {
     }
 
     @Inject
-    lateinit var viewModel: UserFragmentViewModel
+    lateinit var viewModel: UserViewModel
     private lateinit var binding: UserFragmentBinding
     private var searchJob: Job? = null
     private var userProfile by FragmentArgsDelegate<UserProfile>(USER_KEY)
