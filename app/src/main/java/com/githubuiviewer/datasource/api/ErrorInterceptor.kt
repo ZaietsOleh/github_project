@@ -32,6 +32,7 @@ class ErrorInterceptor @Inject constructor(
             .build()
     }
 
+    @Suppress("DEPRECATION")
     private fun isInternetAvailable(): Boolean {
         var result = false
         val connectivityManager =

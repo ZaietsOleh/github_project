@@ -2,8 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
-    id 'org.jetbrains.kotlin.android.extensions'
-
+    id 'kotlin-parcelize'
 }
 
 ext {
@@ -41,10 +40,7 @@ android {
     buildFeatures {
         viewBinding true
     }
-
-    androidExtensions {
-        experimental = true
-    }
+    
 }
 
 dependencies {
