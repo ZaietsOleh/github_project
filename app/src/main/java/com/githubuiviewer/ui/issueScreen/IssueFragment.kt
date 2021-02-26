@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
@@ -83,6 +84,9 @@ class IssueFragment : BaseFragment(R.layout.issue_detail_fragment) {
             }
         }
     }
+
+    override val parentContainer: ConstraintLayout
+        get() = binding.root
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.githubuiviewer.App
 import com.githubuiviewer.tools.MAIN_DEBUG_TAG
 import com.githubuiviewer.R
@@ -17,6 +18,9 @@ import javax.inject.Inject
 class UpdateTokenFragment(
     private val code: String
 ) : BaseFragment(R.layout.upadate_token_fragment) {
+
+    override val parentContainer: ConstraintLayout
+        get() = binding.root
 
     private lateinit var binding: UpadateTokenFragmentBinding
 
