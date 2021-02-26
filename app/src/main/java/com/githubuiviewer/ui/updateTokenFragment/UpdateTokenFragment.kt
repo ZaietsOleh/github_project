@@ -5,19 +5,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.githubuiviewer.App
 import com.githubuiviewer.tools.MAIN_DEBUG_TAG
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.UpadateTokenFragmentBinding
 import com.githubuiviewer.tools.UpdatingState
 import com.githubuiviewer.tools.UserProfile
-import com.githubuiviewer.tools.navigator.BaseFragment
-import com.githubuiviewer.tools.navigator.Navigator
+import com.githubuiviewer.ui.navigator.BaseFragment
 import javax.inject.Inject
 
 class UpdateTokenFragment(
     private val code: String
 ) : BaseFragment(R.layout.upadate_token_fragment) {
+
+    override val parentContainer: ConstraintLayout
+        get() = binding.root
 
     private lateinit var binding: UpadateTokenFragmentBinding
 
@@ -74,7 +77,7 @@ class UpdateTokenFragment(
     }
 
     private fun openUserFragment() {
-        navigation.showUserScreen(UserProfile.AuthorizedUser)
+        navigation.showMainUserProfile(UserProfile.AuthorizedUser)
     }
 
     private fun showError() {

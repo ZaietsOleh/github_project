@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
@@ -19,25 +20,13 @@ import com.githubuiviewer.datasource.model.IssueCommentRepos
 import com.githubuiviewer.tools.Emoji
 import com.githubuiviewer.tools.FragmentArgsDelegate
 import com.githubuiviewer.tools.State
-import com.githubuiviewer.tools.USER_KEY
-import com.githubuiviewer.tools.navigator.BaseFragment
+import com.githubuiviewer.ui.navigator.BaseFragment
 import com.githubuiviewer.ui.issueScreen.adapter.CommentAdapter
-import com.githubuiviewer.ui.projectScreen.ParenRepoProjectFragment
-import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import kotlinx.coroutines.launch
 import java.io.IOException
 import javax.inject.Inject
 
 class IssueFragment : BaseFragment(R.layout.issue_detail_fragment) {
-    companion object {
-        private const val ISSUE_KEY = "ISSUE_KEY"
-
-        fun newInstance(issuesDetailsParameter: IssuesDetailsParameter) = IssueFragment().apply {
-            arguments = Bundle().apply {
-                putParcelable(ISSUE_KEY, issuesDetailsParameter)
-            }
-        }
-    }
 
     @Inject
     lateinit var viewModel: IssueViewModel
@@ -96,6 +85,9 @@ class IssueFragment : BaseFragment(R.layout.issue_detail_fragment) {
         }
     }
 
+    override val parentContainer: ConstraintLayout
+        get() = binding.root
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -153,5 +145,15 @@ class IssueFragment : BaseFragment(R.layout.issue_detail_fragment) {
     private fun setupDi() {
         val app = requireActivity().application as App
         app.getComponent().inject(this)
+    }
+
+    companion object {
+        private const val ISSUE_KEY = "ISSUE_KEY"
+
+        fun newInstance(issuesDetailsParameter: IssuesDetailsParameter) = IssueFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(ISSUE_KEY, issuesDetailsParameter)
+            }
+        }
     }
 }

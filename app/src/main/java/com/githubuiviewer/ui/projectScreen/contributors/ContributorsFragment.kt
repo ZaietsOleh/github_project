@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.githubuiviewer.App
@@ -14,7 +15,7 @@ import com.githubuiviewer.tools.FragmentArgsDelegate
 import com.githubuiviewer.tools.State
 import com.githubuiviewer.tools.USER_KEY
 import com.githubuiviewer.tools.UserProfile
-import com.githubuiviewer.tools.navigator.BaseFragment
+import com.githubuiviewer.ui.navigator.BaseFragment
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import com.githubuiviewer.ui.userScreen.adapter.UserAdapter
 import kotlinx.coroutines.launch
@@ -31,6 +32,8 @@ class ContributorsFragment : BaseFragment(R.layout.contributors_fragment) {
     private val userAdapter = UserAdapter {
         navigation.showUserScreen(UserProfile.PublicUser(it.name))
     }
+    override val parentContainer: ConstraintLayout
+        get() = binding.root
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

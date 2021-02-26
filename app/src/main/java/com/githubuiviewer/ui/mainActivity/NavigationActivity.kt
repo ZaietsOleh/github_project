@@ -7,7 +7,7 @@ import android.util.Log
 import com.githubuiviewer.*
 import com.githubuiviewer.tools.MAIN_DEBUG_TAG
 import com.githubuiviewer.tools.UserProfile
-import com.githubuiviewer.tools.navigator.Navigator
+import com.githubuiviewer.ui.navigator.Navigator
 import com.githubuiviewer.tools.redirectUrl
 
 class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
@@ -31,7 +31,7 @@ class NavigationActivity : AppCompatActivity(R.layout.activity_navigation) {
     }
 
     private fun setupBasicFragment() {
-        navigator.showUserScreen(UserProfile.AuthorizedUser)
+        navigator.showMainUserProfile(UserProfile.AuthorizedUser)
     }
 
     private fun getCodeFromUri(uri: Uri?): String? {

@@ -1,9 +1,7 @@
-package com.githubuiviewer.tools.navigator
+package com.githubuiviewer.ui.navigator
 
-import android.util.Log
 import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentManager
-import com.githubuiviewer.tools.MAIN_DEBUG_TAG
 import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.issueScreen.IssueFragment
 import com.githubuiviewer.ui.issueScreen.IssuesDetailsParameter
@@ -20,20 +18,25 @@ class Navigator(
 ) {
     companion object {
         private const val USER_SCREEN_FRAGMENT = "USER_SCREEN_FRAGMENT"
-        private const val LOGIN_SCREEN_FRAGMENT = "LOGIN_SCREEN_FRAGMENT"
         private const val PROJECT_SCREEN_FRAGMENT = "PROJECT_SCREEN_FRAGMENT"
         private const val ISSUE_SCREEN_FRAGMENT = "ISSUE_SCREEN_FRAGMENT"
         private const val LOADING_SCREEN_FRAGMENT = "LOADING_SCREEN_FRAGMENT"
     }
 
-    fun showUserScreen(userProfile: UserProfile) {
+    fun showMainUserProfile(userProfile: UserProfile){
         fragmentManager.beginTransaction()
             .replace(container, UserFragment.newInstance(userProfile))
             .commit()
     }
 
+    fun showUserScreen(userProfile: UserProfile) {
+        fragmentManager.beginTransaction()
+            .replace(container, UserFragment.newInstance(userProfile))
+            .addToBackStack(USER_SCREEN_FRAGMENT)
+            .commit()
+    }
+
     fun showLoginScreen() {
-        Log.d(MAIN_DEBUG_TAG, "NAVIGATOR start showLoginScreen")
         fragmentManager.beginTransaction()
             .add(container, LoginFragment.newInstance())
             .commit()
