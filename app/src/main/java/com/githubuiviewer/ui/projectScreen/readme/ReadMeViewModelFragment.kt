@@ -33,16 +33,16 @@ class   ReadMeViewModelFragment @Inject constructor(
 
     override fun unauthorizedException() {
         super.unauthorizedException()
-        _readMeLiveData.value = State.Error(UnauthorizedException())
+        _readMeLiveData.postValue(State.Error(UnauthorizedException()))
     }
 
     override fun dataLoadingException() {
         super.dataLoadingException()
-        _readMeLiveData.value = State.Error(DataLoadingException())
+        _readMeLiveData.postValue(State.Error(DataLoadingException()))
     }
 
     override fun networkException() {
         super.networkException()
-        _readMeLiveData.value = State.Error(NetworkException())
+        _readMeLiveData.postValue(State.Error(NetworkException()))
     }
 }
