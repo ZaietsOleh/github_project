@@ -38,7 +38,6 @@ class IssueViewModel @Inject constructor(
         get() = _commentLiveData as LiveData<State<PagingData<IssueCommentRepos>, IOException>>
 
     fun getContent() {
-        _commentLiveData.postValue(State.Loading)
         baseViewModelScope.launch {
             commentsFlow().collectLatest { pagedData ->
                 _commentLiveData.postValue(State.Content(pagedData))

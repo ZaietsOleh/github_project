@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.ProjectFragmentBinding
 import com.githubuiviewer.tools.FragmentArgsDelegate
@@ -18,12 +19,15 @@ class ParenRepoProjectFragment : BaseFragment(R.layout.project_fragment) {
     private lateinit var binding: ProjectFragmentBinding
     private lateinit var viewPagerAdapter: DetailInfoReposAdapter
 
+    override var parentContainer: ConstraintLayout? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = ProjectFragmentBinding.inflate(inflater, container, false)
+        parentContainer = binding.container
         return binding.root
     }
 

@@ -28,14 +28,6 @@ import java.lang.Exception
 import javax.inject.Inject
 
 class UserFragment : BaseFragment(R.layout.user_fragment) {
-    companion object {
-        fun newInstance(userProfile: UserProfile) =
-            UserFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(USER_KEY, userProfile)
-                }
-            }
-    }
 
     @Inject
     lateinit var viewModel: UserViewModel
@@ -47,11 +39,14 @@ class UserFragment : BaseFragment(R.layout.user_fragment) {
 
     private val reposAdapter = ReposAdapter(::onReposClick)
 
+    override var parentContainer: ConstraintLayout? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = UserFragmentBinding.inflate(inflater, container, false)
+        parentContainer = binding.container
         return binding.root
     }
 
@@ -184,5 +179,14 @@ class UserFragment : BaseFragment(R.layout.user_fragment) {
                 }
             }
         }
+    }
+
+    companion object {
+        fun newInstance(userProfile: UserProfile) =
+            UserFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(USER_KEY, userProfile)
+                }
+            }
     }
 }

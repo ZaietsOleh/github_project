@@ -1,6 +1,7 @@
 package com.githubuiviewer
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.emoji.bundled.BundledEmojiCompatConfig
 import androidx.emoji.text.EmojiCompat
 import com.githubuiviewer.di.AppComponent
@@ -13,6 +14,8 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         val config = BundledEmojiCompatConfig(this)
         EmojiCompat.init(config)

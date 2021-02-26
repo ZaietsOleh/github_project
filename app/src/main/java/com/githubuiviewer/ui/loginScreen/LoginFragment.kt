@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.githubuiviewer.R
@@ -17,6 +18,7 @@ import com.githubuiviewer.ui.navigator.BaseFragment
 class LoginFragment : BaseFragment(R.layout.login_fragment) {
 
     private lateinit var binding : LoginFragmentBinding
+    override var parentContainer: ConstraintLayout? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,6 +26,7 @@ class LoginFragment : BaseFragment(R.layout.login_fragment) {
         savedInstanceState: Bundle?
     ): View {
         binding = LoginFragmentBinding.inflate(inflater, container, false)
+        parentContainer = binding.container
         return binding.root
     }
 

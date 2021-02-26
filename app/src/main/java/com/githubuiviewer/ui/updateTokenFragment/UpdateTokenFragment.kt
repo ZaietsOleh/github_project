@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.githubuiviewer.App
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.UpadateTokenFragmentBinding
@@ -16,6 +17,8 @@ class UpdateTokenFragment(
     private val code: String
 ) : BaseFragment(R.layout.upadate_token_fragment) {
 
+    override var parentContainer: ConstraintLayout? = null
+
     private lateinit var binding: UpadateTokenFragmentBinding
 
     @Inject
@@ -26,6 +29,7 @@ class UpdateTokenFragment(
         savedInstanceState: Bundle?
     ): View {
         binding = UpadateTokenFragmentBinding.inflate(inflater, container, false)
+        parentContainer = binding.container
         return binding.root
     }
 

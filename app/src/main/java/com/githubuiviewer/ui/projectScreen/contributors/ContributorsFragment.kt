@@ -26,6 +26,8 @@ import javax.inject.Inject
 
 class ContributorsFragment : BaseFragment(R.layout.contributors_fragment) {
 
+    override var parentContainer: ConstraintLayout? = null
+
     @Inject
     lateinit var viewModel: ContributorsViewModel
 
@@ -42,6 +44,7 @@ class ContributorsFragment : BaseFragment(R.layout.contributors_fragment) {
         savedInstanceState: Bundle?
     ): View {
         binding = ContributorsFragmentBinding.inflate(inflater, container, false)
+        parentContainer = binding.container
         return binding.root
     }
 
