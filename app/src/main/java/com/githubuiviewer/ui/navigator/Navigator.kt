@@ -1,9 +1,7 @@
-package com.githubuiviewer.tools.navigator
+package com.githubuiviewer.ui.navigator
 
-import android.util.Log
 import androidx.annotation.IdRes
 import androidx.fragment.app.FragmentManager
-import com.githubuiviewer.tools.MAIN_DEBUG_TAG
 import com.githubuiviewer.tools.UserProfile
 import com.githubuiviewer.ui.issueScreen.IssueFragment
 import com.githubuiviewer.ui.issueScreen.IssuesDetailsParameter

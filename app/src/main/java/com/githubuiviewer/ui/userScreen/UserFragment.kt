@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +17,7 @@ import com.githubuiviewer.datasource.api.UnauthorizedException
 import com.githubuiviewer.datasource.model.ReposResponse
 import com.githubuiviewer.datasource.model.UserResponse
 import com.githubuiviewer.tools.*
-import com.githubuiviewer.tools.navigator.BaseFragment
+import com.githubuiviewer.ui.navigator.BaseFragment
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import com.githubuiviewer.ui.userScreen.adapter.UserAdapter
 import com.githubuiviewer.ui.userScreen.adapter.ReposAdapter
@@ -26,7 +27,11 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
-class UserFragment : BaseFragment(R.layout.user_fragment) {
+class UserFragment() : BaseFragment(R.layout.user_fragment) {
+
+    override val parentContainer: ConstraintLayout
+        get() = binding.root
+
     companion object {
         fun newInstance(userProfile: UserProfile) =
             UserFragment().apply {
@@ -37,7 +42,7 @@ class UserFragment : BaseFragment(R.layout.user_fragment) {
     }
 
     @Inject
-    lateinit var viewModel: UserViewModel
+    lateinit var viewModel: UserFragmentViewModel
     private lateinit var binding: UserFragmentBinding
     private var searchJob: Job? = null
     private var userProfile by FragmentArgsDelegate<UserProfile>(USER_KEY)
@@ -79,12 +84,6 @@ class UserFragment : BaseFragment(R.layout.user_fragment) {
         )
     }
 
-    override fun onStop() {
-        super.onStop()
-        binding.svSearchUser.isIconified = true
-        binding.svSearchUser.onActionViewCollapsed()
-    }
-
     private fun setupSearch() {
         binding.svSearchUser.apply {
             setOnSearchClickListener {
@@ -101,11 +100,9 @@ class UserFragment : BaseFragment(R.layout.user_fragment) {
             setOnQueryTextListener(SearchListener { query ->
                 searchJob?.cancel()
                 query?.let {
-                    if (query.isNotEmpty()) {
-                        searchJob = lifecycleScope.launch {
-                            delay(INPUT_DELAY)
-                            viewModel.getSearchable(query)
-                        }
+                    searchJob = lifecycleScope.launch {
+                        delay(INPUT_DELAY)
+                        viewModel.getSearchable(query)
                     }
                 }
             })
