@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.githubuiviewer.App
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.ReadMeFragmentBinding
@@ -19,9 +18,6 @@ import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import javax.inject.Inject
 
 class ReadMeFragment : BaseFragment(R.layout.read_me_fragment) {
-
-    override val parentContainer: ConstraintLayout
-        get() = binding.root
 
     @Inject
     lateinit var viewModel: ReadMeViewModel

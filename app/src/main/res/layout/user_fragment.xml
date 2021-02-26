@@ -21,7 +21,7 @@
         android:id="@+id/user_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:padding="@dimen/padding_view"
         app:layout_constraintBottom_toTopOf="@id/rv_repositories"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

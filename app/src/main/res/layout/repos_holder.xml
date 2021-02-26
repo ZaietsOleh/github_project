@@ -11,6 +11,6 @@
         android:textSize="@dimen/repos_name_text_size"
         android:textColor="@color/black"
         android:gravity="center"
-        android:padding="@dimen/beutiful_indent"/>
+        android:padding="@dimen/padding_view"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

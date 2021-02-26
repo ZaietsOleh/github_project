@@ -100,6 +100,4 @@ class ContributorsFragment : BaseFragment(R.layout.contributors_fragment) {
                 }
             }
     }
-    override val parentContainer: ConstraintLayout
-        get() = binding.root
 }

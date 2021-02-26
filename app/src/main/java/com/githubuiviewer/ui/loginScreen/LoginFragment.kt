@@ -9,11 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import com.githubuiviewer.R
 import com.githubuiviewer.databinding.LoginFragmentBinding
 import com.githubuiviewer.tools.*
+import com.githubuiviewer.ui.navigator.BaseFragment
 
-//todo just fragment???
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment(R.layout.login_fragment) {
 
     private lateinit var binding : LoginFragmentBinding
 
@@ -29,8 +30,6 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        Log.d(MAIN_DEBUG_TAG, "onViewCreated login dialog fragment")
-        //isCancelable = false ??TODO THINK ABOUT THIS
         setupListeners()
     }
     

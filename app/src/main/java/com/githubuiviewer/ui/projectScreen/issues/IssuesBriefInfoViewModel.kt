@@ -35,7 +35,7 @@ class IssuesBriefInfoViewModel
 
     fun getIssues(userAndRepoName: UserAndRepoName) {
         baseViewModelScope.launch {
-            //_issuesLiveData.postValue(State.Loading)
+            _issuesLiveData.postValue(State.Loading)
             reposFlow(
                 userAndRepoName.userName,
                 userAndRepoName.repoName

@@ -85,8 +85,7 @@ class IssueFragment : BaseFragment(R.layout.issue_detail_fragment) {
         }
     }
 
-    override val parentContainer: ConstraintLayout
-        get() = binding.root
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -27,11 +27,7 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
-class UserFragment() : BaseFragment(R.layout.user_fragment) {
-
-    override val parentContainer: ConstraintLayout
-        get() = binding.root
-
+class UserFragment : BaseFragment(R.layout.user_fragment) {
     companion object {
         fun newInstance(userProfile: UserProfile) =
             UserFragment().apply {
@@ -84,6 +80,12 @@ class UserFragment() : BaseFragment(R.layout.user_fragment) {
         )
     }
 
+    override fun onStop() {
+        super.onStop()
+        binding.svSearchUser.isIconified = true
+        binding.svSearchUser.onActionViewCollapsed()
+    }
+
     private fun setupSearch() {
         binding.svSearchUser.apply {
             setOnSearchClickListener {
@@ -100,9 +102,11 @@ class UserFragment() : BaseFragment(R.layout.user_fragment) {
             setOnQueryTextListener(SearchListener { query ->
                 searchJob?.cancel()
                 query?.let {
-                    searchJob = lifecycleScope.launch {
-                        delay(INPUT_DELAY)
-                        viewModel.getSearchable(query)
+                    if (query.isNotEmpty()) {
+                        searchJob = lifecycleScope.launch {
+                            delay(INPUT_DELAY)
+                            viewModel.getSearchable(query)
+                        }
                     }
                 }
             })
