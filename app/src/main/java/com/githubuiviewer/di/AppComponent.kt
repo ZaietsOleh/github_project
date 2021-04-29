@@ -14,7 +14,6 @@ import javax.inject.Singleton
 @Singleton
 @Component(dependencies = [], modules = [AppModule::class])
 interface AppComponent {
-    val context : Context
 
     fun inject(fragment: UserFragment)
 

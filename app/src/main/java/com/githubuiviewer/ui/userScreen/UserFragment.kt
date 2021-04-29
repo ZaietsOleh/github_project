@@ -8,6 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.githubuiviewer.App
 import com.githubuiviewer.R
 import com.githubuiviewer.databinding.UserFragmentBinding
@@ -21,6 +22,7 @@ import com.githubuiviewer.ui.navigator.BaseFragment
 import com.githubuiviewer.ui.projectScreen.UserAndRepoName
 import com.githubuiviewer.ui.userScreen.adapter.UserAdapter
 import com.githubuiviewer.ui.userScreen.adapter.ReposAdapter
+import com.githubuiviewer.ui.userScreen.adapter.ReposListAdapter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -36,6 +38,7 @@ class UserFragment : BaseFragment(R.layout.user_fragment) {
     private var userProfile by FragmentArgsDelegate<UserProfile>(USER_KEY)
 
     private val userAdapter = UserAdapter(::onUserClick)
+    private val reposListAdapter = ReposListAdapter(::onReposClick)
 
     private val reposAdapter = ReposAdapter(::onReposClick)
 
@@ -115,9 +118,11 @@ class UserFragment : BaseFragment(R.layout.user_fragment) {
 
     private fun setupRepositoriesAdapter() {
         binding.apply {
-            rvRepositories.adapter = reposAdapter
+//            rvRepositories.adapter = reposAdapter
             rvRepositories.layoutManager =
                 LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            rvRepositories.adapter = reposListAdapter
+            rvRepositories.setOnPaginationLoad(viewModel::loadMoreRepos)
         }
     }
 
@@ -144,6 +149,16 @@ class UserFragment : BaseFragment(R.layout.user_fragment) {
         viewModel.searchLiveData.observe(viewLifecycleOwner) {
             updateSearch(it)
         }
+
+
+
+        viewModel.reposLiveDataCustom.observe(viewLifecycleOwner) {
+            updateCustomRepos(it)
+        }
+    }
+
+    private fun updateCustomRepos(list: List<ReposResponse>) {
+        reposListAdapter.submitList(list)
     }
 
     private fun updateRepos(pagingData: PagingData<ReposResponse>) {
@@ -189,4 +204,39 @@ class UserFragment : BaseFragment(R.layout.user_fragment) {
                 }
             }
     }
+
+    override fun onDestroyView() {
+        binding.rvRepositories.adapter = null
+        super.onDestroyView()
+    }
+}
+
+fun RecyclerView.setOnPaginationLoad(loadMore: () -> Unit) {
+    var isLoading = false
+
+    val linearLayoutManager = (this.layoutManager as? LinearLayoutManager)
+        ?: throw IllegalStateException("LinearUiPagination works only with LinearLayoutManager")
+
+    this.adapter?.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+            isLoading = false
+        }
+    })
+
+    this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            if (isLoading) {
+                return
+            }
+
+            val lastVisiblePosition = linearLayoutManager.findLastVisibleItemPosition()
+
+            val itemsCount = recyclerView.adapter?.itemCount ?: return
+
+            if (lastVisiblePosition > itemsCount - 40) {
+                isLoading = true
+                loadMore()
+            }
+        }
+    })
 }
