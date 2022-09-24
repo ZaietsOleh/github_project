@@ -1,4 +1,4 @@
 # github_project
 
-# ZGoblin - Zaiets Oleh
+# ZaietsOleh - Zaiets Oleh
 # RodionGra - Rodion Gramushniak 
